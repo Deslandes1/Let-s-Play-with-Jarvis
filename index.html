@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Let's Play with Jarvis — Browser Game Hub</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #060b14;
+      color: #f1f5f9;
+      overflow-x: hidden;
+    }
+    .jarvis-grid {
+      background-image:
+        radial-gradient(circle at 15% 15%, rgba(34, 211, 238, 0.12), transparent 40%),
+        radial-gradient(circle at 85% 10%, rgba(16, 185, 129, 0.10), transparent 38%),
+        linear-gradient(to right, rgba(148, 163, 184, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(148, 163, 184, 0.05) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 36px 36px, 36px 36px;
+    }
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.78);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(51, 65, 85, 0.75);
+    }
+    .neon-border {
+      box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.25), 0 12px 32px -8px rgba(6, 182, 212, 0.22);
+    }
+  </style>
+</head>
+<body class="jarvis-grid min-h-screen flex flex-col">
+  <!-- Top Navigation & Jarvis Header -->
+  <header class="sticky top-0 z-40 glass-panel border-b border-slate-800/90">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 via-sky-500 to-emerald-400 flex items-center justify-center text-slate-950 font-black text-lg shadow-lg shadow-cyan-500/25">
+          J
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-lg sm:text-xl font-extrabold tracking-tight text-white">
+              Let&apos;s Play with <span class="text-cyan-400">Jarvis</span>
+            </h1>
+            <span class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              22 Games Ready
+            </span>
+          </div>
+          <p class="text-xs text-slate-400">
+            Built by <span class="text-slate-200 font-medium">Gesner Deslandes</span> · Software Developer
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 sm:gap-3">
+        <button
+          id="btn-favorites-filter"
+          type="button"
+          class="px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-800/90 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5"
+        >
+          <span>★</span>
+          <span>Favorites</span>
+          <span id="fav-count" class="px-1.5 py-0.2 rounded-full bg-cyan-500/20 text-cyan-300 text-xs">0</span>
+        </button>
+        <button
+          id="btn-github-guide"
+          type="button"
+          class="px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-cyan-500 hover:bg-cyan-400 text-slate-950 transition flex items-center gap-1.5 shadow-md shadow-cyan-500/20"
+        >
+          <span>⚡</span>
+          <span>GitHub Pages</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+    <!-- Hero Banner & Developer Card -->
+    <section class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div class="lg:col-span-2 glass-panel rounded-2xl p-5 sm:p-6 neon-border flex flex-col justify-between gap-4">
+        <div class="space-y-2">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-semibold">
+            <span>🎮</span>
+            <span>Instant In-App Play Stage + 22 Curated Browser Game Links</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-black text-white leading-tight">
+            Launch &amp; Play Browser Games Right Inside <span class="text-cyan-400">Jarvis</span>
+          </h2>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            Play <strong class="text-white">Rats of the Manor · RTX Tactical Edition</strong>, explore <strong class="text-white">CrazyGames</strong>, <strong class="text-white">Easy Games</strong>, <strong class="text-white">TopGames.gg</strong>, and <strong class="text-white">Web-games.io</strong>, and jump straight into 22 hand-picked action, 3D shooter, racing, arcade, and puzzle games in the built-in stage below.
+          </p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2.5 pt-1">
+          <button
+            id="btn-play-featured"
+            type="button"
+            class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-400 to-sky-500 hover:from-cyan-300 hover:to-sky-400 text-slate-950 font-bold text-sm transition shadow-lg shadow-cyan-500/25"
+          >
+            ▶ Launch Rats of the Manor
+          </button>
+          <button
+            id="btn-random-game"
+            type="button"
+            class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-sm border border-slate-700 transition"
+          >
+            🎲 Surprise Me
+          </button>
+          <span class="text-xs text-slate-400 sm:ml-1">
+            Tip: If a host blocks embedded frames, use <strong class="text-slate-200">Open Tab</strong> in the player bar.
+          </span>
+        </div>
+      </div>
+
+      <!-- Developer & Contact Card -->
+      <aside class="glass-panel rounded-2xl p-5 flex flex-col justify-between gap-3 border border-cyan-500/20">
+        <div class="space-y-2">
+          <div class="text-xs uppercase tracking-wider font-bold text-cyan-400">Developer Profile</div>
+          <h3 class="text-lg font-extrabold text-white">Gesner Deslandes</h3>
+          <p class="text-xs font-medium text-emerald-300">Software Developer</p>
+          <div class="pt-2 space-y-1.5 text-xs text-slate-300">
+            <div class="flex items-center justify-between gap-2 bg-slate-900/80 px-3 py-2 rounded-xl border border-slate-800">
+              <span class="text-slate-400">Contact Info:</span>
+              <span class="font-semibold text-white">(509)-47385663</span>
+            </div>
+            <div class="flex items-center justify-between gap-2 bg-slate-900/80 px-3 py-2 rounded-xl border border-slate-800">
+              <span class="text-slate-400">Email:</span>
+              <a href="mailto:deslandes78@gmail.com" class="font-semibold text-cyan-300 hover:underline truncate">
+                deslandes78@gmail.com
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between gap-2 pt-2 border-t border-slate-800/80 text-xs">
+          <span class="text-slate-400">GitHub Ready: <strong class="text-emerald-400">index.html</strong></span>
+          <button
+            id="btn-copy-contact"
+            type="button"
+            class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 font-semibold border border-slate-700 transition"
+          >
+            Copy Info
+          </button>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Built-In Playable Stage (Iframe Viewport) -->
+    <section id="play-stage" class="glass-panel rounded-2xl overflow-hidden neon-border">
+      <div class="px-4 sm:px-5 py-3 bg-slate-900/95 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-3 min-w-0">
+          <span id="stage-badge" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 shrink-0">
+            3D Shooter
+          </span>
+          <div class="truncate">
+            <div id="stage-title" class="text-sm sm:text-base font-bold text-white truncate">
+              Rats of the Manor · RTX Tactical Edition
+            </div>
+            <div id="stage-url" class="text-xs text-slate-400 truncate">
+              https://deslandes1.github.io/RATS-OF-THE-MINOR-GAME-2026/
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 shrink-0">
+          <button
+            id="btn-reload-stage"
+            type="button"
+            class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition"
+            title="Reload game frame"
+          >
+            ↻ Reload
+          </button>
+          <button
+            id="btn-fullscreen-stage"
+            type="button"
+            class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition"
+            title="Fullscreen player"
+          >
+            ⛶ Fullscreen
+          </button>
+          <a
+            id="stage-external-link"
+            href="https://deslandes1.github.io/RATS-OF-THE-MINOR-GAME-2026/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition"
+          >
+            ↗ Open Tab
+          </a>
+        </div>
+      </div>
+
+      <div id="stage-frame-wrapper" class="relative w-full h-[62vh] min-h-[420px] max-h-[720px] bg-slate-950">
+        <div id="stage-loader" class="hidden absolute inset-0 z-10 bg-slate-950/85 flex flex-col items-center justify-center gap-2 text-center p-4">
+          <div class="w-8 h-8 rounded-full border-2 border-cyan-400 border-t-transparent animate-spin"></div>
+          <p class="text-sm font-semibold text-cyan-300">Jarvis is loading the game stage...</p>
+        </div>
+        <iframe
+          id="game-iframe"
+          src="https://deslandes1.github.io/RATS-OF-THE-MINOR-GAME-2026/"
+          title="Jarvis Game Player"
+          class="w-full h-full border-0"
+          allow="autoplay; fullscreen; gamepad; accelerometer; gyroscope; pointer-lock"
+          allowfullscreen
+          loading="eager"
+        ></iframe>
+      </div>
+
+      <div class="px-4 sm:px-5 py-2.5 bg-slate-900/70 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400">
+        <span>
+          Note: Some external portals set <code class="text-slate-300">X-Frame-Options</code> / <code class="text-slate-300">CSP</code> headers that prevent embedding. Click <strong class="text-emerald-300">↗ Open Tab</strong> anytime to play in a full window.
+        </span>
+        <button
+          id="btn-add-custom-link"
+          type="button"
+          class="text-cyan-300 hover:text-cyan-200 font-semibold underline underline-offset-2"
+        >
+          + Add Custom Game Link
+        </button>
+      </div>
+    </section>
+
+    <!-- Search & Category Filter Bar -->
+    <section class="glass-panel rounded-2xl p-4 space-y-3">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <div class="relative flex-1">
+          <input
+            id="search-input"
+            type="text"
+            placeholder="Search 22 games & portals (e.g., Rats of the Manor, CrazyGames, Racing, Puzzle, 3D)..."
+            class="w-full px-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 focus:border-cyan-400 focus:outline-none text-sm text-white placeholder-slate-400"
+          />
+        </div>
+        <div class="flex items-center gap-2 text-xs text-slate-400">
+          <span>Showing</span>
+          <strong id="visible-count" class="text-cyan-300">22</strong>
+          <span>games</span>
+        </div>
+      </div>
+
+      <div id="category-pills" class="flex flex-wrap gap-2"></div>
+    </section>
+
+    <!-- Game Catalog Grid (22 Curated Games & Portals) -->
+    <section>
+      <div id="games-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"></div>
+      <div id="empty-state" class="hidden glass-panel rounded-2xl p-10 text-center space-y-2">
+        <p class="text-base font-bold text-white">No matching games found</p>
+        <p class="text-sm text-slate-400">Try clearing your search filter or switching categories.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer with Developer Details -->
+  <footer class="glass-panel border-t border-slate-800/90 mt-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
+      <div>
+        <strong class="text-white">Let&apos;s Play with Jarvis</strong> · Built by <strong class="text-cyan-300">Gesner Deslandes</strong> (Software Developer)
+      </div>
+      <div class="flex flex-wrap items-center gap-4">
+        <span>Phone: <strong class="text-slate-200">(509)-47385663</strong></span>
+        <span>Email: <a href="mailto:deslandes78@gmail.com" class="text-cyan-300 hover:underline">deslandes78@gmail.com</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification -->
+  <div
+    id="toast"
+    class="fixed bottom-5 right-5 z-50 hidden max-w-sm px-4 py-3 rounded-xl bg-slate-900 border border-cyan-400/50 text-white text-xs sm:text-sm font-semibold shadow-2xl"
+  ></div>
+
+  <!-- Add Custom Game Modal -->
+  <div id="custom-game-modal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass-panel rounded-2xl max-w-md w-full p-5 space-y-4 border border-cyan-500/30">
+      <div class="flex items-center justify-between">
+        <h3 class="text-base font-extrabold text-white">Add Custom Game Link</h3>
+        <button id="close-custom-modal" type="button" class="text-slate-400 hover:text-white text-lg font-bold">✕</button>
+      </div>
+      <form id="custom-game-form" class="space-y-3">
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Game Title</label>
+          <input id="custom-title" type="text" required placeholder="e.g., Neon Drift 3D" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white focus:border-cyan-400 focus:outline-none" />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Game URL (https://...)</label>
+          <input id="custom-url" type="url" required placeholder="https://example.com/game" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white focus:border-cyan-400 focus:outline-none" />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Category</label>
+          <select id="custom-category" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white focus:border-cyan-400 focus:outline-none">
+            <option value="3D Shooter">3D Shooter</option>
+            <option value="Portal">Portal</option>
+            <option value="Racing">Racing</option>
+            <option value="Action">Action</option>
+            <option value="Arcade">Arcade</option>
+            <option value="Puzzle">Puzzle</option>
+          </select>
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" id="cancel-custom-modal" class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700">Cancel</button>
+          <button type="submit" class="px-4 py-2 rounded-xl text-xs font-bold bg-cyan-500 text-slate-950 hover:bg-cyan-400">Save &amp; Play</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- GitHub Pages Guide Modal -->
+  <div id="github-modal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass-panel rounded-2xl max-w-xl w-full p-5 sm:p-6 space-y-4 border border-cyan-500/30">
+      <div class="flex items-center justify-between">
+        <h3 class="text-lg font-extrabold text-white">Deploy &quot;Let&apos;s Play with Jarvis&quot; on GitHub Pages</h3>
+        <button id="close-github-modal" type="button" class="text-slate-400 hover:text-white text-lg font-bold">✕</button>
+      </div>
+      <ol class="space-y-2.5 text-xs sm:text-sm text-slate-300 list-decimal list-inside">
+        <li>Create a new GitHub repository (for example, <code class="text-cyan-300">lets-play-with-jarvis</code>).</li>
+        <li>Save this file as <code class="text-cyan-300">index.html</code> in the root of your repository.</li>
+        <li>Commit and push <code class="text-cyan-300">index.html</code> to the <code class="text-cyan-300">main</code> branch.</li>
+        <li>In GitHub, open <strong class="text-white">Settings → Pages</strong>, select <strong class="text-white">Deploy from a branch</strong>, choose <code class="text-cyan-300">main</code> / <code class="text-cyan-300">/(root)</code>, and save.</li>
+      </ol>
+      <div class="bg-slate-900/90 rounded-xl p-3 border border-slate-800 text-xs font-mono text-emerald-300 overflow-x-auto">
+        git init && git add index.html && git commit -m "Launch Let's Play with Jarvis" && git branch -M main && git push -u origin main
+      </div>
+      <div class="flex justify-end">
+        <button id="done-github-modal" type="button" class="px-4 py-2 rounded-xl text-xs font-bold bg-cyan-500 text-slate-950 hover:bg-cyan-400">Got It</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const STORAGE_FAVS = 'jarvis_play_favs_v1';
+      const STORAGE_CUSTOM = 'jarvis_play_custom_v1';
+
+      // 22 curated games & portals including the user's GitHub Pages game and requested portals
+      const INITIAL_GAMES = [
+        {
+          id: 'rats-of-the-manor',
+          title: 'Rats of the Manor · RTX Tactical Edition',
+          category: '3D Shooter',
+          url: 'https://deslandes1.github.io/RATS-OF-THE-MINOR-GAME-2026/',
+          badge: 'GitHub Pages Featured',
+          desc: 'Three-story manor & forest 3D tactical action game with flight, combat, and stages.'
+        },
+        {
+          id: 'crazygames-portal',
+          title: 'CrazyGames — Free Browser Games Hub',
+          category: 'Portal',
+          url: 'https://www.crazygames.com/',
+          badge: 'Popular Portal',
+          desc: 'Large catalog of free browser games across action, shooting, racing, puzzle, and multiplayer.'
+        },
+        {
+          id: 'easy-games-portal',
+          title: 'Easy Games — Instant HTML5 Browser Games',
+          category: 'Portal',
+          url: 'https://www.easygames.org/',
+          badge: 'Popular Portal',
+          desc: 'Instant HTML5 browser games across arcade, racing, action, and strategy with no downloads.'
+        },
+        {
+          id: 'topgames-portal',
+          title: 'TopGames.gg — Desktop & Mobile Browser Games',
+          category: 'Portal',
+          url: 'https://topgames.gg/',
+          badge: 'Popular Portal',
+          desc: 'Free browser games you can launch directly on desktop or mobile devices.'
+        },
+        {
+          id: 'web-games-io-portal',
+          title: 'Web-games.io — Instant-Play Web Games',
+          category: 'Portal',
+          url: 'https://web-games.io/',
+          badge: 'Popular Portal',
+          desc: 'Instant-play free web games with no sign-ups required.'
+        },
+        {
+          id: 'crazygames-action',
+          title: 'CrazyGames — Action & Shooter Zone',
+          category: '3D Shooter',
+          url: 'https://www.crazygames.com/c/action',
+          badge: '3D & Action',
+          desc: 'Fast-paced browser action and shooter titles ready to play.'
+        },
+        {
+          id: 'crazygames-car',
+          title: 'CrazyGames — Car & Racing Arena',
+          category: 'Racing',
+          url: 'https://www.crazygames.com/c/car',
+          badge: 'High Speed',
+          desc: 'Drifting, stunt tracks, and high-speed car races directly in the browser.'
+        },
+        {
+          id: 'crazygames-puzzle',
+          title: 'CrazyGames — Puzzle & Brain Lab',
+          category: 'Puzzle',
+          url: 'https://www.crazygames.com/c/puzzle',
+          badge: 'Logic & Mind',
+          desc: 'Clever logic puzzles, matching challenges, and spatial brain teasers.'
+        },
+        {
+          id: 'crazygames-io',
+          title: 'CrazyGames — Multiplayer .IO Arena',
+          category: 'Action',
+          url: 'https://www.crazygames.com/c/io',
+          badge: 'Multiplayer',
+          desc: 'Real-time browser arena and survival games.'
+        },
+        {
+          id: 'easygames-arcade',
+          title: 'Easy Games — Classic Arcade Collection',
+          category: 'Arcade',
+          url: 'https://www.easygames.org/c/arcade',
+          badge: 'HTML5 Arcade',
+          desc: 'Quick-reflex arcade classics built for instant browser play.'
+        },
+        {
+          id: 'easygames-racing',
+          title: 'Easy Games — Racing & Track Circuit',
+          category: 'Racing',
+          url: 'https://www.easygames.org/c/racing',
+          badge: 'HTML5 Racing',
+          desc: 'Speedy browser racing games with responsive controls.'
+        },
+        {
+          id: 'easygames-strategy',
+          title: 'Easy Games — Tactical & Strategy',
+          category: 'Puzzle',
+          url: 'https://www.easygames.org/c/strategy',
+          badge: 'Strategy',
+          desc: 'Plan moves, manage resources, and outsmart opponents.'
+        },
+        {
+          id: 'topgames-action',
+          title: 'TopGames.gg — Action & Arena Picks',
+          category: 'Action',
+          url: 'https://topgames.gg/category/action',
+          badge: 'Top Picks',
+          desc: 'Curated action games tuned for desktop and mobile play.'
+        },
+        {
+          id: 'topgames-racing',
+          title: 'TopGames.gg — Racing & Driving',
+          category: 'Racing',
+          url: 'https://topgames.gg/category/racing',
+          badge: 'Top Picks',
+          desc: 'Highway sprints, stunt courses, and racing challenges.'
+        },
+        {
+          id: 'topgames-arcade',
+          title: 'TopGames.gg — Arcade Classics',
+          category: 'Arcade',
+          url: 'https://topgames.gg/category/arcade',
+          badge: 'Top Picks',
+          desc: 'Pick-up-and-play arcade games with instant starts.'
+        },
+        {
+          id: 'topgames-puzzle',
+          title: 'TopGames.gg — Puzzle & Logic',
+          category: 'Puzzle',
+          url: 'https://topgames.gg/category/puzzle',
+          badge: 'Top Picks',
+          desc: 'Relaxing and challenging browser puzzle games.'
+        },
+        {
+          id: 'webgames-io-action',
+          title: 'Web-games.io — Instant Action',
+          category: 'Action',
+          url: 'https://web-games.io/c/action',
+          badge: 'No Sign-Up',
+          desc: 'Jump straight into action web games without accounts.'
+        },
+        {
+          id: 'webgames-io-racing',
+          title: 'Web-games.io — Instant Racing',
+          category: 'Racing',
+          url: 'https://web-games.io/c/racing',
+          badge: 'No Sign-Up',
+          desc: 'Instant-start racing games right in your browser.'
+        },
+        {
+          id: 'webgames-io-arcade',
+          title: 'Web-games.io — Instant Arcade',
+          category: 'Arcade',
+          url: 'https://web-games.io/c/arcade',
+          badge: 'No Sign-Up',
+          desc: 'Light, fast-loading arcade games on demand.'
+        },
+        {
+          id: 'webgames-io-puzzle',
+          title: 'Web-games.io — Instant Puzzle',
+          category: 'Puzzle',
+          url: 'https://web-games.io/c/puzzle',
+          badge: 'No Sign-Up',
+          desc: 'Brainteasers and puzzle games ready in seconds.'
+        },
+        {
+          id: 'js13k-games',
+          title: 'js13kGames — Indie HTML5 Showcase',
+          category: 'Arcade',
+          url: 'https://js13kgames.com/games',
+          badge: 'Indie Web',
+          desc: 'Creative lightweight browser games crafted by indie developers.'
+        },
+        {
+          id: 'itch-browser-games',
+          title: 'itch.io — Free Browser Games Shelf',
+          category: '3D Shooter',
+          url: 'https://itch.io/games/free/html5',
+          badge: 'Indie Catalog',
+          desc: 'Independent free HTML5 and WebGL games playable in browser.'
+        }
+      ];
+
+      function safeReadJson(key, fallback) {
+        try {
+          const raw = localStorage.getItem(key);
+          return raw ? JSON.parse(raw) : fallback;
+        } catch (err) {
+          return fallback;
+        }
+      }
+
+      function safeWriteJson(key, value) {
+        try {
+          localStorage.setItem(key, JSON.stringify(value));
+        } catch (err) {
+          // Ignore storage quota errors in restricted frames
+        }
+      }
+
+      let favorites = safeReadJson(STORAGE_FAVS, ['rats-of-the-manor', 'crazygames-portal']);
+      let customGames = safeReadJson(STORAGE_CUSTOM, []);
+      let activeCategory = 'All';
+      let favoritesOnly = false;
+      let searchQuery = '';
+      let currentGame = INITIAL_GAMES[0];
+
+      const CATEGORIES = ['All', '3D Shooter', 'Portal', 'Racing', 'Action', 'Arcade', 'Puzzle'];
+
+      const gamesGrid = document.getElementById('games-grid');
+      const emptyState = document.getElementById('empty-state');
+      const visibleCount = document.getElementById('visible-count');
+      const favCount = document.getElementById('fav-count');
+      const categoryPills = document.getElementById('category-pills');
+      const searchInput = document.getElementById('search-input');
+      const gameIframe = document.getElementById('game-iframe');
+      const stageTitle = document.getElementById('stage-title');
+      const stageUrl = document.getElementById('stage-url');
+      const stageBadge = document.getElementById('stage-badge');
+      const stageExternalLink = document.getElementById('stage-external-link');
+      const stageLoader = document.getElementById('stage-loader');
+      const stageFrameWrapper = document.getElementById('stage-frame-wrapper');
+      const toastEl = document.getElementById('toast');
+
+      let toastTimer = null;
+      function showToast(message) {
+        toastEl.textContent = message;
+        toastEl.classList.remove('hidden');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+          toastEl.classList.add('hidden');
+        }, 2800);
+      }
+
+      function getAllGames() {
+        return [...INITIAL_GAMES, ...customGames];
+      }
+
+      function loadGameIntoStage(game, scrollToStage = false) {
+        if (!game) return;
+        currentGame = game;
+        stageLoader.classList.remove('hidden');
+        stageTitle.textContent = game.title;
+        stageUrl.textContent = game.url;
+        stageBadge.textContent = game.category;
+        stageExternalLink.href = game.url;
+        gameIframe.src = game.url;
+        renderGames();
+        showToast(`Loaded "${game.title}" in Jarvis Stage`);
+        if (scrollToStage) {
+          document.getElementById('play-stage').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+
+      gameIframe.addEventListener('load', () => {
+        stageLoader.classList.add('hidden');
+      });
+
+      function toggleFavorite(gameId) {
+        if (favorites.includes(gameId)) {
+          favorites = favorites.filter((id) => id !== gameId);
+          showToast('Removed from Favorites');
+        } else {
+          favorites.push(gameId);
+          showToast('Added to Favorites ★');
+        }
+        safeWriteJson(STORAGE_FAVS, favorites);
+        renderGames();
+      }
+
+      function renderCategoryPills() {
+        categoryPills.innerHTML = '';
+        CATEGORIES.forEach((cat) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          const isActive = !favoritesOnly && activeCategory === cat;
+          btn.className = isActive
+            ? 'px-3.5 py-1.5 rounded-xl text-xs font-bold bg-cyan-400 text-slate-950 transition shadow-sm'
+            : 'px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-900/90 hover:bg-slate-800 text-slate-300 border border-slate-700/80 transition';
+          btn.textContent = cat;
+          btn.addEventListener('click', () => {
+            favoritesOnly = false;
+            activeCategory = cat;
+            document.getElementById('btn-favorites-filter').classList.remove('ring-2', 'ring-cyan-400');
+            renderCategoryPills();
+            renderGames();
+          });
+          categoryPills.appendChild(btn);
+        });
+      }
+
+      function renderGames() {
+        favCount.textContent = String(favorites.length);
+        const all = getAllGames();
+        const q = searchQuery.trim().toLowerCase();
+
+        const filtered = all.filter((g) => {
+          const matchesFav = !favoritesOnly || favorites.includes(g.id);
+          const matchesCat = favoritesOnly || activeCategory === 'All' || g.category === activeCategory;
+          const matchesSearch =
+            !q ||
+            g.title.toLowerCase().includes(q) ||
+            g.category.toLowerCase().includes(q) ||
+            g.desc.toLowerCase().includes(q);
+          return matchesFav && matchesCat && matchesSearch;
+        });
+
+        visibleCount.textContent = String(filtered.length);
+        gamesGrid.innerHTML = '';
+
+        if (filtered.length === 0) {
+          emptyState.classList.remove('hidden');
+          return;
+        }
+        emptyState.classList.add('hidden');
+
+        filtered.forEach((game) => {
+          const isSelected = currentGame && currentGame.id === game.id;
+          const isFav = favorites.includes(game.id);
+
+          const card = document.createElement('article');
+          card.className = isSelected
+            ? 'glass-panel rounded-2xl p-4 flex flex-col justify-between gap-3 border-2 border-cyan-400 shadow-lg shadow-cyan-500/15'
+            : 'glass-panel rounded-2xl p-4 flex flex-col justify-between gap-3 hover:border-cyan-500/50 transition';
+
+          card.innerHTML = `
+            <div class="space-y-2">
+              <div class="flex items-center justify-between gap-2">
+                <span class="px-2.5 py-0.5 rounded-lg text-[11px] font-bold bg-cyan-500/15 text-cyan-300 border border-cyan-500/25">
+                  ${game.category}
+                </span>
+                <button
+                  type="button"
+                  data-fav-id="${game.id}"
+                  class="text-base leading-none px-1.5 py-0.5 rounded-lg hover:bg-slate-800 transition ${isFav ? 'text-amber-400' : 'text-slate-500'}"
+                  title="Toggle Favorite"
+                >
+                  ${isFav ? '★' : '☆'}
+                </button>
+              </div>
+              <h3 class="text-sm sm:text-base font-extrabold text-white leading-snug">
+                ${game.title}
+              </h3>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                ${game.desc}
+              </p>
+            </div>
+
+            <div class="pt-2 border-t border-slate-800/80 flex items-center justify-between gap-2">
+              <button
+                type="button"
+                data-play-id="${game.id}"
+                class="flex-1 px-3 py-2 rounded-xl text-xs font-extrabold ${
+                  isSelected
+                    ? 'bg-emerald-400 text-slate-950'
+                    : 'bg-cyan-500 hover:bg-cyan-400 text-slate-950'
+                } transition"
+              >
+                ${isSelected ? '▶ Playing Now' : '▶ Play in App'}
+              </button>
+              <a
+                href="${game.url}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="px-3 py-2 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition"
+                title="Open in new browser tab"
+              >
+                ↗
+              </a>
+            </div>
+          `;
+
+          card.querySelector('[data-play-id]').addEventListener('click', () => {
+            loadGameIntoStage(game, true);
+          });
+
+          card.querySelector('[data-fav-id]').addEventListener('click', () => {
+            toggleFavorite(game.id);
+          });
+
+          gamesGrid.appendChild(card);
+        });
+      }
+
+      searchInput.addEventListener('input', (e) => {
+        searchQuery = e.target.value;
+        renderGames();
+      });
+
+      document.getElementById('btn-favorites-filter').addEventListener('click', (e) => {
+        favoritesOnly = !favoritesOnly;
+        e.currentTarget.classList.toggle('ring-2', favoritesOnly);
+        e.currentTarget.classList.toggle('ring-cyan-400', favoritesOnly);
+        renderCategoryPills();
+        renderGames();
+      });
+
+      document.getElementById('btn-play-featured').addEventListener('click', () => {
+        loadGameIntoStage(INITIAL_GAMES[0], true);
+      });
+
+      document.getElementById('btn-random-game').addEventListener('click', () => {
+        const all = getAllGames();
+        const pool = all.filter((g) => g.id !== (currentGame && currentGame.id));
+        const pick = pool[Math.floor(Math.random() * pool.length)] || all[0];
+        loadGameIntoStage(pick, true);
+      });
+
+      document.getElementById('btn-reload-stage').addEventListener('click', () => {
+        loadGameIntoStage(currentGame, false);
+      });
+
+      document.getElementById('btn-fullscreen-stage').addEventListener('click', () => {
+        if (stageFrameWrapper.requestFullscreen) {
+          stageFrameWrapper.requestFullscreen().catch(() => {
+            showToast('Fullscreen unavailable in this frame; try Open Tab.');
+          });
+        } else if (gameIframe.requestFullscreen) {
+          gameIframe.requestFullscreen().catch(() => {
+            showToast('Fullscreen unavailable in this frame; try Open Tab.');
+          });
+        }
+      });
+
+      document.getElementById('btn-copy-contact').addEventListener('click', () => {
+        const contactSummary = 'Gesner Deslandes (Software Developer) | Phone: (509)-47385663 | Email: deslandes78@gmail.com';
+        try {
+          const temp = document.createElement('textarea');
+          temp.value = contactSummary;
+          document.body.appendChild(temp);
+          temp.select();
+          document.execCommand('copy');
+          document.body.removeChild(temp);
+          showToast('Developer contact info copied!');
+        } catch (err) {
+          showToast('Gesner Deslandes · (509)-47385663 · deslandes78@gmail.com');
+        }
+      });
+
+      // Custom game modal controls
+      const customModal = document.getElementById('custom-game-modal');
+      document.getElementById('btn-add-custom-link').addEventListener('click', () => {
+        customModal.classList.remove('hidden');
+      });
+      document.getElementById('close-custom-modal').addEventListener('click', () => {
+        customModal.classList.add('hidden');
+      });
+      document.getElementById('cancel-custom-modal').addEventListener('click', () => {
+        customModal.classList.add('hidden');
+      });
+
+      document.getElementById('custom-game-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const title = document.getElementById('custom-title').value.trim();
+        const url = document.getElementById('custom-url').value.trim();
+        const category = document.getElementById('custom-category').value;
+        if (!title || !url) return;
+
+        const newGame = {
+          id: 'custom-' + Date.now(),
+          title,
+          url,
+          category,
+          badge: 'Custom Link',
+          desc: 'Custom browser game added by Gesner Deslandes in Let\'s Play with Jarvis.'
+        };
+        customGames.push(newGame);
+        safeWriteJson(STORAGE_CUSTOM, customGames);
+        customModal.classList.add('hidden');
+        e.target.reset();
+        renderGames();
+        loadGameIntoStage(newGame, true);
+      });
+
+      // GitHub Pages modal controls
+      const githubModal = document.getElementById('github-modal');
+      document.getElementById('btn-github-guide').addEventListener('click', () => {
+        githubModal.classList.remove('hidden');
+      });
+      document.getElementById('close-github-modal').addEventListener('click', () => {
+        githubModal.classList.add('hidden');
+      });
+      document.getElementById('done-github-modal').addEventListener('click', () => {
+        githubModal.classList.add('hidden');
+      });
+
+      renderCategoryPills();
+      renderGames();
+    })();
+  </script>
+</body>
+</html>
