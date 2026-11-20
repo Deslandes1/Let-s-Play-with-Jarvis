@@ -27,7 +27,7 @@
       background-size: 100% 100%, 100% 100%, 36px 36px, 36px 36px;
     }
     .glass-panel {
-      background: rgba(15, 23, 42, 0.78);
+      background: rgba(15, 23, 42, 0.80);
       backdrop-filter: blur(12px);
       border: 1px solid rgba(51, 65, 85, 0.75);
     }
@@ -36,9 +36,9 @@
     }
     .simulated-cover-backdrop {
       background:
-        radial-gradient(circle at 50% 20%, rgba(34, 211, 238, 0.18), transparent 45%),
-        radial-gradient(circle at 80% 80%, rgba(16, 185, 129, 0.14), transparent 42%),
-        rgba(6, 11, 20, 0.84);
+        radial-gradient(circle at 50% 18%, rgba(34, 211, 238, 0.20), transparent 45%),
+        radial-gradient(circle at 82% 82%, rgba(16, 185, 129, 0.16), transparent 42%),
+        rgba(6, 11, 20, 0.86);
       backdrop-filter: blur(14px);
     }
   </style>
@@ -52,7 +52,7 @@
     aria-labelledby="sim-cover-title"
     class="fixed inset-0 z-50 hidden simulated-cover-backdrop flex flex-col justify-between p-4 sm:p-6 overflow-y-auto"
   >
-    <!-- Top Bar with Prominent Top-Left Return Arrow -->
+    <!-- Top Control Bar with Prominent Top-Left Return Arrow -->
     <div class="w-full max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3 bg-slate-900/95 border border-cyan-500/40 rounded-2xl px-3.5 py-3 shadow-2xl">
       <div class="flex items-center gap-3 min-w-0">
         <button
@@ -68,7 +68,7 @@
           <div class="flex items-center gap-2 flex-wrap">
             <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-              Background Cover Active · Simulated In-App Session
+              Background Cover · Simulated In-App Session
             </span>
             <span id="sim-cover-category" class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-cyan-500/15 text-cyan-300 border border-cyan-500/25">
               Portal / Comms
@@ -81,23 +81,16 @@
       </div>
       <div class="flex items-center gap-2 shrink-0">
         <button
-          id="btn-relaunch-external"
+          id="btn-focus-external"
           type="button"
-          class="px-3 py-2 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 transition cursor-pointer"
+          class="px-3.5 py-2 rounded-xl text-xs font-extrabold bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition cursor-pointer shadow-md shadow-emerald-500/20"
         >
-          ↗ Relaunch Tab
-        </button>
-        <button
-          id="btn-try-iframe-instead"
-          type="button"
-          class="px-3 py-2 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition cursor-pointer"
-        >
-          Try Embedded Stage
+          ↗ Launch / Focus External Window
         </button>
       </div>
     </div>
 
-    <!-- Center Simulated In-App Session Card over Background Cover -->
+    <!-- Center Simulated Session Card over Background Cover -->
     <div class="my-auto w-full max-w-3xl mx-auto py-6">
       <div class="glass-panel rounded-3xl p-6 sm:p-8 border border-cyan-400/35 neon-border space-y-5 text-center sm:text-left">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800/90 pb-4">
@@ -107,24 +100,24 @@
             </div>
             <div>
               <p class="text-[11px] uppercase tracking-wider font-bold text-cyan-400">
-                Let&apos;s Play with Jarvis · Background Cover Shell
+                Let&apos;s Play with Jarvis · Seamless Background Cover
               </p>
-              <h3 id="sim-card-heading" class="text-xl sm:text-2xl font-black text-white">
-                External Session Launched Outside Frame
+              <h3 class="text-xl sm:text-2xl font-black text-white">
+                Active External Session in Simulated In-App Mode
               </h3>
             </div>
           </div>
-          <span id="sim-cover-badge" class="self-center sm:self-auto px-3 py-1 rounded-full text-xs font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30">
+          <span id="sim-cover-badge" class="self-center sm:self-auto px-3 py-1 rounded-full text-xs font-bold bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
             Simulated In-App Mode
           </span>
         </div>
 
         <p id="sim-cover-desc" class="text-sm text-slate-300 leading-relaxed">
-          This destination was launched in a dedicated external browser tab so it runs without iframe, X-Frame-Options, or CSP restrictions while Jarvis remains active as a background cover.
+          Opened in a dedicated external browser tab while Let&apos;s Play with Jarvis remains active as your background cover.
         </p>
 
         <div class="bg-slate-950/90 border border-slate-800 rounded-2xl p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
-          <span class="text-slate-400 font-semibold">Active Target URL:</span>
+          <span class="text-slate-400 font-semibold">Destination URL:</span>
           <a
             id="sim-cover-url-link"
             href="#"
@@ -138,16 +131,16 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-slate-300">
           <div class="bg-slate-900/80 border border-slate-800/90 rounded-2xl p-3">
-            <div class="font-bold text-cyan-300 mb-0.5">1. External Tab Active</div>
-            <p class="text-slate-400">Runs full-screen in a new browser tab outside frame blocks.</p>
+            <div class="font-bold text-cyan-300 mb-0.5">External Tab Active</div>
+            <p class="text-slate-400">Runs full-screen in its own browser window or tab.</p>
           </div>
           <div class="bg-slate-900/80 border border-slate-800/90 rounded-2xl p-3">
-            <div class="font-bold text-emerald-300 mb-0.5">2. Jarvis Cover Preserved</div>
-            <p class="text-slate-400">Your hub state, favorites, and search stay ready underneath.</p>
+            <div class="font-bold text-emerald-300 mb-0.5">Jarvis Cover Ready</div>
+            <p class="text-slate-400">Jarvis stays open behind this cover with your session state intact.</p>
           </div>
           <div class="bg-slate-900/80 border border-slate-800/90 rounded-2xl p-3">
-            <div class="font-bold text-sky-300 mb-0.5">3. Top-Left Arrow Return</div>
-            <p class="text-slate-400">Click <strong class="text-white">← Back to Jarvis</strong> at top-left to return to the hub.</p>
+            <div class="font-bold text-sky-300 mb-0.5">Instant Hub Return</div>
+            <p class="text-slate-400">Select <strong class="text-white">← Back to Jarvis</strong> at top-left anytime.</p>
           </div>
         </div>
 
@@ -157,7 +150,7 @@
             type="button"
             class="px-5 py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-sky-500 hover:from-cyan-300 hover:to-sky-400 text-slate-950 font-extrabold text-sm shadow-lg shadow-cyan-500/20 transition cursor-pointer"
           >
-            ← Return to Let&apos;s Play with Jarvis
+            ← Back to Jarvis
           </button>
           <a
             id="sim-cover-direct-open"
@@ -166,15 +159,15 @@
             rel="noopener noreferrer"
             class="px-4 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-sm transition"
           >
-            Open External Tab Again ↗
+            ↗ Launch / Focus External Window
           </a>
         </div>
       </div>
     </div>
 
-    <!-- Bottom Status Bar -->
+    <!-- Bottom Footer Strip -->
     <div class="w-full max-w-6xl mx-auto text-center text-xs text-slate-400">
-      Let&apos;s Play with Jarvis · Gesner Deslandes (Software Engineer &amp; Technology Coordinator, GlobalInternet.py)
+      Let&apos;s Play with Jarvis · Gesner Deslandes (Software Developer &amp; Technology Coordinator, GlobalInternet.py)
     </div>
   </div>
 
@@ -200,7 +193,7 @@
             </span>
           </div>
           <p class="text-xs text-slate-400">
-            Built by <span class="text-slate-200 font-medium">Gesner Deslandes</span> · Software Engineer &amp; Technology Coordinator, GlobalInternet.py
+            Built by <span class="text-slate-200 font-medium">Gesner Deslandes</span> · Software Developer &amp; Technology Coordinator, GlobalInternet.py
           </p>
         </div>
       </div>
@@ -234,13 +227,13 @@
         <div class="space-y-2">
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-semibold">
             <span>🎮</span>
-            <span>Embedded Stage + Simulated In-App Background Cover Mode</span>
+            <span>Seamless In-App Stage + Simulated Background Cover Mode</span>
           </div>
           <h2 class="text-2xl sm:text-3xl font-black text-white leading-tight">
             Launch &amp; Play Browser Games Right Inside <span class="text-cyan-400">Jarvis</span>
           </h2>
           <p class="text-sm text-slate-300 leading-relaxed">
-            Play <strong class="text-white">Rats of the Manor · RTX Tactical Edition</strong> and <strong class="text-white">Fighter Jet Game</strong>, access <strong class="text-white">G Jarvis Communication Portal</strong>, <strong class="text-white">GlobalInternet.py Website</strong>, and <strong class="text-white">Jarvis World Map GPS Tracker</strong>, or explore <strong class="text-white">CrazyGames</strong>, <strong class="text-white">Easy Games</strong>, <strong class="text-white">TopGames.gg</strong>, and <strong class="text-white">Web-games.io</strong>—with Simulated In-App Mode and top-left return arrow for links that open in a new tab.
+            Play <strong class="text-white">Rats of the Manor · RTX Tactical Edition</strong> and <strong class="text-white">Fighter Jet Game</strong>, launch <strong class="text-white">G Jarvis Communication Portal</strong>, <strong class="text-white">GlobalInternet.py Website</strong>, and <strong class="text-white">Jarvis World Map GPS Tracker</strong>, or browse <strong class="text-white">CrazyGames</strong>, <strong class="text-white">Easy Games</strong>, <strong class="text-white">TopGames.gg</strong>, <strong class="text-white">Web-games.io</strong>, <strong class="text-white">js13kGames</strong>, and <strong class="text-white">itch.io</strong> with automatic background cover simulation when external sites open in a new tab.
           </p>
         </div>
         <div class="flex flex-wrap items-center gap-2.5 pt-1">
@@ -263,7 +256,7 @@
             type="button"
             class="px-4 py-2.5 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 font-semibold text-sm border border-emerald-500/35 transition cursor-pointer"
           >
-            ⧉ Simulate Current In-App
+            ⧉ Simulated Cover Mode
           </button>
         </div>
       </div>
@@ -274,7 +267,7 @@
           <div class="text-xs uppercase tracking-wider font-bold text-cyan-400">Developer Profile</div>
           <h3 class="text-lg font-extrabold text-white">Gesner Deslandes</h3>
           <p class="text-xs font-medium text-emerald-300 leading-snug">
-            Software Engineer &amp; Technology Coordinator, GlobalInternet.py
+            Software Developer &amp; Technology Coordinator, GlobalInternet.py
           </p>
           <div class="pt-2 space-y-1.5 text-xs text-slate-300">
             <div class="flex items-center justify-between gap-2 bg-slate-900/80 px-3 py-2 rounded-xl border border-slate-800">
@@ -302,7 +295,7 @@
       </aside>
     </section>
 
-    <!-- Built-In Playable Stage (Iframe Viewport + Simulated Cover Trigger) -->
+    <!-- Built-In Playable Stage -->
     <section id="play-stage" class="glass-panel rounded-2xl overflow-hidden neon-border">
       <div class="px-4 sm:px-5 py-3 bg-slate-900/95 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3">
         <div class="flex items-center gap-3 min-w-0">
@@ -323,9 +316,9 @@
             id="btn-simulate-stage"
             type="button"
             class="px-3 py-1.5 rounded-lg text-xs font-bold bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/40 transition cursor-pointer"
-            title="Open in new tab with Jarvis background cover overlay"
+            title="Open in new tab with Jarvis background cover"
           >
-            ⧉ Simulate In-App
+            ⧉ Simulated Cover
           </button>
           <button
             id="btn-reload-stage"
@@ -358,7 +351,7 @@
       <div id="stage-frame-wrapper" class="relative w-full h-[62vh] min-h-[420px] max-h-[720px] bg-slate-950">
         <div id="stage-loader" class="hidden absolute inset-0 z-10 bg-slate-950/85 flex flex-col items-center justify-center gap-2 text-center p-4">
           <div class="w-8 h-8 rounded-full border-2 border-cyan-400 border-t-transparent animate-spin"></div>
-          <p class="text-sm font-semibold text-cyan-300">Jarvis is loading the game stage...</p>
+          <p class="text-sm font-semibold text-cyan-300">Jarvis is loading the stage...</p>
         </div>
         <iframe
           id="game-iframe"
@@ -373,14 +366,14 @@
 
       <div class="px-4 sm:px-5 py-2.5 bg-slate-900/70 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400">
         <span>
-          If a site blocks embedded frames or prefers a full external tab, use <strong class="text-cyan-300">⧉ Simulate In-App</strong> to launch it in a new tab while keeping Jarvis as a background cover with a top-left <strong class="text-white">← Back to Jarvis</strong> arrow.
+          External portals and links that open outside the frame automatically launch in a new tab with Jarvis active as a background cover and a top-left <strong class="text-white">← Back to Jarvis</strong> arrow.
         </span>
         <button
           id="btn-add-custom-link"
           type="button"
           class="text-cyan-300 hover:text-cyan-200 font-semibold underline underline-offset-2 cursor-pointer"
         >
-          + Add Custom Game Link
+          + Add Custom Link
         </button>
       </div>
     </section>
@@ -392,7 +385,7 @@
           <input
             id="search-input"
             type="text"
-            placeholder="Search games, portals, GPS tracker, Fighter Jet, CrazyGames, Puzzle, 3D..."
+            placeholder="Search games, G Jarvis Comms, GlobalInternet.py, GPS Tracker, Fighter Jet, CrazyGames..."
             class="w-full px-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 focus:border-cyan-400 focus:outline-none text-sm text-white placeholder-slate-400"
           />
         </div>
@@ -405,11 +398,11 @@
       <div id="category-pills" class="flex flex-wrap gap-2"></div>
     </section>
 
-    <!-- Game & Portal Catalog Grid -->
+    <!-- Catalog Grid -->
     <section>
       <div id="games-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"></div>
       <div id="empty-state" class="hidden glass-panel rounded-2xl p-10 text-center space-y-2">
-        <p class="text-base font-bold text-white">No matching games or portals found</p>
+        <p class="text-base font-bold text-white">No matching items found</p>
         <p class="text-sm text-slate-400">Try clearing your search filter or switching categories.</p>
       </div>
     </section>
@@ -419,7 +412,7 @@
   <footer class="glass-panel border-t border-slate-800/90 mt-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
       <div>
-        <strong class="text-white">Let&apos;s Play with Jarvis</strong> · Built by <strong class="text-cyan-300">Gesner Deslandes</strong> (Software Engineer &amp; Technology Coordinator, GlobalInternet.py)
+        <strong class="text-white">Let&apos;s Play with Jarvis</strong> · Built by <strong class="text-cyan-300">Gesner Deslandes</strong> (Software Developer &amp; Technology Coordinator, GlobalInternet.py)
       </div>
       <div class="flex flex-wrap items-center gap-4">
         <span>Phone: <strong class="text-slate-200">(509)-47385663</strong></span>
@@ -434,11 +427,11 @@
     class="fixed bottom-5 right-5 z-50 hidden max-w-sm px-4 py-3 rounded-xl bg-slate-900 border border-cyan-400/50 text-white text-xs sm:text-sm font-semibold shadow-2xl"
   ></div>
 
-  <!-- Add Custom Game Modal -->
+  <!-- Add Custom Link Modal -->
   <div id="custom-game-modal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="glass-panel rounded-2xl max-w-md w-full p-5 space-y-4 border border-cyan-500/30">
       <div class="flex items-center justify-between">
-        <h3 class="text-base font-extrabold text-white">Add Custom Game or Portal Link</h3>
+        <h3 class="text-base font-extrabold text-white">Add Custom Link</h3>
         <button id="close-custom-modal" type="button" class="text-slate-400 hover:text-white text-lg font-bold cursor-pointer">✕</button>
       </div>
       <form id="custom-game-form" class="space-y-3">
@@ -466,7 +459,7 @@
         </div>
         <div class="flex justify-end gap-2 pt-2">
           <button type="button" id="cancel-custom-modal" class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 cursor-pointer">Cancel</button>
-          <button type="submit" class="px-4 py-2 rounded-xl text-xs font-bold bg-cyan-500 text-slate-950 hover:bg-cyan-400 cursor-pointer">Save &amp; Play</button>
+          <button type="submit" class="px-4 py-2 rounded-xl text-xs font-bold bg-cyan-500 text-slate-950 hover:bg-cyan-400 cursor-pointer">Save &amp; Launch</button>
         </div>
       </form>
     </div>
@@ -496,10 +489,20 @@
 
   <script>
     (function () {
-      const STORAGE_FAVS = 'jarvis_play_favs_v2';
-      const STORAGE_CUSTOM = 'jarvis_play_custom_v2';
+      const STORAGE_FAVS = 'jarvis_play_favs_v3';
+      const STORAGE_CUSTOM = 'jarvis_play_custom_v3';
 
-      // Curated catalog including the 4 new requested links + existing 22 games & portals
+      // Portals and external hubs that open in a new tab with Jarvis background cover
+      const EXTERNAL_COVER_HOSTS = [
+        'crazygames.com',
+        'easygames.org',
+        'topgames.gg',
+        'web-games.io',
+        'js13kgames.com',
+        'itch.io'
+      ];
+
+      // Curated catalog including all requested Jarvis links, Fighter Jet Game, and browser portals
       const INITIAL_GAMES = [
         {
           id: 'rats-of-the-manor',
@@ -515,7 +518,7 @@
           category: 'Portal / Comms',
           url: 'https://deslandes1.github.io/G-COMMUNICATION-2026/',
           badge: 'Jarvis Comms · 2026',
-          desc: 'G Jarvis communication hub for messaging, coordination, and live connected workflows.'
+          desc: 'G Jarvis communication portal for connected messaging, alerts, and coordination.'
         },
         {
           id: 'global-internet-py-website',
@@ -523,7 +526,7 @@
           category: 'Portal / Website',
           url: 'https://deslandes1.github.io/GlobalInternet.py-Website-Static-Site-Conversion-2026/',
           badge: 'GlobalInternet.py',
-          desc: 'Official static site edition of GlobalInternet.py engineered by Gesner Deslandes.'
+          desc: 'Official static site edition of GlobalInternet.py built by Gesner Deslandes.'
         },
         {
           id: 'jarvis-world-map-gps-tracker',
@@ -531,7 +534,7 @@
           category: 'Tracker / GPS',
           url: 'https://deslandes1.github.io/JARVIS-WORLD-MAP-TRACKER-2026/',
           badge: 'Live GPS Map',
-          desc: 'Interactive Jarvis world map GPS tracker for global telemetry and location monitoring.'
+          desc: 'Interactive Jarvis world map GPS tracker for global coordinates and telemetry.'
         },
         {
           id: 'fighter-jet-game',
@@ -555,7 +558,7 @@
           category: 'Portal',
           url: 'https://www.easygames.org/',
           badge: 'Popular Portal',
-          desc: 'Instant HTML5 browser games across arcade, racing, action, and strategy with no downloads.'
+          desc: 'Instant HTML5 browser games across arcade, racing, action, and strategy.'
         },
         {
           id: 'topgames-portal',
@@ -728,9 +731,20 @@
         }
       }
 
+      function shouldUseSimulatedCover(url) {
+        try {
+          const parsed = new URL(url);
+          const host = parsed.hostname.toLowerCase();
+          return EXTERNAL_COVER_HOSTS.some((blockedHost) => host === blockedHost || host.endsWith('.' + blockedHost));
+        } catch (err) {
+          return false;
+        }
+      }
+
       let favorites = safeReadJson(STORAGE_FAVS, [
         'rats-of-the-manor',
         'g-jarvis-communication-portal',
+        'global-internet-py-website',
         'jarvis-world-map-gps-tracker',
         'fighter-jet-game'
       ]);
@@ -741,6 +755,7 @@
       let currentGame = INITIAL_GAMES[0];
       let simulatedTargetGame = null;
       let isSimulatedCoverActive = false;
+      let stageWatchdogTimer = null;
 
       const CATEGORIES = [
         'All',
@@ -787,7 +802,14 @@
         clearTimeout(toastTimer);
         toastTimer = setTimeout(() => {
           toastEl.classList.add('hidden');
-        }, 3000);
+        }, 2800);
+      }
+
+      function clearStageWatchdog() {
+        if (stageWatchdogTimer) {
+          clearTimeout(stageWatchdogTimer);
+          stageWatchdogTimer = null;
+        }
       }
 
       function getAllGames() {
@@ -806,16 +828,18 @@
         }
       }
 
-      // Simulated In-App Mode: launches external tab while showing Jarvis background cover & top-left return arrow
-      function launchSimulatedInApp(game, openNewTab = true) {
+      function activateSimulatedCover(game, openNewTab = true) {
         if (!game) return;
+        clearStageWatchdog();
+        stageLoader.classList.add('hidden');
+
         simulatedTargetGame = game;
         isSimulatedCoverActive = true;
 
         simTitle.textContent = game.title;
         simCategory.textContent = game.category;
         simBadge.textContent = game.badge || 'Simulated In-App Mode';
-        simDesc.textContent = `${game.desc} Opened in an external tab to avoid frame blocks while Let's Play with Jarvis remains active as a background cover.`;
+        simDesc.textContent = `${game.desc} Opened in a new browser tab while Let's Play with Jarvis remains active as a background cover.`;
         simUrlLink.textContent = game.url;
         simUrlLink.href = game.url;
         simDirectOpen.href = game.url;
@@ -824,16 +848,11 @@
         document.body.classList.add('overflow-hidden');
 
         if (openNewTab) {
-          const opened = openExternalWindow(game.url);
-          if (opened) {
-            showToast(`Simulated In-App: "${game.title}" opened in a new tab`);
-          } else {
-            showToast(`Background cover active for "${game.title}" — use Open External Tab if popups were blocked`);
-          }
+          openExternalWindow(game.url);
+          showToast(`Opened "${game.title}" in a new tab`);
         }
       }
 
-      // Return from simulated cover back to Let's Play with Jarvis hub
       function returnFromSimulatedCover() {
         isSimulatedCoverActive = false;
         simOverlay.classList.add('hidden');
@@ -849,24 +868,53 @@
         showToast('Returned to Let\'s Play with Jarvis');
       }
 
-      function loadGameIntoStage(game, scrollToStage = false) {
+      function handleItemLaunch(game, scrollToStage = true) {
         if (!game) return;
         currentGame = game;
-        stageLoader.classList.remove('hidden');
+        renderGames();
+
+        // Portals that block iframes go straight to new tab + simulated cover without showing an error
+        if (shouldUseSimulatedCover(game.url)) {
+          activateSimulatedCover(game, true);
+          return;
+        }
+
         stageTitle.textContent = game.title;
         stageUrl.textContent = game.url;
         stageBadge.textContent = game.category;
         stageExternalLink.href = game.url;
-        gameIframe.src = game.url;
-        renderGames();
-        showToast(`Loaded "${game.title}" in Jarvis Stage`);
+        stageLoader.classList.remove('hidden');
+
+        clearStageWatchdog();
+        // If an embedded frame stalls or fails to load, seamlessly switch to background cover without error UI
+        stageWatchdogTimer = setTimeout(() => {
+          if (!isSimulatedCoverActive && currentGame && currentGame.id === game.id) {
+            activateSimulatedCover(game, true);
+          }
+        }, 4200);
+
+        try {
+          gameIframe.src = game.url;
+        } catch (err) {
+          activateSimulatedCover(game, true);
+          return;
+        }
+
+        showToast(`Launching "${game.title}"`);
         if (scrollToStage) {
           document.getElementById('play-stage').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
       }
 
       gameIframe.addEventListener('load', () => {
+        clearStageWatchdog();
         stageLoader.classList.add('hidden');
+      });
+
+      gameIframe.addEventListener('error', () => {
+        if (currentGame) {
+          activateSimulatedCover(currentGame, true);
+        }
       });
 
       function toggleFavorite(gameId) {
@@ -932,6 +980,7 @@
         filtered.forEach((game) => {
           const isSelected = currentGame && currentGame.id === game.id;
           const isFav = favorites.includes(game.id);
+          const usesCover = shouldUseSimulatedCover(game.url);
           const card = document.createElement('article');
           card.className = isSelected
             ? 'glass-panel rounded-2xl p-4 flex flex-col justify-between gap-3 border-2 border-cyan-400 shadow-lg shadow-cyan-500/15'
@@ -966,31 +1015,23 @@
                 ${game.desc}
               </p>
             </div>
-            <div class="pt-2 border-t border-slate-800/80 flex items-center gap-1.5">
+            <div class="pt-2 border-t border-slate-800/80 flex items-center gap-2">
               <button
                 type="button"
                 data-play-id="${game.id}"
-                class="flex-1 px-2.5 py-2 rounded-xl text-xs font-extrabold ${
+                class="flex-1 px-3 py-2 rounded-xl text-xs font-extrabold ${
                   isSelected
                     ? 'bg-emerald-400 text-slate-950'
                     : 'bg-cyan-500 hover:bg-cyan-400 text-slate-950'
                 } transition cursor-pointer"
               >
-                ${isSelected ? '▶ Playing Now' : '▶ Play in App'}
-              </button>
-              <button
-                type="button"
-                data-sim-id="${game.id}"
-                class="px-2.5 py-2 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 transition cursor-pointer"
-                title="Open in new tab with Simulated In-App Background Cover"
-              >
-                ⧉ Sim
+                ${usesCover ? '⧉ Launch in Cover' : isSelected ? '▶ Active in Jarvis' : '▶ Open in Jarvis'}
               </button>
               <a
                 href="${game.url}"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="px-2.5 py-2 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition"
+                class="px-3 py-2 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition"
                 title="Open in new browser tab"
               >
                 ↗
@@ -999,12 +1040,7 @@
           `;
 
           card.querySelector('[data-play-id]').addEventListener('click', () => {
-            loadGameIntoStage(game, true);
-          });
-          card.querySelector('[data-sim-id]').addEventListener('click', () => {
-            currentGame = game;
-            renderGames();
-            launchSimulatedInApp(game, true);
+            handleItemLaunch(game, true);
           });
           card.querySelector('[data-fav-id]').addEventListener('click', () => {
             toggleFavorite(game.id);
@@ -1014,29 +1050,23 @@
         });
       }
 
-      // Simulated cover button listeners
+      // Simulated cover controls
       document.getElementById('btn-top-left-return').addEventListener('click', returnFromSimulatedCover);
       document.getElementById('btn-cover-return-primary').addEventListener('click', returnFromSimulatedCover);
-      document.getElementById('btn-relaunch-external').addEventListener('click', () => {
-        if (simulatedTargetGame) {
-          openExternalWindow(simulatedTargetGame.url);
-          showToast(`Relaunched "${simulatedTargetGame.title}" in a new tab`);
+      document.getElementById('btn-focus-external').addEventListener('click', () => {
+        const target = simulatedTargetGame || currentGame;
+        if (target) {
+          openExternalWindow(target.url);
+          showToast(`Focused "${target.title}" in external window`);
         }
       });
-      document.getElementById('btn-try-iframe-instead').addEventListener('click', () => {
-        const target = simulatedTargetGame || currentGame;
-        isSimulatedCoverActive = false;
-        simOverlay.classList.add('hidden');
-        document.body.classList.remove('overflow-hidden');
-        loadGameIntoStage(target, true);
-      });
 
-      // Stage & Hero simulated mode triggers
+      // Stage & Hero simulated cover triggers
       document.getElementById('btn-simulate-stage').addEventListener('click', () => {
-        launchSimulatedInApp(currentGame, true);
+        activateSimulatedCover(currentGame, true);
       });
       document.getElementById('btn-hero-simulate').addEventListener('click', () => {
-        launchSimulatedInApp(currentGame, true);
+        activateSimulatedCover(currentGame, true);
       });
 
       searchInput.addEventListener('input', (e) => {
@@ -1053,34 +1083,34 @@
       });
 
       document.getElementById('btn-play-featured').addEventListener('click', () => {
-        loadGameIntoStage(INITIAL_GAMES[0], true);
+        handleItemLaunch(INITIAL_GAMES[0], true);
       });
 
       document.getElementById('btn-random-game').addEventListener('click', () => {
         const all = getAllGames();
         const pool = all.filter((g) => g.id !== (currentGame && currentGame.id));
         const pick = pool[Math.floor(Math.random() * pool.length)] || all[0];
-        loadGameIntoStage(pick, true);
+        handleItemLaunch(pick, true);
       });
 
       document.getElementById('btn-reload-stage').addEventListener('click', () => {
-        loadGameIntoStage(currentGame, false);
+        handleItemLaunch(currentGame, false);
       });
 
       document.getElementById('btn-fullscreen-stage').addEventListener('click', () => {
         if (stageFrameWrapper.requestFullscreen) {
           stageFrameWrapper.requestFullscreen().catch(() => {
-            showToast('Fullscreen unavailable in this frame; try Open Tab or Simulate In-App.');
+            activateSimulatedCover(currentGame, true);
           });
         } else if (gameIframe.requestFullscreen) {
           gameIframe.requestFullscreen().catch(() => {
-            showToast('Fullscreen unavailable in this frame; try Open Tab or Simulate In-App.');
+            activateSimulatedCover(currentGame, true);
           });
         }
       });
 
       document.getElementById('btn-copy-contact').addEventListener('click', () => {
-        const contactSummary = 'Gesner Deslandes (Software Engineer & Technology Coordinator, GlobalInternet.py) | Phone: (509)-47385663 | Email: deslandes78@gmail.com';
+        const contactSummary = 'Gesner Deslandes (Software Developer & Technology Coordinator, GlobalInternet.py) | Phone: (509)-47385663 | Email: deslandes78@gmail.com';
         try {
           const temp = document.createElement('textarea');
           temp.value = contactSummary;
@@ -1094,7 +1124,7 @@
         }
       });
 
-      // Custom game modal controls
+      // Custom link modal controls
       const customModal = document.getElementById('custom-game-modal');
       document.getElementById('btn-add-custom-link').addEventListener('click', () => {
         customModal.classList.remove('hidden');
@@ -1124,7 +1154,7 @@
         customModal.classList.add('hidden');
         e.target.reset();
         renderGames();
-        loadGameIntoStage(newGame, true);
+        handleItemLaunch(newGame, true);
       });
 
       // GitHub Pages modal controls
@@ -1139,7 +1169,6 @@
         githubModal.classList.add('hidden');
       });
 
-      // Keyboard Escape support for closing simulated cover back to hub
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && isSimulatedCoverActive) {
           returnFromSimulatedCover();
