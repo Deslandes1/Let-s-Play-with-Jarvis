@@ -199,6 +199,15 @@
       </div>
       <div class="flex items-center gap-2 sm:gap-3">
         <button
+          id="btn-open-donation"
+          type="button"
+          aria-label="Support and Donate"
+          class="px-3 py-2 rounded-xl text-xs sm:text-sm font-bold bg-rose-500/15 hover:bg-rose-500/25 text-rose-200 border border-rose-500/45 transition flex items-center gap-1.5 shadow-md shadow-rose-500/15 cursor-pointer"
+        >
+          <span class="text-rose-500 text-sm leading-none">❤️</span>
+          <span>Donate</span>
+        </button>
+        <button
           id="btn-favorites-filter"
           type="button"
           class="px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-800/90 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5 cursor-pointer"
@@ -406,6 +415,174 @@
         <p class="text-sm text-slate-400">Try clearing your search filter or switching categories.</p>
       </div>
     </section>
+
+    <!-- Dedicated Supporter Donation Section -->
+    <section id="donation-section" class="glass-panel rounded-2xl p-5 sm:p-6 border border-rose-500/30 neon-border space-y-5">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800/90 pb-4">
+        <div class="space-y-1">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/15 border border-rose-500/35 text-rose-200 text-xs font-bold">
+            <span class="text-rose-500">❤️</span>
+            <span>Support Let&apos;s Play with Jarvis &amp; GlobalInternet.py</span>
+          </div>
+          <h2 class="text-xl sm:text-2xl font-black text-white">
+            Send a Donation or Support Transfer
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-300">
+            Support ongoing development and community projects using Digicel MonCash mobile transfers or international money transfer services.
+          </p>
+        </div>
+        <button
+          id="btn-section-donation-modal"
+          type="button"
+          class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-400 hover:to-pink-400 text-white shadow-lg shadow-rose-500/25 transition shrink-0 cursor-pointer flex items-center gap-2"
+        >
+          <span>❤️</span>
+          <span>Open Donation Card</span>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <!-- Method 1: Prisme Transfer & TapTap Send to Digicel MonCash -->
+        <div class="bg-slate-900/85 border border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-col justify-between gap-4">
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between gap-2">
+              <span class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                Option 1 · Digicel MonCash
+              </span>
+              <span class="text-base">❤️</span>
+            </div>
+            <h3 class="text-base font-extrabold text-white">Prisme Transfer &amp; TapTap Send</h3>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Send funds via <strong class="text-white">Prisme Transfer</strong> or <strong class="text-white">TapTap Send</strong> directly to the Digicel MonCash number below:
+            </p>
+            <div class="bg-slate-950/90 border border-cyan-500/30 rounded-xl p-3 flex items-center justify-between gap-2">
+              <div>
+                <div class="text-[11px] text-slate-400">Digicel MonCash Number</div>
+                <div class="text-sm font-extrabold text-cyan-300 font-mono">(509)-47385663</div>
+              </div>
+              <button
+                type="button"
+                data-copy-value="(509)-47385663"
+                data-copy-label="Digicel MonCash number (509)-47385663"
+                class="copy-trigger px-2.5 py-1.5 rounded-lg text-xs font-bold bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 transition cursor-pointer"
+              >
+                Copy
+              </button>
+            </div>
+          </div>
+          <div class="flex flex-wrap items-center gap-2 pt-1">
+            <button
+              type="button"
+              data-donate-service="Prisme Transfer"
+              data-donate-url="https://prismetransfer.com/"
+              class="donate-service-btn flex-1 px-3 py-2 rounded-xl text-xs font-extrabold bg-cyan-500 hover:bg-cyan-400 text-slate-950 transition cursor-pointer"
+            >
+              ⧉ Prisme Transfer
+            </button>
+            <button
+              type="button"
+              data-donate-service="TapTap Send"
+              data-donate-url="https://www.taptapsend.com/"
+              class="donate-service-btn flex-1 px-3 py-2 rounded-xl text-xs font-extrabold bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition cursor-pointer"
+            >
+              ⧉ TapTap Send
+            </button>
+          </div>
+        </div>
+
+        <!-- Method 2: Western Union, MoneyGram, Unitransfer -->
+        <div class="bg-slate-900/85 border border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-col justify-between gap-4">
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between gap-2">
+              <span class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30">
+                Option 2 · Wire &amp; Remittance
+              </span>
+              <span class="text-xs font-bold text-slate-400">MTCN / Ref</span>
+            </div>
+            <h3 class="text-base font-extrabold text-white">Western Union, MoneyGram &amp; Unitransfer</h3>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Send via <strong class="text-white">Western Union</strong>, <strong class="text-white">MoneyGram</strong>, or <strong class="text-white">Unitransfer</strong> using the recipient details on the right, then <strong class="text-emerald-300">share the tracking number</strong> to:
+            </p>
+            <div class="bg-slate-950/90 border border-amber-500/30 rounded-xl p-3 flex items-center justify-between gap-2">
+              <div>
+                <div class="text-[11px] text-slate-400">Share Tracking Number To</div>
+                <div class="text-sm font-extrabold text-amber-300 font-mono">(509)-47385663</div>
+              </div>
+              <button
+                type="button"
+                data-copy-value="(509)-47385663"
+                data-copy-label="Tracking share number (509)-47385663"
+                class="copy-trigger px-2.5 py-1.5 rounded-lg text-xs font-bold bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 transition cursor-pointer"
+              >
+                Copy
+              </button>
+            </div>
+          </div>
+          <div class="flex flex-wrap items-center gap-1.5 pt-1">
+            <button
+              type="button"
+              data-donate-service="Western Union"
+              data-donate-url="https://www.westernunion.com/"
+              class="donate-service-btn px-2.5 py-2 rounded-xl text-[11px] font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition cursor-pointer"
+            >
+              Western Union
+            </button>
+            <button
+              type="button"
+              data-donate-service="MoneyGram"
+              data-donate-url="https://www.moneygram.com/"
+              class="donate-service-btn px-2.5 py-2 rounded-xl text-[11px] font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition cursor-pointer"
+            >
+              MoneyGram
+            </button>
+            <button
+              type="button"
+              data-donate-service="Unitransfer"
+              data-donate-url="https://unitransfer.com/"
+              class="donate-service-btn px-2.5 py-2 rounded-xl text-[11px] font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition cursor-pointer"
+            >
+              Unitransfer
+            </button>
+          </div>
+        </div>
+
+        <!-- Recipient Information Card -->
+        <div class="bg-slate-900/85 border border-cyan-500/25 rounded-2xl p-4 sm:p-5 flex flex-col justify-between gap-3">
+          <div class="space-y-2 text-xs">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] uppercase tracking-wider font-bold text-cyan-400">Recipient Details</span>
+              <button
+                type="button"
+                id="btn-copy-full-donation-info"
+                class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-300 border border-cyan-500/30 transition cursor-pointer"
+              >
+                Copy All
+              </button>
+            </div>
+            <div class="space-y-1.5 text-slate-300">
+              <div class="bg-slate-950/75 px-3 py-2 rounded-xl border border-slate-800/90">
+                <span class="text-slate-400">Name &amp; Role:</span>
+                <div class="font-bold text-white">Gesner Deslandes · Software Developer</div>
+              </div>
+              <div class="bg-slate-950/75 px-3 py-2 rounded-xl border border-slate-800/90 flex items-center justify-between gap-2">
+                <div>
+                  <span class="text-slate-400">Contact / MonCash / Tracking:</span>
+                  <div class="font-bold text-cyan-300 font-mono">(509)-47385663</div>
+                </div>
+              </div>
+              <div class="bg-slate-950/75 px-3 py-2 rounded-xl border border-slate-800/90">
+                <span class="text-slate-400">Email:</span>
+                <div class="font-semibold text-cyan-300 break-all">deslandes78@gmail.com</div>
+              </div>
+              <div class="bg-slate-950/75 px-3 py-2 rounded-xl border border-slate-800/90">
+                <span class="text-slate-400">Address:</span>
+                <div class="font-semibold text-white">Grand Goâve, Haiti — National Road Route 2</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <!-- Footer with Developer Details -->
@@ -426,6 +603,129 @@
     id="toast"
     class="fixed bottom-5 right-5 z-50 hidden max-w-sm px-4 py-3 rounded-xl bg-slate-900 border border-cyan-400/50 text-white text-xs sm:text-sm font-semibold shadow-2xl"
   ></div>
+
+  <!-- Donation Modal -->
+  <div id="donation-modal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="glass-panel rounded-2xl max-w-2xl w-full p-5 sm:p-6 space-y-4 border border-rose-500/40 my-auto">
+      <div class="flex items-center justify-between gap-3 border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2.5">
+          <span class="w-9 h-9 rounded-xl bg-rose-500/20 border border-rose-500/40 flex items-center justify-center text-lg">❤️</span>
+          <div>
+            <h3 class="text-base sm:text-lg font-extrabold text-white">Donate to Gesner Deslandes</h3>
+            <p class="text-xs text-slate-400">Software Developer · Grand Goâve, Haiti — National Road Route 2</p>
+          </div>
+        </div>
+        <button id="close-donation-modal" type="button" class="text-slate-400 hover:text-white text-lg font-bold cursor-pointer">✕</button>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 space-y-2.5">
+          <div class="font-extrabold text-emerald-300 text-sm">1. Prisme Transfer &amp; TapTap Send</div>
+          <p class="text-slate-300 leading-relaxed">
+            Send directly to Digicel MonCash number:
+          </p>
+          <div class="flex items-center justify-between gap-2 bg-slate-950 border border-slate-800 rounded-xl px-3 py-2">
+            <span class="font-mono font-bold text-cyan-300">(509)-47385663</span>
+            <button
+              type="button"
+              data-copy-value="(509)-47385663"
+              data-copy-label="Digicel MonCash number (509)-47385663"
+              class="copy-trigger px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 font-bold cursor-pointer"
+            >
+              Copy
+            </button>
+          </div>
+          <div class="flex gap-2 pt-1">
+            <button
+              type="button"
+              data-donate-service="Prisme Transfer"
+              data-donate-url="https://prismetransfer.com/"
+              class="donate-service-btn flex-1 px-3 py-2 rounded-xl font-extrabold bg-cyan-500 hover:bg-cyan-400 text-slate-950 transition cursor-pointer"
+            >
+              ⧉ Prisme Transfer
+            </button>
+            <button
+              type="button"
+              data-donate-service="TapTap Send"
+              data-donate-url="https://www.taptapsend.com/"
+              class="donate-service-btn flex-1 px-3 py-2 rounded-xl font-extrabold bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition cursor-pointer"
+            >
+              ⧉ TapTap Send
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 space-y-2.5">
+          <div class="font-extrabold text-amber-300 text-sm">2. Western Union, MoneyGram, Unitransfer</div>
+          <p class="text-slate-300 leading-relaxed">
+            After sending, <strong class="text-white">share the tracking number</strong> to <strong class="text-amber-300 font-mono">(509)-47385663</strong>.
+          </p>
+          <div class="flex items-center justify-between gap-2 bg-slate-950 border border-slate-800 rounded-xl px-3 py-2">
+            <span class="font-mono font-bold text-amber-300">(509)-47385663</span>
+            <button
+              type="button"
+              data-copy-value="(509)-47385663"
+              data-copy-label="Tracking share number (509)-47385663"
+              class="copy-trigger px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold cursor-pointer"
+            >
+              Copy
+            </button>
+          </div>
+          <div class="flex flex-wrap gap-1.5 pt-1">
+            <button
+              type="button"
+              data-donate-service="Western Union"
+              data-donate-url="https://www.westernunion.com/"
+              class="donate-service-btn px-2.5 py-1.5 rounded-xl font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition cursor-pointer"
+            >
+              Western Union
+            </button>
+            <button
+              type="button"
+              data-donate-service="MoneyGram"
+              data-donate-url="https://www.moneygram.com/"
+              class="donate-service-btn px-2.5 py-1.5 rounded-xl font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition cursor-pointer"
+            >
+              MoneyGram
+            </button>
+            <button
+              type="button"
+              data-donate-service="Unitransfer"
+              data-donate-url="https://unitransfer.com/"
+              class="donate-service-btn px-2.5 py-1.5 rounded-xl font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition cursor-pointer"
+            >
+              Unitransfer
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-slate-950/85 border border-slate-800 rounded-2xl p-4 space-y-1.5 text-xs text-slate-300">
+        <div class="font-bold text-cyan-400 uppercase tracking-wider text-[11px]">Recipient Personal Info</div>
+        <div><strong class="text-white">Name:</strong> Gesner Deslandes · <strong class="text-emerald-300">Software Developer</strong></div>
+        <div><strong class="text-white">Contact Info / Digicel MonCash / Tracking Number:</strong> <span class="font-mono text-cyan-300">(509)-47385663</span></div>
+        <div><strong class="text-white">Email:</strong> <span class="text-cyan-300">deslandes78@gmail.com</span></div>
+        <div><strong class="text-white">Location:</strong> Grand Goâve, Haiti — National Road Route 2</div>
+      </div>
+
+      <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+        <button
+          type="button"
+          id="btn-modal-copy-all"
+          class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 transition cursor-pointer"
+        >
+          Copy All Recipient Details
+        </button>
+        <button
+          type="button"
+          id="close-donation-modal-btn"
+          class="px-4 py-2 rounded-xl text-xs font-extrabold bg-cyan-500 hover:bg-cyan-400 text-slate-950 transition cursor-pointer"
+        >
+          Done
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- Add Custom Link Modal -->
   <div id="custom-game-modal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
@@ -1169,9 +1469,75 @@
         githubModal.classList.add('hidden');
       });
 
+      // Donation modal, clipboard copy, and simulated cover transfer triggers
+      const donationModal = document.getElementById('donation-modal');
+      function openDonationModal() {
+        donationModal.classList.remove('hidden');
+      }
+      function closeDonationModal() {
+        donationModal.classList.add('hidden');
+      }
+      document.getElementById('btn-open-donation').addEventListener('click', openDonationModal);
+      document.getElementById('btn-section-donation-modal').addEventListener('click', openDonationModal);
+      document.getElementById('close-donation-modal').addEventListener('click', closeDonationModal);
+      document.getElementById('close-donation-modal-btn').addEventListener('click', closeDonationModal);
+
+      function copyTextValue(text, successMessage) {
+        try {
+          const temp = document.createElement('textarea');
+          temp.value = text;
+          document.body.appendChild(temp);
+          temp.select();
+          document.execCommand('copy');
+          document.body.removeChild(temp);
+          showToast(successMessage || 'Copied to clipboard!');
+        } catch (err) {
+          showToast(text);
+        }
+      }
+
+      document.querySelectorAll('.copy-trigger').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const val = btn.getAttribute('data-copy-value') || '(509)-47385663';
+          const label = btn.getAttribute('data-copy-label') || 'Number';
+          copyTextValue(val, `Copied ${label}`);
+        });
+      });
+
+      const fullDonationSummary =
+        'Gesner Deslandes | Software Developer | Digicel MonCash & Tracking Number: (509)-47385663 | Email: deslandes78@gmail.com | Location: Grand Goâve, Haiti — National Road Route 2 | Services: Prisme Transfer, TapTap Send, Western Union, MoneyGram, Unitransfer';
+
+      document.getElementById('btn-copy-full-donation-info').addEventListener('click', () => {
+        copyTextValue(fullDonationSummary, 'Copied all donation & recipient details!');
+      });
+      document.getElementById('btn-modal-copy-all').addEventListener('click', () => {
+        copyTextValue(fullDonationSummary, 'Copied all donation & recipient details!');
+      });
+
+      document.querySelectorAll('.donate-service-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const serviceName = btn.getAttribute('data-donate-service') || 'Transfer Portal';
+          const serviceUrl = btn.getAttribute('data-donate-url') || 'https://www.taptapsend.com/';
+          closeDonationModal();
+          activateSimulatedCover(
+            {
+              id: 'donate-' + serviceName.toLowerCase().replace(/\s+/g, '-'),
+              title: `${serviceName} · Donate to (509)-47385663`,
+              category: 'Supporter Donation',
+              url: serviceUrl,
+              badge: '❤️ Donation Cover',
+              desc: `Recipient: Gesner Deslandes (Software Developer) · Digicel MonCash / Share Tracking Number: (509)-47385663 · deslandes78@gmail.com · Grand Goâve, Haiti — National Road Route 2.`
+            },
+            true
+          );
+        });
+      });
+
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && isSimulatedCoverActive) {
           returnFromSimulatedCover();
+        } else if (e.key === 'Escape' && !donationModal.classList.contains('hidden')) {
+          closeDonationModal();
         }
       });
 
