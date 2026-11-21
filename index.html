@@ -89,7 +89,6 @@
         </button>
       </div>
     </div>
-
     <!-- Center Simulated Session Card over Background Cover -->
     <div class="my-auto w-full max-w-3xl mx-auto py-6">
       <div class="glass-panel rounded-3xl p-6 sm:p-8 border border-cyan-400/35 neon-border space-y-5 text-center sm:text-left">
@@ -111,11 +110,9 @@
             Simulated In-App Mode
           </span>
         </div>
-
         <p id="sim-cover-desc" class="text-sm text-slate-300 leading-relaxed">
           Opened in a dedicated external browser tab while Let&apos;s Play with Jarvis remains active as your background cover.
         </p>
-
         <div class="bg-slate-950/90 border border-slate-800 rounded-2xl p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
           <span class="text-slate-400 font-semibold">Destination URL:</span>
           <a
@@ -128,7 +125,6 @@
             https://deslandes1.github.io/
           </a>
         </div>
-
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-slate-300">
           <div class="bg-slate-900/80 border border-slate-800/90 rounded-2xl p-3">
             <div class="font-bold text-cyan-300 mb-0.5">External Tab Active</div>
@@ -143,7 +139,6 @@
             <p class="text-slate-400">Select <strong class="text-white">← Back to Jarvis</strong> at top-left anytime.</p>
           </div>
         </div>
-
         <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
           <button
             id="btn-cover-return-primary"
@@ -164,7 +159,6 @@
         </div>
       </div>
     </div>
-
     <!-- Bottom Footer Strip -->
     <div class="w-full max-w-6xl mx-auto text-center text-xs text-slate-400">
       Let&apos;s Play with Jarvis · Gesner Deslandes (Software Developer &amp; Technology Coordinator, GlobalInternet.py)
@@ -197,7 +191,16 @@
           </p>
         </div>
       </div>
-      <div class="flex items-center gap-2 sm:gap-3">
+      <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
+        <button
+          id="btn-open-owner-chat"
+          type="button"
+          aria-label="Chat with Gesner Deslandes right now"
+          class="px-3 py-2 rounded-xl text-xs sm:text-sm font-bold bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-200 border border-emerald-500/45 transition flex items-center gap-1.5 shadow-md shadow-emerald-500/15 cursor-pointer"
+        >
+          <span>💬</span>
+          <span>Chat with Owner</span>
+        </button>
         <button
           id="btn-open-donation"
           type="button"
@@ -267,28 +270,70 @@
           >
             ⧉ Simulated Cover Mode
           </button>
+          <a
+            id="hero-whatsapp-link"
+            href="https://wa.me/50947385663?text=Hello%20Gesner%20Deslandes%2C%20I%20am%20visiting%20Let%27s%20Play%20with%20Jarvis%20and%20would%20like%20to%20chat%20with%20you%20right%20now."
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-sm transition shadow-lg shadow-emerald-500/20"
+          >
+            💬 Chat with Gesner Deslandes Right Now
+          </a>
         </div>
       </div>
 
       <!-- Developer & Contact Card -->
       <aside class="glass-panel rounded-2xl p-5 flex flex-col justify-between gap-3 border border-cyan-500/20">
         <div class="space-y-2">
-          <div class="text-xs uppercase tracking-wider font-bold text-cyan-400">Developer Profile</div>
+          <div class="flex items-center justify-between gap-2">
+            <span class="text-xs uppercase tracking-wider font-bold text-cyan-400">Developer &amp; Owner</span>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+              Owner Live Chat
+            </span>
+          </div>
           <h3 class="text-lg font-extrabold text-white">Gesner Deslandes</h3>
           <p class="text-xs font-medium text-emerald-300 leading-snug">
             Software Developer &amp; Technology Coordinator, GlobalInternet.py
           </p>
           <div class="pt-2 space-y-1.5 text-xs text-slate-300">
             <div class="flex items-center justify-between gap-2 bg-slate-900/80 px-3 py-2 rounded-xl border border-slate-800">
-              <span class="text-slate-400">Contact Info:</span>
-              <span class="font-semibold text-white">(509)-47385663</span>
+              <span class="text-slate-400">WhatsApp:</span>
+              <a
+                id="card-whatsapp-link"
+                href="https://wa.me/50947385663?text=Hello%20Gesner%20Deslandes%2C%20I%20am%20visiting%20Let%27s%20Play%20with%20Jarvis%20and%20want%20to%20chat%20now."
+                target="_blank"
+                rel="noopener noreferrer"
+                class="font-semibold text-emerald-300 hover:underline font-mono"
+              >
+                (509)-47385663
+              </a>
             </div>
             <div class="flex items-center justify-between gap-2 bg-slate-900/80 px-3 py-2 rounded-xl border border-slate-800">
               <span class="text-slate-400">Email:</span>
-              <a href="mailto:deslandes78@gmail.com" class="font-semibold text-cyan-300 hover:underline truncate">
+              <a
+                id="card-email-link"
+                href="mailto:deslandes78@gmail.com?subject=Chat%20with%20Gesner%20Deslandes%20%E2%80%94%20Let%27s%20Play%20with%20Jarvis&body=Hello%20Gesner%20Deslandes%2C%0A%0AI%20am%20reaching%20out%20from%20Let%27s%20Play%20with%20Jarvis."
+                class="font-semibold text-cyan-300 hover:underline truncate"
+              >
                 deslandes78@gmail.com
               </a>
             </div>
+          </div>
+          <div class="pt-1.5 grid grid-cols-2 gap-2">
+            <a
+              href="https://wa.me/50947385663?text=Hello%20Gesner%20Deslandes%2C%20I%20would%20like%20to%20chat%20with%20you%20right%20now%20from%20Let%27s%20Play%20with%20Jarvis."
+              target="_blank"
+              rel="noopener noreferrer"
+              class="px-3 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs text-center transition"
+            >
+              WhatsApp Chat
+            </a>
+            <a
+              href="mailto:deslandes78@gmail.com?subject=Direct%20Message%20to%20Gesner%20Deslandes&body=Hello%20Gesner%2C%0A%0A"
+              class="px-3 py-2 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-200 border border-cyan-400/40 font-extrabold text-xs text-center transition"
+            >
+              Send Email
+            </a>
           </div>
         </div>
         <div class="flex items-center justify-between gap-2 pt-2 border-t border-slate-800/80 text-xs">
@@ -356,7 +401,6 @@
           </a>
         </div>
       </div>
-
       <div id="stage-frame-wrapper" class="relative w-full h-[62vh] min-h-[420px] max-h-[720px] bg-slate-950">
         <div id="stage-loader" class="hidden absolute inset-0 z-10 bg-slate-950/85 flex flex-col items-center justify-center gap-2 text-center p-4">
           <div class="w-8 h-8 rounded-full border-2 border-cyan-400 border-t-transparent animate-spin"></div>
@@ -372,7 +416,6 @@
           loading="eager"
         ></iframe>
       </div>
-
       <div class="px-4 sm:px-5 py-2.5 bg-slate-900/70 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400">
         <span>
           External portals and links that open outside the frame automatically launch in a new tab with Jarvis active as a background cover and a top-left <strong class="text-white">← Back to Jarvis</strong> arrow.
@@ -416,6 +459,85 @@
       </div>
     </section>
 
+    <!-- Direct Chat with Owner (Gesner Deslandes) Section -->
+    <section id="owner-chat-section" class="glass-panel rounded-2xl p-5 sm:p-6 border border-emerald-500/30 neon-border space-y-4">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800/90 pb-4">
+        <div class="space-y-1">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/35 text-emerald-200 text-xs font-bold">
+            <span>💬</span>
+            <span>Direct Owner Channel · Let&apos;s Play with Jarvis</span>
+          </div>
+          <h2 class="text-xl sm:text-2xl font-black text-white">
+            Chat with Gesner Deslandes Right Now
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-300">
+            Redirect directly to <strong class="text-emerald-300">WhatsApp (509)-47385663</strong> or send an <strong class="text-cyan-300">Email to deslandes78@gmail.com</strong> to chat with <strong class="text-white">Gesner Deslandes</strong>, the owner.
+          </p>
+        </div>
+        <button
+          id="btn-section-owner-chat-modal"
+          type="button"
+          class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold bg-gradient-to-r from-emerald-400 to-cyan-400 hover:from-emerald-300 hover:to-cyan-300 text-slate-950 shadow-lg shadow-emerald-500/20 transition shrink-0 cursor-pointer"
+        >
+          💬 Launch Instant Chat Box
+        </button>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-slate-900/85 border border-emerald-500/30 rounded-2xl p-4 sm:p-5 flex flex-col justify-between gap-4">
+          <div class="space-y-1.5">
+            <div class="text-xs font-bold uppercase tracking-wider text-emerald-300">WhatsApp Direct Chat</div>
+            <h3 class="text-base font-extrabold text-white">Message Gesner Deslandes on WhatsApp</h3>
+            <p class="text-xs text-slate-300">
+              Number: <span class="font-mono font-bold text-emerald-300">(509)-47385663</span> · Instant redirect to WhatsApp chat.
+            </p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <a
+              href="https://wa.me/50947385663?text=Hello%20Gesner%20Deslandes%2C%20I%20am%20chatting%20with%20you%20from%20Let%27s%20Play%20with%20Jarvis."
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex-1 px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs text-center transition"
+            >
+              💬 Open WhatsApp (509)-47385663
+            </a>
+            <button
+              type="button"
+              data-copy-value="(509)-47385663"
+              data-copy-label="WhatsApp number (509)-47385663"
+              class="copy-trigger px-3 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-slate-700 font-bold text-xs transition cursor-pointer"
+            >
+              Copy Number
+            </button>
+          </div>
+        </div>
+        <div class="bg-slate-900/85 border border-cyan-500/30 rounded-2xl p-4 sm:p-5 flex flex-col justify-between gap-4">
+          <div class="space-y-1.5">
+            <div class="text-xs font-bold uppercase tracking-wider text-cyan-300">Email Direct Contact</div>
+            <h3 class="text-base font-extrabold text-white">Email Gesner Deslandes Directly</h3>
+            <p class="text-xs text-slate-300">
+              Email: <span class="font-mono font-bold text-cyan-300">deslandes78@gmail.com</span> · Opens your mail client immediately.
+            </p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <a
+              href="mailto:deslandes78@gmail.com?subject=Chat%20with%20Gesner%20Deslandes%20%E2%80%94%20Owner%20of%20Let%27s%20Play%20with%20Jarvis&body=Hello%20Gesner%20Deslandes%2C%0A%0AI%20would%20like%20to%20chat%20with%20you%20regarding%20Let%27s%20Play%20with%20Jarvis."
+              class="flex-1 px-4 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-extrabold text-xs text-center transition"
+            >
+              ✉ Email deslandes78@gmail.com
+            </a>
+            <button
+              type="button"
+              data-copy-value="deslandes78@gmail.com"
+              data-copy-label="Email deslandes78@gmail.com"
+              class="copy-trigger px-3 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 font-bold text-xs transition cursor-pointer"
+            >
+              Copy Email
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Dedicated Supporter Donation Section -->
     <section id="donation-section" class="glass-panel rounded-2xl p-5 sm:p-6 border border-rose-500/30 neon-border space-y-5">
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800/90 pb-4">
@@ -440,7 +562,6 @@
           <span>Open Donation Card</span>
         </button>
       </div>
-
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <!-- Method 1: Prisme Transfer & TapTap Send to Digicel MonCash -->
         <div class="bg-slate-900/85 border border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-col justify-between gap-4">
@@ -489,7 +610,6 @@
             </button>
           </div>
         </div>
-
         <!-- Method 2: Western Union, MoneyGram, Unitransfer -->
         <div class="bg-slate-900/85 border border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-col justify-between gap-4">
           <div class="space-y-2.5">
@@ -545,7 +665,6 @@
             </button>
           </div>
         </div>
-
         <!-- Recipient Information Card -->
         <div class="bg-slate-900/85 border border-cyan-500/25 rounded-2xl p-4 sm:p-5 flex flex-col justify-between gap-3">
           <div class="space-y-2 text-xs">
@@ -592,7 +711,14 @@
         <strong class="text-white">Let&apos;s Play with Jarvis</strong> · Built by <strong class="text-cyan-300">Gesner Deslandes</strong> (Software Developer &amp; Technology Coordinator, GlobalInternet.py)
       </div>
       <div class="flex flex-wrap items-center gap-4">
-        <span>Phone: <strong class="text-slate-200">(509)-47385663</strong></span>
+        <a
+          href="https://wa.me/50947385663?text=Hello%20Gesner%20Deslandes%2C%20I%20want%20to%20chat%20with%20you%20right%20now."
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-emerald-300 hover:underline font-semibold"
+        >
+          WhatsApp: (509)-47385663
+        </a>
         <span>Email: <a href="mailto:deslandes78@gmail.com" class="text-cyan-300 hover:underline">deslandes78@gmail.com</a></span>
       </div>
     </div>
@@ -603,6 +729,62 @@
     id="toast"
     class="fixed bottom-5 right-5 z-50 hidden max-w-sm px-4 py-3 rounded-xl bg-slate-900 border border-cyan-400/50 text-white text-xs sm:text-sm font-semibold shadow-2xl"
   ></div>
+
+  <!-- Owner Instant Chat Modal -->
+  <div id="owner-chat-modal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="glass-panel rounded-2xl max-w-lg w-full p-5 sm:p-6 space-y-4 border border-emerald-500/40 my-auto">
+      <div class="flex items-center justify-between gap-3 border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2.5">
+          <span class="w-9 h-9 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-lg">💬</span>
+          <div>
+            <h3 class="text-base sm:text-lg font-extrabold text-white">Chat with Gesner Deslandes Right Now</h3>
+            <p class="text-xs text-emerald-300">Owner · Let&apos;s Play with Jarvis &amp; GlobalInternet.py</p>
+          </div>
+        </div>
+        <button id="close-owner-chat-modal" type="button" class="text-slate-400 hover:text-white text-lg font-bold cursor-pointer">✕</button>
+      </div>
+      <form id="owner-chat-form" class="space-y-3">
+        <div>
+          <label for="chat-visitor-name" class="block text-xs font-semibold text-slate-300 mb-1">Your Name (Optional)</label>
+          <input
+            id="chat-visitor-name"
+            type="text"
+            placeholder="e.g., Visitor or Player"
+            class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white focus:border-emerald-400 focus:outline-none"
+          />
+        </div>
+        <div>
+          <label for="chat-visitor-message" class="block text-xs font-semibold text-slate-300 mb-1">Message for Gesner Deslandes</label>
+          <textarea
+            id="chat-visitor-message"
+            rows="3"
+            placeholder="Hello Gesner Deslandes, I would like to chat with you right now..."
+            class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white focus:border-emerald-400 focus:outline-none"
+          ></textarea>
+        </div>
+        <div class="bg-slate-950/85 border border-slate-800 rounded-xl p-3 text-xs text-slate-300 space-y-1">
+          <div><strong class="text-white">WhatsApp:</strong> <span class="font-mono text-emerald-300">(509)-47385663</span></div>
+          <div><strong class="text-white">Email:</strong> <span class="font-mono text-cyan-300">deslandes78@gmail.com</span></div>
+        </div>
+        <div class="flex flex-wrap items-center gap-2.5 pt-1">
+          <button
+            id="btn-redirect-whatsapp-now"
+            type="submit"
+            class="flex-1 px-4 py-2.5 rounded-xl text-xs font-extrabold bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition cursor-pointer"
+          >
+            💬 Redirect to WhatsApp (509)-47385663
+          </button>
+          <button
+            id="btn-redirect-email-now"
+            type="button"
+            class="flex-1 px-4 py-2.5 rounded-xl text-xs font-extrabold bg-cyan-500 hover:bg-cyan-400 text-slate-950 transition cursor-pointer"
+          >
+            ✉ Redirect to Email deslandes78@gmail.com
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <!-- Donation Modal -->
   <div id="donation-modal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
@@ -617,7 +799,6 @@
         </div>
         <button id="close-donation-modal" type="button" class="text-slate-400 hover:text-white text-lg font-bold cursor-pointer">✕</button>
       </div>
-
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
         <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 space-y-2.5">
           <div class="font-extrabold text-emerald-300 text-sm">1. Prisme Transfer &amp; TapTap Send</div>
@@ -654,7 +835,6 @@
             </button>
           </div>
         </div>
-
         <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 space-y-2.5">
           <div class="font-extrabold text-amber-300 text-sm">2. Western Union, MoneyGram, Unitransfer</div>
           <p class="text-slate-300 leading-relaxed">
@@ -699,7 +879,6 @@
           </div>
         </div>
       </div>
-
       <div class="bg-slate-950/85 border border-slate-800 rounded-2xl p-4 space-y-1.5 text-xs text-slate-300">
         <div class="font-bold text-cyan-400 uppercase tracking-wider text-[11px]">Recipient Personal Info</div>
         <div><strong class="text-white">Name:</strong> Gesner Deslandes · <strong class="text-emerald-300">Software Developer</strong></div>
@@ -707,7 +886,6 @@
         <div><strong class="text-white">Email:</strong> <span class="text-cyan-300">deslandes78@gmail.com</span></div>
         <div><strong class="text-white">Location:</strong> Grand Goâve, Haiti — National Road Route 2</div>
       </div>
-
       <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
         <button
           type="button"
@@ -791,6 +969,10 @@
     (function () {
       const STORAGE_FAVS = 'jarvis_play_favs_v3';
       const STORAGE_CUSTOM = 'jarvis_play_custom_v3';
+      const OWNER_NAME = 'Gesner Deslandes';
+      const OWNER_WHATSAPP_RAW = '50947385663';
+      const OWNER_WHATSAPP_DISPLAY = '(509)-47385663';
+      const OWNER_EMAIL = 'deslandes78@gmail.com';
 
       // Portals and external hubs that open in a new tab with Jarvis background cover
       const EXTERNAL_COVER_HOSTS = [
@@ -1096,6 +1278,7 @@
       const simDirectOpen = document.getElementById('sim-cover-direct-open');
 
       let toastTimer = null;
+
       function showToast(message) {
         toastEl.textContent = message;
         toastEl.classList.remove('hidden');
@@ -1103,6 +1286,40 @@
         toastTimer = setTimeout(() => {
           toastEl.classList.add('hidden');
         }, 2800);
+      }
+
+      function buildComposedMessage() {
+        const visitorNameInput = document.getElementById('chat-visitor-name');
+        const visitorMsgInput = document.getElementById('chat-visitor-message');
+        const name = visitorNameInput ? visitorNameInput.value.trim() : '';
+        const customBody = visitorMsgInput ? visitorMsgInput.value.trim() : '';
+        if (customBody) {
+          return name ? `${customBody} — From ${name}` : customBody;
+        }
+        return name
+          ? `Hello ${OWNER_NAME}, I am ${name} from Let's Play with Jarvis and would like to chat with you right now.`
+          : `Hello ${OWNER_NAME}, I am visiting Let's Play with Jarvis and would like to chat with you right now.`;
+      }
+
+      function redirectToWhatsAppChat() {
+        const message = encodeURIComponent(buildComposedMessage());
+        const whatsappUrl = `https://wa.me/${OWNER_WHATSAPP_RAW}?text=${message}`;
+        showToast(`Redirecting to WhatsApp (${OWNER_WHATSAPP_DISPLAY}) to chat with ${OWNER_NAME}...`);
+        openExternalWindow(whatsappUrl);
+      }
+
+      function redirectToEmailChat() {
+        const visitorNameInput = document.getElementById('chat-visitor-name');
+        const name = visitorNameInput ? visitorNameInput.value.trim() : '';
+        const subject = encodeURIComponent(
+          name
+            ? `Chat with ${OWNER_NAME} from ${name} — Let's Play with Jarvis`
+            : `Chat with ${OWNER_NAME} (Owner) — Let's Play with Jarvis`
+        );
+        const body = encodeURIComponent(buildComposedMessage());
+        const mailtoUrl = `mailto:${OWNER_EMAIL}?subject=${subject}&body=${body}`;
+        showToast(`Opening email to ${OWNER_EMAIL}...`);
+        window.location.href = mailtoUrl;
       }
 
       function clearStageWatchdog() {
@@ -1132,10 +1349,8 @@
         if (!game) return;
         clearStageWatchdog();
         stageLoader.classList.add('hidden');
-
         simulatedTargetGame = game;
         isSimulatedCoverActive = true;
-
         simTitle.textContent = game.title;
         simCategory.textContent = game.category;
         simBadge.textContent = game.badge || 'Simulated In-App Mode';
@@ -1143,10 +1358,8 @@
         simUrlLink.textContent = game.url;
         simUrlLink.href = game.url;
         simDirectOpen.href = game.url;
-
         simOverlay.classList.remove('hidden');
         document.body.classList.add('overflow-hidden');
-
         if (openNewTab) {
           openExternalWindow(game.url);
           showToast(`Opened "${game.title}" in a new tab`);
@@ -1172,34 +1385,27 @@
         if (!game) return;
         currentGame = game;
         renderGames();
-
-        // Portals that block iframes go straight to new tab + simulated cover without showing an error
         if (shouldUseSimulatedCover(game.url)) {
           activateSimulatedCover(game, true);
           return;
         }
-
         stageTitle.textContent = game.title;
         stageUrl.textContent = game.url;
         stageBadge.textContent = game.category;
         stageExternalLink.href = game.url;
         stageLoader.classList.remove('hidden');
-
         clearStageWatchdog();
-        // If an embedded frame stalls or fails to load, seamlessly switch to background cover without error UI
         stageWatchdogTimer = setTimeout(() => {
           if (!isSimulatedCoverActive && currentGame && currentGame.id === game.id) {
             activateSimulatedCover(game, true);
           }
         }, 4200);
-
         try {
           gameIframe.src = game.url;
         } catch (err) {
           activateSimulatedCover(game, true);
           return;
         }
-
         showToast(`Launching "${game.title}"`);
         if (scrollToStage) {
           document.getElementById('play-stage').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1255,7 +1461,6 @@
         totalCatalogCount.textContent = String(all.length);
         favCount.textContent = String(favorites.length);
         const q = searchQuery.trim().toLowerCase();
-
         const filtered = all.filter((g) => {
           const matchesFav = !favoritesOnly || favorites.includes(g.id);
           const matchesCat = favoritesOnly || activeCategory === 'All' || g.category === activeCategory;
@@ -1267,16 +1472,13 @@
             g.desc.toLowerCase().includes(q);
           return matchesFav && matchesCat && matchesSearch;
         });
-
         visibleCount.textContent = String(filtered.length);
         gamesGrid.innerHTML = '';
-
         if (filtered.length === 0) {
           emptyState.classList.remove('hidden');
           return;
         }
         emptyState.classList.add('hidden');
-
         filtered.forEach((game) => {
           const isSelected = currentGame && currentGame.id === game.id;
           const isFav = favorites.includes(game.id);
@@ -1285,7 +1487,6 @@
           card.className = isSelected
             ? 'glass-panel rounded-2xl p-4 flex flex-col justify-between gap-3 border-2 border-cyan-400 shadow-lg shadow-cyan-500/15'
             : 'glass-panel rounded-2xl p-4 flex flex-col justify-between gap-3 hover:border-cyan-500/50 transition';
-
           card.innerHTML = `
             <div class="space-y-2">
               <div class="flex items-center justify-between gap-2">
@@ -1338,17 +1539,32 @@
               </a>
             </div>
           `;
-
           card.querySelector('[data-play-id]').addEventListener('click', () => {
             handleItemLaunch(game, true);
           });
           card.querySelector('[data-fav-id]').addEventListener('click', () => {
             toggleFavorite(game.id);
           });
-
           gamesGrid.appendChild(card);
         });
       }
+
+      // Owner Chat Modal controls
+      const ownerChatModal = document.getElementById('owner-chat-modal');
+      function openOwnerChatModal() {
+        ownerChatModal.classList.remove('hidden');
+      }
+      function closeOwnerChatModal() {
+        ownerChatModal.classList.add('hidden');
+      }
+      document.getElementById('btn-open-owner-chat').addEventListener('click', openOwnerChatModal);
+      document.getElementById('btn-section-owner-chat-modal').addEventListener('click', openOwnerChatModal);
+      document.getElementById('close-owner-chat-modal').addEventListener('click', closeOwnerChatModal);
+      document.getElementById('owner-chat-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        redirectToWhatsAppChat();
+      });
+      document.getElementById('btn-redirect-email-now').addEventListener('click', redirectToEmailChat);
 
       // Simulated cover controls
       document.getElementById('btn-top-left-return').addEventListener('click', returnFromSimulatedCover);
@@ -1410,7 +1626,7 @@
       });
 
       document.getElementById('btn-copy-contact').addEventListener('click', () => {
-        const contactSummary = 'Gesner Deslandes (Software Developer & Technology Coordinator, GlobalInternet.py) | Phone: (509)-47385663 | Email: deslandes78@gmail.com';
+        const contactSummary = `${OWNER_NAME} (Owner, Software Developer & Technology Coordinator, GlobalInternet.py) | WhatsApp: ${OWNER_WHATSAPP_DISPLAY} | Email: ${OWNER_EMAIL}`;
         try {
           const temp = document.createElement('textarea');
           temp.value = contactSummary;
@@ -1420,7 +1636,7 @@
           document.body.removeChild(temp);
           showToast('Developer contact info copied!');
         } catch (err) {
-          showToast('Gesner Deslandes · (509)-47385663 · deslandes78@gmail.com');
+          showToast(`${OWNER_NAME} · ${OWNER_WHATSAPP_DISPLAY} · ${OWNER_EMAIL}`);
         }
       });
 
@@ -1447,7 +1663,7 @@
           url,
           category,
           badge: 'Custom Link',
-          desc: 'Custom link added by Gesner Deslandes in Let\'s Play with Jarvis.'
+          desc: `Custom link added by ${OWNER_NAME} in Let's Play with Jarvis.`
         };
         customGames.push(newGame);
         safeWriteJson(STORAGE_CUSTOM, customGames);
@@ -1498,14 +1714,14 @@
 
       document.querySelectorAll('.copy-trigger').forEach((btn) => {
         btn.addEventListener('click', () => {
-          const val = btn.getAttribute('data-copy-value') || '(509)-47385663';
-          const label = btn.getAttribute('data-copy-label') || 'Number';
+          const val = btn.getAttribute('data-copy-value') || OWNER_WHATSAPP_DISPLAY;
+          const label = btn.getAttribute('data-copy-label') || 'Contact value';
           copyTextValue(val, `Copied ${label}`);
         });
       });
 
       const fullDonationSummary =
-        'Gesner Deslandes | Software Developer | Digicel MonCash & Tracking Number: (509)-47385663 | Email: deslandes78@gmail.com | Location: Grand Goâve, Haiti — National Road Route 2 | Services: Prisme Transfer, TapTap Send, Western Union, MoneyGram, Unitransfer';
+        `${OWNER_NAME} | Software Developer | Digicel MonCash & Tracking Number: ${OWNER_WHATSAPP_DISPLAY} | Email: ${OWNER_EMAIL} | Location: Grand Goâve, Haiti — National Road Route 2 | Services: Prisme Transfer, TapTap Send, Western Union, MoneyGram, Unitransfer`;
 
       document.getElementById('btn-copy-full-donation-info').addEventListener('click', () => {
         copyTextValue(fullDonationSummary, 'Copied all donation & recipient details!');
@@ -1522,11 +1738,11 @@
           activateSimulatedCover(
             {
               id: 'donate-' + serviceName.toLowerCase().replace(/\s+/g, '-'),
-              title: `${serviceName} · Donate to (509)-47385663`,
+              title: `${serviceName} · Donate to ${OWNER_WHATSAPP_DISPLAY}`,
               category: 'Supporter Donation',
               url: serviceUrl,
               badge: '❤️ Donation Cover',
-              desc: `Recipient: Gesner Deslandes (Software Developer) · Digicel MonCash / Share Tracking Number: (509)-47385663 · deslandes78@gmail.com · Grand Goâve, Haiti — National Road Route 2.`
+              desc: `Recipient: ${OWNER_NAME} (Software Developer) · Digicel MonCash / Share Tracking Number: ${OWNER_WHATSAPP_DISPLAY} · ${OWNER_EMAIL} · Grand Goâve, Haiti — National Road Route 2.`
             },
             true
           );
@@ -1536,6 +1752,8 @@
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && isSimulatedCoverActive) {
           returnFromSimulatedCover();
+        } else if (e.key === 'Escape' && !ownerChatModal.classList.contains('hidden')) {
+          closeOwnerChatModal();
         } else if (e.key === 'Escape' && !donationModal.classList.contains('hidden')) {
           closeDonationModal();
         }
