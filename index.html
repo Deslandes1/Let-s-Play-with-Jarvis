@@ -3,244 +3,491 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Let's Play with Jarvis — NVIDIA-Inspired Browser Game Hub</title>
+  <title>Let's Play with Jarvis — NVIDIA RTX Game Hub</title>
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet" />
+
   <style>
-    html { scroll-behavior: smooth; }
+    :root {
+      --nv-accent: #76b900;
+      --nv-accent-glow: rgba(118, 185, 0, 0.25);
+      --jarvis-cyan: #22d3ee;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      font-family: 'Inter', sans-serif;
-      background-color: #0a0a0c;
-      color: #e8e8ec;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: #050911;
+      color: #f1f5f9;
       overflow-x: hidden;
     }
 
-    /* NVIDIA-inspired: deeper blacks, green accent, subtle grid */
-    .jarvis-grid {
-      background-image:
-        radial-gradient(circle at 15% 15%, rgba(118, 185, 0, 0.08), transparent 42%),
-        radial-gradient(circle at 85% 10%, rgba(0, 180, 255, 0.06), transparent 40%),
-        linear-gradient(to right, rgba(148, 163, 184, 0.03) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(148, 163, 184, 0.03) 1px, transparent 1px);
-      background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+    .font-mono-tabular {
+      font-family: 'JetBrains Mono', monospace;
+      font-variant-numeric: tabular-nums;
     }
 
-    /* NVIDIA App-style glass panels with sharper borders */
-    .glass-panel {
-      background: rgba(16, 16, 20, 0.88);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(118, 185, 0, 0.12);
+    /* Hybrid Jarvis Cyan + NVIDIA Green Cyber Grid */
+    .jarvis-rtx-grid {
+      background-image:
+        radial-gradient(circle at 12% 10%, rgba(118, 185, 0, 0.12), transparent 38%),
+        radial-gradient(circle at 88% 12%, rgba(34, 211, 238, 0.12), transparent 40%),
+        radial-gradient(circle at 50% 85%, rgba(16, 185, 129, 0.08), transparent 45%),
+        linear-gradient(to right, rgba(148, 163, 184, 0.045) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(148, 163, 184, 0.045) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 100% 100%, 38px 38px, 38px 38px;
     }
-    .glass-panel:hover {
-      border-color: rgba(118, 185, 0, 0.25);
-      transition: border-color 0.3s ease;
+
+    .glass-panel {
+      background: rgba(12, 18, 32, 0.84);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(51, 65, 85, 0.72);
+    }
+
+    .rtx-glass {
+      background: rgba(10, 12, 16, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(118, 185, 0, 0.28);
     }
 
     .neon-border {
-      box-shadow:
-        0 0 0 1px rgba(118, 185, 0, 0.2),
-        0 12px 40px -12px rgba(118, 185, 0, 0.15);
+      box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.22), 0 14px 36px -10px rgba(6, 182, 212, 0.20);
     }
 
-    /* NVIDIA green accent classes */
-    .nvidia-green { color: #76b900; }
-    .nvidia-bg { background: #76b900; }
-    .nvidia-border { border-color: #76b900; }
+    .rtx-glow {
+      box-shadow: 0 0 0 1px var(--nv-accent-glow), 0 12px 32px -8px var(--nv-accent-glow);
+    }
 
-    /* Performance HUD strip — inspired by NVIDIA App stats overlay [citation:3][citation:9] */
-    .perf-strip {
-      background: rgba(8, 8, 10, 0.92);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(118, 185, 0, 0.18);
-      border-radius: 8px;
-      font-variant-numeric: tabular-nums;
-    }
-    .perf-metric {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 10px;
-      border-right: 1px solid rgba(255,255,255,0.06);
-    }
-    .perf-metric:last-child { border-right: none; }
-    .perf-metric .label {
-      font-size: 9px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      color: #666;
-    }
-    .perf-metric .value {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
-      font-weight: 700;
-      color: #76b900;
-    }
-    .perf-metric .value.cyan { color: #00d4ff; }
-    .perf-metric .value.amber { color: #ffb800; }
-
-    /* Simulated cover overlay — deeper NVIDIA-style backdrop */
     .simulated-cover-backdrop {
       background:
-        radial-gradient(circle at 50% 18%, rgba(118, 185, 0, 0.12), transparent 48%),
-        radial-gradient(circle at 82% 82%, rgba(0, 180, 255, 0.08), transparent 44%),
-        rgba(6, 6, 10, 0.94);
-      backdrop-filter: blur(20px);
+        radial-gradient(circle at 50% 18%, rgba(34, 211, 238, 0.22), transparent 45%),
+        radial-gradient(circle at 82% 82%, rgba(118, 185, 0, 0.16), transparent 42%),
+        rgba(5, 9, 17, 0.90);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
     }
 
-    /* Buttons — NVIDIA aesthetic: sharp, green-focused, monospace hints */
-    .btn-nvidia {
-      background: linear-gradient(135deg, #76b900 0%, #5a8f00 100%);
-      color: #0a0a0c;
-      font-weight: 800;
-      letter-spacing: 0.3px;
-      transition: all 0.2s ease;
-    }
-    .btn-nvidia:hover {
-      background: linear-gradient(135deg, #8fd400 0%, #6aa800 100%);
-      transform: translateY(-1px);
-      box-shadow: 0 8px 24px -6px rgba(118, 185, 0, 0.4);
-    }
-    .btn-outline-nvidia {
-      background: transparent;
-      border: 1px solid rgba(118, 185, 0, 0.35);
-      color: #76b900;
-      transition: all 0.2s ease;
-    }
-    .btn-outline-nvidia:hover {
-      background: rgba(118, 185, 0, 0.1);
-      border-color: #76b900;
+    /* NVIDIA App Slide-Over Drawer (Alt+Z) */
+    .nvidia-drawer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 340px;
+      max-width: 92vw;
+      height: 100vh;
+      background: rgba(10, 11, 14, 0.96);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-right: 1px solid var(--nv-accent);
+      transform: translateX(-105%);
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+      z-index: 60;
+      overflow-y: auto;
     }
 
-    /* Card hover lift — subtle, like NVIDIA App feature tiles */
-    .card-lift {
-      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.25s ease;
-    }
-    .card-lift:hover {
-      transform: translateY(-3px);
-      border-color: rgba(118, 185, 0, 0.4);
+    .nvidia-drawer.open {
+      transform: translateX(0);
     }
 
-    /* Scanline texture for “hardware” feel */
-    .scanlines::after {
-      content: '';
-      position: absolute;
-      inset: 0;
+    /* Floating NVIDIA Performance Overlay (Alt+R) */
+    .perf-hud-floating {
+      position: fixed;
+      z-index: 45;
+      background: rgba(8, 10, 14, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(118, 185, 0, 0.32);
+      border-radius: 14px;
+      padding: 14px 16px;
+      min-width: 245px;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65);
+    }
+
+    .perf-hud-floating.hud-hidden {
+      opacity: 0;
       pointer-events: none;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(0, 0, 0, 0.03) 2px,
-        rgba(0, 0, 0, 0.03) 4px
-      );
-      border-radius: inherit;
+      transform: scale(0.96);
     }
 
-    /* Category pills — NVIDIA App sidebar-inspired */
-    .cat-pill {
-      padding: 6px 14px;
-      border-radius: 6px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.4px;
-      text-transform: uppercase;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(20, 20, 24, 0.8);
-      color: #888;
+    /* HUD Customizer Drawer */
+    .custom-hud-drawer {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 315px;
+      max-width: calc(100vw - 32px);
+      background: rgba(10, 12, 16, 0.96);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border: 1px solid rgba(118, 185, 0, 0.38);
+      border-radius: 16px;
+      padding: 18px;
+      z-index: 55;
+      transform: translateY(calc(100% + 40px));
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75);
+    }
+
+    .custom-hud-drawer.open {
+      transform: translateY(0);
+    }
+
+    /* Custom Range Sliders (NVIDIA Green Theme) */
+    input[type="range"].nv-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      outline: none;
+    }
+
+    input[type="range"].nv-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: var(--nv-accent);
       cursor: pointer;
-      transition: all 0.18s ease;
-    }
-    .cat-pill:hover {
-      border-color: rgba(118, 185, 0, 0.3);
-      color: #aaa;
-    }
-    .cat-pill.active {
-      background: rgba(118, 185, 0, 0.12);
-      border-color: #76b900;
-      color: #76b900;
+      border: 2px solid #0a0a0a;
+      box-shadow: 0 0 8px var(--nv-accent);
     }
 
-    /* Game grid cards — NVIDIA App library style */
-    .game-card {
-      background: rgba(18, 18, 22, 0.9);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 10px;
-      overflow: hidden;
-      cursor: pointer;
-      transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    .game-card:hover {
-      border-color: rgba(118, 185, 0, 0.45);
-      transform: translateY(-4px);
-      box-shadow: 0 16px 40px -16px rgba(118, 185, 0, 0.25);
-    }
-    .game-card .card-cover {
-      height: 120px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 40px;
-      background: linear-gradient(135deg, rgba(118,185,0,0.06) 0%, rgba(0,0,0,0.4) 100%);
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-      position: relative;
-    }
-    .game-card .card-body {
-      padding: 12px 14px;
-    }
-    .game-card .card-body h4 {
-      font-size: 13px;
-      font-weight: 700;
-      color: #e8e8ec;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .game-card .card-body p {
-      font-size: 10px;
-      color: #666;
-      margin-top: 4px;
-      font-family: 'JetBrains Mono', monospace;
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
+    /* RTX Stage Visual Shader Filters */
+    .rtx-vibrance-active {
+      filter: saturate(1.32) contrast(1.06);
     }
 
-    /* Fullscreen iframe stage */
-    #stage-frame-wrapper { position: relative; }
-    #game-iframe { background: #000; }
+    .rtx-hdr-active {
+      filter: contrast(1.14) brightness(1.06);
+    }
 
-    /* Responsive tweaks */
-    @media (max-width: 640px) {
-      .perf-metric { padding: 3px 6px; }
-      .perf-metric .value { font-size: 11px; }
-      .perf-metric .label { font-size: 8px; }
-      .game-card .card-cover { height: 90px; font-size: 30px; }
+    .rtx-vibrance-active.rtx-hdr-active {
+      filter: saturate(1.35) contrast(1.16) brightness(1.06);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #070b14;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #334155;
     }
   </style>
 </head>
-<body id="top" class="jarvis-grid min-h-screen flex flex-col">
+<body id="top" class="jarvis-rtx-grid min-h-screen flex flex-col">
 
-  <!-- ================= SIMULATED COVER OVERLAY (NVIDIA-style deep backdrop) ================= -->
-  <div id="simulated-cover-overlay" role="dialog" aria-modal="true" aria-labelledby="sim-cover-title"
-       class="fixed inset-0 z-50 hidden simulated-cover-backdrop flex flex-col justify-between p-4 sm:p-6 overflow-y-auto">
+  <!-- ============ NVIDIA APP SIDE OVERLAY DRAWER (Alt+Z) ============ -->
+  <aside id="nvidia-drawer" class="nvidia-drawer p-5 flex flex-col gap-5" aria-label="NVIDIA App Command Drawer">
+    <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+      <div class="flex items-center gap-3">
+        <div id="nv-logo-badge" class="w-9 h-9 rounded-lg flex items-center justify-center font-black text-lg text-slate-950 shadow-lg" style="background-color: var(--nv-accent);">
+          N
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <h2 class="text-sm font-extrabold text-white tracking-wide">NVIDIA App</h2>
+            <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">RTX</span>
+          </div>
+          <p class="text-[11px] text-slate-400">Jarvis Telemetry &amp; Overlay v10.6</p>
+        </div>
+      </div>
+      <button id="btn-close-nvidia-drawer" type="button" class="w-8 h-8 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white flex items-center justify-center font-bold cursor-pointer" title="Close NVIDIA Drawer (Alt+Z)">
+        ✕
+      </button>
+    </div>
 
-    <!-- Top Control Bar -->
-    <div class="w-full max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3 bg-black/90 border border-[#76b900]/30 rounded-xl px-4 py-3 shadow-2xl">
+    <!-- GPU Telemetry Summary Banner -->
+    <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3 space-y-2">
+      <div class="flex items-center justify-between text-[11px]">
+        <span class="font-bold text-slate-300">GeForce RTX 4090 Virtual</span>
+        <span class="font-mono-tabular text-[10px] px-2 py-0.5 rounded bg-slate-950 text-emerald-400 border border-emerald-500/25">Driver 566.14</span>
+      </div>
+      <div class="grid grid-cols-3 gap-2 pt-1 text-center">
+        <div class="bg-slate-950/90 rounded-lg p-2 border border-slate-800/80">
+          <div class="text-[10px] text-slate-400">GPU LOAD</div>
+          <div id="drawer-gpu-load" class="font-mono-tabular text-xs font-extrabold text-white mt-0.5">64%</div>
+        </div>
+        <div class="bg-slate-950/90 rounded-lg p-2 border border-slate-800/80">
+          <div class="text-[10px] text-slate-400">TEMP</div>
+          <div id="drawer-gpu-temp" class="font-mono-tabular text-xs font-extrabold text-amber-400 mt-0.5">61°C</div>
+        </div>
+        <div class="bg-slate-950/90 rounded-lg p-2 border border-slate-800/80">
+          <div class="text-[10px] text-slate-400">POWER</div>
+          <div id="drawer-gpu-power" class="font-mono-tabular text-xs font-extrabold text-cyan-300 mt-0.5">245W</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 1: Capture & Record -->
+    <div class="space-y-2">
+      <div class="text-[10px] font-extrabold uppercase tracking-widest" style="color: var(--nv-accent);">Capture &amp; Record</div>
+      <button id="tile-instant-replay" type="button" class="nv-feature-tile w-full text-left bg-white/[0.03] hover:bg-white/[0.07] border border-slate-800 rounded-xl p-3 flex items-center gap-3 transition cursor-pointer">
+        <div class="w-9 h-9 rounded-lg flex items-center justify-center text-lg shrink-0" style="background: rgba(118,185,0,0.16);">📹</div>
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center justify-between">
+            <h4 class="text-xs font-bold text-white">Instant Replay</h4>
+            <span id="badge-replay" class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300">ON</span>
+          </div>
+          <p class="text-[11px] text-slate-400 truncate">ShadowPlay · 4K 120FPS AV1</p>
+        </div>
+      </button>
+
+      <button id="tile-photo-mode" type="button" class="nv-feature-tile w-full text-left bg-white/[0.03] hover:bg-white/[0.07] border border-slate-800 rounded-xl p-3 flex items-center gap-3 transition cursor-pointer">
+        <div class="w-9 h-9 rounded-lg flex items-center justify-center text-lg shrink-0" style="background: rgba(118,185,0,0.16);">📸</div>
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center justify-between">
+            <h4 class="text-xs font-bold text-white">Photo Mode Snapshot</h4>
+            <span class="text-[10px] font-bold text-cyan-300">Capture</span>
+          </div>
+          <p class="text-[11px] text-slate-400 truncate">Save stage telemetry frame</p>
+        </div>
+      </button>
+    </div>
+
+    <!-- Section 2: RTX Visual & Reflex Enhancements -->
+    <div class="space-y-2">
+      <div class="text-[10px] font-extrabold uppercase tracking-widest" style="color: var(--nv-accent);">RTX Enhance &amp; Reflex</div>
+
+      <button id="tile-rtx-vibrance" type="button" class="nv-feature-tile w-full text-left bg-white/[0.03] hover:bg-white/[0.07] border border-slate-800 rounded-xl p-3 flex items-center gap-3 transition cursor-pointer">
+        <div class="w-9 h-9 rounded-lg flex items-center justify-center text-lg shrink-0" style="background: rgba(118,185,0,0.16);">🎨</div>
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center justify-between">
+            <h4 class="text-xs font-bold text-white">RTX Dynamic Vibrance</h4>
+            <span id="badge-vibrance" class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">OFF</span>
+          </div>
+          <p class="text-[11px] text-slate-400 truncate">AI color boost on game stage</p>
+        </div>
+      </button>
+
+      <button id="tile-rtx-hdr" type="button" class="nv-feature-tile w-full text-left bg-white/[0.03] hover:bg-white/[0.07] border border-slate-800 rounded-xl p-3 flex items-center gap-3 transition cursor-pointer">
+        <div class="w-9 h-9 rounded-lg flex items-center justify-center text-lg shrink-0" style="background: rgba(118,185,0,0.16);">🌅</div>
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center justify-between">
+            <h4 class="text-xs font-bold text-white">RTX HDR</h4>
+            <span id="badge-hdr" class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">OFF</span>
+          </div>
+          <p class="text-[11px] text-slate-400 truncate">High dynamic contrast curve</p>
+        </div>
+      </button>
+
+      <button id="tile-nv-reflex" type="button" class="nv-feature-tile w-full text-left bg-white/[0.03] hover:bg-white/[0.07] border border-emerald-500/40 rounded-xl p-3 flex items-center gap-3 transition cursor-pointer">
+        <div class="w-9 h-9 rounded-lg flex items-center justify-center text-lg shrink-0" style="background: rgba(118,185,0,0.22);">⚡</div>
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center justify-between">
+            <h4 class="text-xs font-bold text-white">NVIDIA Reflex</h4>
+            <span id="badge-reflex" class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300">ON + BOOST</span>
+          </div>
+          <p class="text-[11px] text-slate-400 truncate">Ultra-low click-to-photon latency</p>
+        </div>
+      </button>
+    </div>
+
+    <!-- Section 3: Live Performance Tuning Sliders -->
+    <div class="space-y-3 bg-slate-900/80 border border-slate-800 rounded-xl p-3.5">
+      <div class="flex items-center justify-between">
+        <span class="text-[10px] font-extrabold uppercase tracking-widest" style="color: var(--nv-accent);">GPU Performance Tuning</span>
+        <button id="btn-reset-tuning" type="button" class="text-[10px] font-semibold text-cyan-300 hover:underline cursor-pointer">Reset</button>
+      </div>
+
+      <div class="space-y-1">
+        <div class="flex justify-between text-[11px]">
+          <span class="text-slate-300">Power Limit</span>
+          <span id="val-power-limit" class="font-mono-tabular font-bold text-white">100%</span>
+        </div>
+        <input id="slider-power-limit" type="range" min="50" max="120" value="100" class="nv-slider" />
+      </div>
+
+      <div class="space-y-1">
+        <div class="flex justify-between text-[11px]">
+          <span class="text-slate-300">GPU Clock Offset</span>
+          <span id="val-clock-offset" class="font-mono-tabular font-bold text-emerald-300">+0 MHz</span>
+        </div>
+        <input id="slider-clock-offset" type="range" min="-200" max="200" step="10" value="0" class="nv-slider" />
+      </div>
+
+      <div class="space-y-1">
+        <div class="flex justify-between text-[11px]">
+          <span class="text-slate-300">Target FPS Cap</span>
+          <span id="val-fps-cap" class="font-mono-tabular font-bold text-cyan-300">165 FPS</span>
+        </div>
+        <input id="slider-fps-cap" type="range" min="60" max="360" step="15" value="165" class="nv-slider" />
+      </div>
+    </div>
+
+    <!-- Quick Overlay Actions -->
+    <div class="mt-auto pt-3 border-t border-slate-800/90 space-y-2">
+      <div class="grid grid-cols-2 gap-2">
+        <button id="drawer-toggle-perf" type="button" class="px-3 py-2 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 transition cursor-pointer">
+          📊 Toggle Stats
+        </button>
+        <button id="drawer-open-custom" type="button" class="px-3 py-2 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 transition cursor-pointer">
+          ⚙️ Customize HUD
+        </button>
+      </div>
+      <p class="text-[10px] text-slate-500 text-center">
+        Shortcuts: <strong class="text-slate-300">Alt+Z</strong> NVIDIA App · <strong class="text-slate-300">Alt+R</strong> Stats HUD
+      </p>
+    </div>
+  </aside>
+
+  <!-- ============ FLOATING NVIDIA PERFORMANCE OVERLAY (Alt+R) ============ -->
+  <div id="perf-overlay" class="perf-hud-floating" style="bottom: 20px; left: 20px;" role="region" aria-label="NVIDIA Performance Overlay">
+    <div class="flex items-center justify-between pb-2 mb-2 border-b border-white/10">
+      <div class="flex items-center gap-1.5">
+        <span class="w-2 h-2 rounded-full animate-pulse" style="background-color: var(--nv-accent);"></span>
+        <span class="text-[10px] font-extrabold uppercase tracking-wider" style="color: var(--nv-accent);">NVIDIA RTX Telemetry</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="text-[10px] font-mono-tabular text-slate-400">Alt+R</span>
+        <button id="btn-close-perf-hud" type="button" class="text-slate-400 hover:text-white text-xs font-bold cursor-pointer" title="Hide Performance Overlay">✕</button>
+      </div>
+    </div>
+
+    <div id="perf-metrics-list" class="space-y-1.5 text-xs">
+      <div class="flex justify-between items-center">
+        <span class="text-slate-400">Frame Rate</span>
+        <span id="perf-fps" class="font-mono-tabular font-extrabold text-sm" style="color: var(--nv-accent);">144 FPS</span>
+      </div>
+      <div class="flex justify-between items-center">
+        <span class="text-slate-400">Frame Time</span>
+        <span id="perf-frametime" class="font-mono-tabular font-bold text-slate-200">6.9 ms</span>
+      </div>
+      <div class="flex justify-between items-center">
+        <span class="text-slate-400">GPU Utilization</span>
+        <span id="perf-gpu" class="font-mono-tabular font-bold text-white">64%</span>
+      </div>
+      <div class="flex justify-between items-center">
+        <span class="text-slate-400">GPU Temp</span>
+        <span id="perf-temp" class="font-mono-tabular font-bold text-amber-400">61°C</span>
+      </div>
+      <div class="flex justify-between items-center">
+        <span class="text-slate-400">VRAM Usage</span>
+        <span id="perf-vram" class="font-mono-tabular font-bold text-slate-200">4.2 / 24 GB</span>
+      </div>
+      <div class="flex justify-between items-center">
+        <span class="text-slate-400">Reflex Latency</span>
+        <span id="perf-latency" class="font-mono-tabular font-bold text-cyan-300">7.4 ms</span>
+      </div>
+    </div>
+
+    <!-- Click-to-Photon Latency Bar -->
+    <div class="mt-2.5">
+      <div class="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+        <div id="latency-bar" class="h-full rounded-full transition-all duration-300" style="width: 28%; background: linear-gradient(90deg, #76b900, #22d3ee);"></div>
+      </div>
+      <div class="flex justify-between text-[9px] text-slate-500 mt-1 font-mono-tabular">
+        <span>0ms</span>
+        <span>Click-to-Photon</span>
+        <span>30ms</span>
+      </div>
+    </div>
+
+    <!-- 20-Bar Live FPS Sparkline -->
+    <div id="fps-sparkline" class="mt-2.5 pt-2 border-t border-white/10 flex items-end gap-0.5 h-7" aria-hidden="true"></div>
+  </div>
+
+  <!-- ============ HUD CUSTOMIZATION DRAWER ============ -->
+  <div id="custom-hud-drawer" class="custom-hud-drawer" role="dialog" aria-label="HUD Customization">
+    <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-800">
+      <h3 class="text-xs font-extrabold uppercase tracking-wider" style="color: var(--nv-accent);">HUD Customization</h3>
+      <button id="btn-close-custom-hud" type="button" class="text-slate-400 hover:text-white text-sm font-bold cursor-pointer">✕</button>
+    </div>
+
+    <div class="space-y-3 text-xs">
+      <div class="flex items-center justify-between">
+        <span class="text-slate-300 font-medium">Performance Overlay</span>
+        <button id="toggle-perf-switch" type="button" class="px-3 py-1 rounded-full text-[11px] font-extrabold bg-emerald-500 text-slate-950 cursor-pointer">
+          VISIBLE
+        </button>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <span class="text-slate-300 font-medium">HUD Screen Position</span>
+        <select id="select-hud-pos" class="bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white text-xs focus:outline-none">
+          <option value="bottom-left" selected>Bottom Left</option>
+          <option value="bottom-right">Bottom Right</option>
+          <option value="top-right">Top Right</option>
+          <option value="top-left">Top Left</option>
+        </select>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <span class="text-slate-300 font-medium">Telemetry Font Size</span>
+        <select id="select-hud-fontsize" class="bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white text-xs focus:outline-none">
+          <option value="11">Small</option>
+          <option value="12" selected>Medium</option>
+          <option value="14">Large</option>
+        </select>
+      </div>
+
+      <div class="space-y-1">
+        <div class="flex justify-between">
+          <span class="text-slate-300 font-medium">Overlay Opacity</span>
+          <span id="val-hud-opacity" class="font-mono-tabular text-cyan-300">88%</span>
+        </div>
+        <input id="slider-hud-opacity" type="range" min="45" max="100" value="88" class="nv-slider" />
+      </div>
+
+      <div class="flex items-center justify-between pt-1">
+        <span class="text-slate-300 font-medium">NVIDIA Accent Theme</span>
+        <div class="flex items-center gap-1.5">
+          <button type="button" data-accent="#76b900" class="accent-swatch w-5 h-5 rounded-full border-2 border-white cursor-pointer" style="background:#76b900;" title="NVIDIA Green"></button>
+          <button type="button" data-accent="#22d3ee" class="accent-swatch w-5 h-5 rounded-full border border-slate-600 cursor-pointer" style="background:#22d3ee;" title="Jarvis Cyan"></button>
+          <button type="button" data-accent="#10b981" class="accent-swatch w-5 h-5 rounded-full border border-slate-600 cursor-pointer" style="background:#10b981;" title="Emerald RTX"></button>
+          <input id="picker-accent" type="color" value="#76b900" class="w-6 h-6 rounded bg-transparent border-0 cursor-pointer" title="Custom Accent" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SIMULATED IN-APP BACKGROUND COVER OVERLAY ============ -->
+  <div
+    id="simulated-cover-overlay"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="sim-cover-title"
+    class="fixed inset-0 z-50 hidden simulated-cover-backdrop flex flex-col justify-between p-4 sm:p-6 overflow-y-auto"
+  >
+    <!-- Top Control Bar with Prominent Top-Left Return Arrow -->
+    <div class="w-full max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3 bg-slate-900/95 border border-cyan-500/40 rounded-2xl px-3.5 py-3 shadow-2xl">
       <div class="flex items-center gap-3 min-w-0">
-        <button id="btn-top-left-return" type="button" aria-label="Back to Jarvis Hub"
-                class="group inline-flex items-center gap-2 px-4 py-2.5 rounded-lg btn-nvidia font-extrabold text-xs sm:text-sm shadow-lg transition shrink-0 cursor-pointer">
+        <button
+          id="btn-top-left-return"
+          type="button"
+          aria-label="Back to Jarvis Hub"
+          class="group inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-400 to-sky-500 hover:from-cyan-300 hover:to-sky-400 text-slate-950 font-extrabold text-xs sm:text-sm shadow-lg shadow-cyan-500/25 transition shrink-0 cursor-pointer"
+        >
           <span class="text-base leading-none transform transition-transform group-hover:-translate-x-0.5">←</span>
           <span>Back to Jarvis</span>
         </button>
         <div class="min-w-0">
           <div class="flex items-center gap-2 flex-wrap">
-            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-[10px] font-bold bg-[#76b900]/15 text-[#76b900] border border-[#76b900]/30">
-              <span class="w-1.5 h-1.5 rounded-full bg-[#76b900] animate-ping"></span>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
               Background Cover · Simulated In-App Session
             </span>
-            <span id="sim-cover-category" class="px-2 py-0.5 rounded text-[10px] font-bold bg-cyan-500/15 text-cyan-400 border border-cyan-500/25">
+            <span id="sim-cover-category" class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-cyan-500/15 text-cyan-300 border border-cyan-500/25">
               Portal / Comms
             </span>
           </div>
@@ -250,406 +497,569 @@
         </div>
       </div>
       <div class="flex items-center gap-2 shrink-0">
-        <button id="btn-focus-external" type="button"
-                class="px-3.5 py-2 rounded-lg text-xs font-extrabold bg-emerald-500 hover:bg-emerald-400 text-black transition cursor-pointer shadow-md">
-          Launch / Focus External Window ↗
+        <button
+          id="btn-focus-external"
+          type="button"
+          class="px-3.5 py-2 rounded-xl text-xs font-extrabold bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition cursor-pointer shadow-md shadow-emerald-500/20"
+        >
+          ↗ Launch / Focus External Window
         </button>
       </div>
     </div>
 
-    <!-- Center Card -->
+    <!-- Center Simulated Session Card over Background Cover -->
     <div class="my-auto w-full max-w-3xl mx-auto py-6">
-      <div class="glass-panel rounded-2xl p-6 sm:p-8 border border-[#76b900]/25 neon-border space-y-5 text-center sm:text-left">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/5 pb-4">
+      <div class="glass-panel rounded-3xl p-6 sm:p-8 border border-cyan-400/35 neon-border space-y-5 text-center sm:text-left">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800/90 pb-4">
           <div class="flex items-center justify-center sm:justify-start gap-3">
-            <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-[#76b900] via-[#5a8f00] to-cyan-500 flex items-center justify-center text-black font-black text-xl shadow-lg">
+            <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-cyan-400 via-sky-500 to-emerald-400 flex items-center justify-center text-slate-950 font-black text-xl shadow-lg shadow-cyan-500/25">
               J
             </div>
             <div>
-              <p class="text-[10px] uppercase tracking-wider font-bold text-[#76b900]">
-                Let's Play with Jarvis · Seamless Background Cover
+              <p class="text-[11px] uppercase tracking-wider font-bold text-cyan-400">
+                Let&apos;s Play with Jarvis · Seamless Background Cover
               </p>
               <h3 class="text-xl sm:text-2xl font-black text-white">
                 Active External Session in Simulated In-App Mode
               </h3>
             </div>
           </div>
-          <span id="sim-cover-badge" class="self-center sm:self-auto px-3 py-1 rounded text-xs font-bold bg-[#76b900]/15 text-[#76b900] border border-[#76b900]/30">
+          <span id="sim-cover-badge" class="self-center sm:self-auto px-3 py-1 rounded-full text-xs font-bold bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
             Simulated In-App Mode
           </span>
         </div>
+
         <p id="sim-cover-desc" class="text-sm text-slate-300 leading-relaxed">
-          Opened in a dedicated external browser tab while Let's Play with Jarvis remains active as your background cover.
+          Opened in a dedicated external browser tab while Let&apos;s Play with Jarvis remains active as your background cover.
         </p>
-        <div class="bg-black/90 border border-white/5 rounded-lg p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
-          <span class="text-slate-500 font-semibold uppercase tracking-wider text-[10px]">Destination URL:</span>
-          <a id="sim-cover-url-link" href="#" target="_blank" rel="noopener noreferrer"
-             class="text-[#76b900] hover:underline font-mono break-all">
+
+        <div class="bg-slate-950/90 border border-slate-800 rounded-2xl p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+          <span class="text-slate-400 font-semibold">Destination URL:</span>
+          <a
+            id="sim-cover-url-link"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-cyan-300 hover:underline font-mono break-all"
+          >
             https://deslandes1.github.io/
           </a>
         </div>
+
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-slate-300">
-          <div class="bg-black/60 border border-white/5 rounded-lg p-3">
-            <div class="font-bold text-[#76b900] mb-0.5">External Tab Active</div>
+          <div class="bg-slate-900/80 border border-slate-800/90 rounded-2xl p-3">
+            <div class="font-bold text-cyan-300 mb-0.5">External Tab Active</div>
             <p class="text-slate-400">Runs full-screen in its own browser window or tab.</p>
           </div>
-          <div class="bg-black/60 border border-white/5 rounded-lg p-3">
-            <div class="font-bold text-emerald-400 mb-0.5">Jarvis Cover Ready</div>
+          <div class="bg-slate-900/80 border border-slate-800/90 rounded-2xl p-3">
+            <div class="font-bold text-emerald-300 mb-0.5">Jarvis Cover Ready</div>
             <p class="text-slate-400">Jarvis stays open behind this cover with your session state intact.</p>
           </div>
-          <div class="bg-black/60 border border-white/5 rounded-lg p-3">
-            <div class="font-bold text-cyan-400 mb-0.5">Instant Hub Return</div>
+          <div class="bg-slate-900/80 border border-slate-800/90 rounded-2xl p-3">
+            <div class="font-bold text-sky-300 mb-0.5">Instant Hub Return</div>
             <p class="text-slate-400">Select <strong class="text-white">← Back to Jarvis</strong> at top-left anytime.</p>
           </div>
         </div>
+
         <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
-          <button id="btn-cover-return-primary" type="button"
-                  class="px-5 py-3 rounded-lg btn-nvidia font-extrabold text-sm shadow-lg transition cursor-pointer">
+          <button
+            id="btn-cover-return-primary"
+            type="button"
+            class="px-5 py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-sky-500 hover:from-cyan-300 hover:to-sky-400 text-slate-950 font-extrabold text-sm shadow-lg shadow-cyan-500/20 transition cursor-pointer"
+          >
             ← Back to Jarvis
           </button>
-          <a id="sim-cover-direct-open" href="#" target="_blank" rel="noopener noreferrer"
-             class="px-4 py-3 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-sm transition">
-            Launch / Focus External Window ↗
+          <a
+            id="sim-cover-direct-open"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-4 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-sm transition"
+          >
+            ↗ Launch / Focus External Window
           </a>
         </div>
       </div>
     </div>
 
-    <div class="w-full max-w-6xl mx-auto text-center text-xs text-slate-500">
-      Let's Play with Jarvis · Gesner Deslandes (Software Developer & Technology Coordinator, GlobalInternet.py)
+    <div class="w-full max-w-6xl mx-auto text-center text-xs text-slate-400">
+      Let&apos;s Play with Jarvis · Gesner Deslandes (Software Developer &amp; Technology Coordinator, GlobalInternet.py)
     </div>
   </div>
 
-  <!-- ================= HEADER (NVIDIA App-style top bar) ================= -->
-  <header class="sticky top-0 z-40 glass-panel border-b border-white/5">
+  <!-- ============ TOP NAVIGATION & JARVIS + NVIDIA COMMAND HEADER ============ -->
+  <header class="sticky top-0 z-40 glass-panel border-b border-slate-800/90">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap items-center justify-between gap-3">
+      <!-- Brand Identity -->
       <div class="flex items-center gap-3">
-        <a href="#top" class="w-10 h-10 rounded-lg bg-gradient-to-br from-[#76b900] via-[#5a8f00] to-cyan-500 flex items-center justify-center text-black font-black text-lg shadow-lg shrink-0" title="Let's Play with Jarvis Home">
+        <a
+          href="#top"
+          class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 via-sky-500 to-emerald-400 flex items-center justify-center text-slate-950 font-black text-lg shadow-lg shadow-cyan-500/25 shrink-0"
+          title="Let's Play with Jarvis Home"
+        >
           J
         </a>
         <div>
           <div class="flex items-center gap-2 flex-wrap">
-            <h1 class="text-lg sm:text-xl font-extrabold tracking-tight text-white">
-              Let's Play with <span class="nvidia-green">Jarvis</span>
+            <h1 class="text-base sm:text-xl font-extrabold tracking-tight text-white">
+              Let&apos;s Play with <span class="text-cyan-400">Jarvis</span>
             </h1>
-            <span class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-[10px] font-semibold bg-[#76b900]/15 text-[#76b900] border border-[#76b900]/30">
-              <span class="w-1.5 h-1.5 rounded-full bg-[#76b900] animate-pulse"></span>
-              <span id="total-catalog-count">33</span> Links &amp; Games Ready
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span id="total-catalog-count">33</span> Links Ready
             </span>
+            <!-- Live Inline Telemetry Pill -->
+            <div class="hidden xl:flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-slate-950/90 border border-slate-800 text-[11px] font-mono-tabular">
+              <span class="text-slate-400">FPS:</span>
+              <span id="header-fps" class="font-extrabold" style="color: var(--nv-accent);">144</span>
+              <span class="text-slate-700">|</span>
+              <span class="text-slate-400">Reflex:</span>
+              <span id="header-latency" class="font-bold text-cyan-300">7.4ms</span>
+            </div>
           </div>
-          <p class="text-xs text-slate-500">
-            Built by <span class="text-slate-300 font-medium">Gesner Deslandes</span> · Software Developer &amp; Technology Coordinator, GlobalInternet.py
+          <p class="text-[11px] sm:text-xs text-slate-400">
+            Built by <span class="text-slate-200 font-medium">Gesner Deslandes</span> · Software Developer &amp; Technology Coordinator, GlobalInternet.py
           </p>
         </div>
       </div>
-      <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
-        <button id="btn-open-owner-chat" type="button"
-                class="px-3 py-2 rounded-lg text-xs sm:text-sm font-bold bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/35 transition flex items-center gap-1.5 shadow-md cursor-pointer">
-          <span>💬</span> <span>Chat with Owner</span>
-        </button>
-        <button id="btn-open-donation" type="button"
-                class="px-3 py-2 rounded-lg text-xs sm:text-sm font-bold bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 border border-rose-500/35 transition flex items-center gap-1.5 shadow-md cursor-pointer">
-          <span>❤️</span> <span>Donate</span>
-        </button>
-        <button id="btn-favorites-filter" type="button"
-                class="px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 transition flex items-center gap-1.5 cursor-pointer">
-          <span>★</span> <span>Favorites</span>
-          <span id="fav-count" class="px-1.5 py-0.2 rounded bg-[#76b900]/20 text-[#76b900] text-xs">0</span>
-        </button>
-        <button id="btn-github-guide" type="button"
-                class="px-3 py-2 rounded-lg text-xs sm:text-sm font-bold btn-nvidia transition flex items-center gap-1.5 shadow-md cursor-pointer">
-          <span>⚡</span> <span>GitHub Pages</span>
-        </button>
-      </div>
-    </div>
 
-    <!-- NVIDIA-inspired live performance strip (simulated system telemetry) -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-2">
-      <div class="perf-strip inline-flex flex-wrap items-center overflow-hidden">
-        <div class="perf-metric">
-          <span class="label">FPS</span>
-          <span class="value" id="sim-fps">144</span>
-        </div>
-        <div class="perf-metric">
-          <span class="label">Latency</span>
-          <span class="value cyan" id="sim-latency">8.2<small class="text-[8px] ml-0.5">ms</small></span>
-        </div>
-        <div class="perf-metric">
-          <span class="label">GPU</span>
-          <span class="value" id="sim-gpu">67<small class="text-[8px] ml-0.5">%</small></span>
-        </div>
-        <div class="perf-metric">
-          <span class="label">VRAM</span>
-          <span class="value amber" id="sim-vram">4.2<small class="text-[8px] ml-0.5">GB</small></span>
-        </div>
-        <div class="perf-metric">
-          <span class="label">Reflex</span>
-          <span class="value" style="color:#76b900;">ON</span>
-        </div>
+      <!-- Command Actions -->
+      <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+        <!-- NVIDIA App Drawer Button (Alt+Z) -->
+        <button
+          id="btn-toggle-nvidia-app"
+          type="button"
+          aria-label="Open NVIDIA App Overlay"
+          class="px-3 py-2 rounded-xl text-xs font-extrabold text-slate-950 transition flex items-center gap-1.5 shadow-md cursor-pointer"
+          style="background-color: var(--nv-accent);"
+          title="Toggle NVIDIA App Overlay (Alt+Z)"
+        >
+          <span class="font-black">N</span>
+          <span>NVIDIA App</span>
+          <span class="hidden md:inline text-[10px] opacity-80">(Alt+Z)</span>
+        </button>
+
+        <!-- Performance Stats Button (Alt+R) -->
+        <button
+          id="btn-toggle-perf-header"
+          type="button"
+          class="px-2.5 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-emerald-300 border border-emerald-500/35 transition flex items-center gap-1 cursor-pointer"
+          title="Toggle Performance Overlay (Alt+R)"
+        >
+          <span>📊</span>
+          <span class="hidden sm:inline">Stats</span>
+        </button>
+
+        <!-- HUD Customize Button -->
+        <button
+          id="btn-toggle-custom-header"
+          type="button"
+          class="px-2.5 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 transition flex items-center gap-1 cursor-pointer"
+          title="Customize HUD Layout"
+        >
+          <span>⚙️</span>
+          <span class="hidden sm:inline">HUD</span>
+        </button>
+
+        <!-- Chat with Owner -->
+        <button
+          id="btn-open-owner-chat"
+          type="button"
+          aria-label="Chat with Gesner Deslandes right now"
+          class="px-3 py-2 rounded-xl text-xs font-bold bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-200 border border-emerald-500/45 transition flex items-center gap-1.5 cursor-pointer"
+        >
+          <span>💬</span>
+          <span>Chat Owner</span>
+        </button>
+
+        <!-- Donate -->
+        <button
+          id="btn-open-donation"
+          type="button"
+          aria-label="Support and Donate"
+          class="px-3 py-2 rounded-xl text-xs font-bold bg-rose-500/15 hover:bg-rose-500/25 text-rose-200 border border-rose-500/45 transition flex items-center gap-1.5 cursor-pointer"
+        >
+          <span class="text-rose-500 leading-none">❤️</span>
+          <span>Donate</span>
+        </button>
+
+        <!-- Favorites -->
+        <button
+          id="btn-favorites-filter"
+          type="button"
+          class="px-2.5 py-2 rounded-xl text-xs font-semibold bg-slate-800/90 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5 cursor-pointer"
+        >
+          <span class="text-amber-400">★</span>
+          <span class="hidden sm:inline">Favorites</span>
+          <span id="fav-count" class="px-1.5 py-0.2 rounded-full bg-cyan-500/20 text-cyan-300 text-xs">0</span>
+        </button>
+
+        <!-- GitHub Pages Guide -->
+        <button
+          id="btn-github-guide"
+          type="button"
+          class="px-3 py-2 rounded-xl text-xs font-bold bg-cyan-500 hover:bg-cyan-400 text-slate-950 transition flex items-center gap-1 cursor-pointer"
+        >
+          <span>⚡</span>
+          <span class="hidden sm:inline">GitHub</span>
+        </button>
       </div>
     </div>
   </header>
 
-  <!-- ================= MAIN CONTENT ================= -->
+  <!-- ============ MAIN CONTENT ============ -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
 
-    <!-- Hero + Developer Card -->
+    <!-- Hero Banner & Developer Card -->
     <section class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-      <div class="lg:col-span-2 glass-panel rounded-xl p-5 sm:p-6 neon-border flex flex-col justify-between gap-4 card-lift relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-64 h-64 bg-[#76b900]/5 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="space-y-2 relative z-10">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#76b900]/10 border border-[#76b900]/25 text-[#76b900] text-xs font-semibold">
-            <span>🎮</span>
-            <span>Seamless In-App Stage + Simulated Background Cover Mode</span>
+      <div class="lg:col-span-2 glass-panel rounded-2xl p-5 sm:p-6 neon-border flex flex-col justify-between gap-4">
+        <div class="space-y-2.5">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-semibold">
+              <span>🎮</span>
+              <span>Jarvis In-App Stage + Simulated Cover</span>
+            </span>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border" style="background: rgba(118,185,0,0.12); border-color: rgba(118,185,0,0.35); color: var(--nv-accent);">
+              <span>⚡</span>
+              <span>NVIDIA RTX &amp; Reflex Telemetry Integrated</span>
+            </span>
           </div>
           <h2 class="text-2xl sm:text-3xl font-black text-white leading-tight">
-            Launch &amp; Play Browser Games Right Inside <span class="nvidia-green">Jarvis</span>
+            Launch &amp; Play Browser Games Inside <span class="text-cyan-400">Jarvis</span> with <span style="color: var(--nv-accent);">NVIDIA RTX</span>
           </h2>
-          <p class="text-sm text-slate-400 leading-relaxed">
-            Play <strong class="text-white">Rats of the Manor · RTX Tactical Edition</strong> and
-            <strong class="text-white">Fighter Jet Game</strong>, launch <strong class="text-white">G Jarvis Communication Portal</strong>,
-            <strong class="text-white">GlobalInternet.py Website</strong>, and <strong class="text-white">Jarvis World Map GPS Tracker</strong>,
-            or browse <strong class="text-white">CrazyGames</strong>, <strong class="text-white">Easy Games</strong>,
-            <strong class="text-white">TopGames.gg</strong>, <strong class="text-white">Web-games.io</strong>,
-            <strong class="text-white">js13kGames</strong>, <strong class="text-white">itch.io</strong>, and
-            <strong class="text-white">Social Media &amp; Search/Mail</strong> shortcuts with automatic background cover simulation when external sites open in a new tab.
+          <p class="text-sm text-slate-300 leading-relaxed">
+            Play <strong class="text-white">Rats of the Manor · RTX Tactical Edition</strong> and <strong class="text-white">Fighter Jet Game</strong>, launch <strong class="text-white">G Jarvis Communication Portal</strong>, <strong class="text-white">GlobalInternet.py Website</strong>, and <strong class="text-white">Jarvis World Map GPS Tracker</strong>, or browse <strong class="text-white">CrazyGames</strong>, <strong class="text-white">Easy Games</strong>, <strong class="text-white">TopGames.gg</strong>, <strong class="text-white">Web-games.io</strong>, <strong class="text-white">js13kGames</strong>, <strong class="text-white">itch.io</strong>, and <strong class="text-white">Social Media &amp; Search/Mail</strong> shortcuts with live NVIDIA App telemetry and RTX stage filters.
           </p>
         </div>
-        <div class="flex flex-wrap items-center gap-2.5 pt-1 relative z-10">
-          <button id="btn-play-featured" type="button"
-                  class="px-4 py-2.5 rounded-lg btn-nvidia font-bold text-sm shadow-lg transition cursor-pointer">
+
+        <div class="flex flex-wrap items-center gap-2.5 pt-1">
+          <button
+            id="btn-play-featured"
+            type="button"
+            class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-400 to-sky-500 hover:from-cyan-300 hover:to-sky-400 text-slate-950 font-bold text-sm transition shadow-lg shadow-cyan-500/25 cursor-pointer"
+          >
             ▶ Launch Rats of the Manor
           </button>
-          <button id="btn-random-game" type="button"
-                  class="px-4 py-2.5 rounded-lg bg-white/5 hover:bg-white/10 text-white font-semibold text-sm border border-white/10 transition cursor-pointer">
+          <button
+            id="btn-hero-nvidia"
+            type="button"
+            class="px-4 py-2.5 rounded-xl text-slate-950 font-extrabold text-sm transition shadow-lg cursor-pointer"
+            style="background-color: var(--nv-accent);"
+          >
+            ⚡ Open NVIDIA App (Alt+Z)
+          </button>
+          <button
+            id="btn-random-game"
+            type="button"
+            class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-sm border border-slate-700 transition cursor-pointer"
+          >
             🎲 Surprise Me
           </button>
-          <button id="btn-hero-simulate" type="button"
-                  class="px-4 py-2.5 rounded-lg btn-outline-nvidia font-semibold text-sm transition cursor-pointer">
+          <button
+            id="btn-hero-simulate"
+            type="button"
+            class="px-4 py-2.5 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 font-semibold text-sm border border-emerald-500/35 transition cursor-pointer"
+          >
             ⧉ Simulated Cover Mode
           </button>
-          <a id="hero-whatsapp-link"
-             href="https://wa.me/50947385663?text=Hello%20Gesner%20Deslandes%2C%20I%20am%20visiting%20Let%27s%20Play%20with%20Jarvis%20and%20would%20like%20to%20chat%20with%20you%20right%20now."
-             target="_blank" rel="noopener noreferrer"
-             class="px-4 py-2.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-sm transition shadow-lg">
+          <a
+            id="hero-whatsapp-link"
+            href="https://wa.me/50947385663?text=Hello%20Gesner%20Deslandes%2C%20I%20am%20visiting%20Let%27s%20Play%20with%20Jarvis%20and%20would%20like%20to%20chat%20with%20you%20right%20now."
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-sm transition shadow-lg shadow-emerald-500/20"
+          >
             💬 Chat with Gesner Deslandes Right Now
           </a>
         </div>
       </div>
 
-      <!-- Developer Card (preserved content, NVIDIA-styled) -->
-      <aside class="glass-panel rounded-xl p-5 flex flex-col justify-between gap-3 border border-[#76b900]/15 card-lift">
+      <!-- Developer & Owner Card -->
+      <aside class="glass-panel rounded-2xl p-5 flex flex-col justify-between gap-3 border border-cyan-500/20">
         <div class="space-y-2">
           <div class="flex items-center justify-between gap-2">
-            <span class="text-[10px] uppercase tracking-wider font-bold text-[#76b900]">Developer &amp; Owner</span>
-            <span class="px-2 py-0.5 rounded text-[9px] font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+            <span class="text-xs uppercase tracking-wider font-bold text-cyan-400">Developer &amp; Owner</span>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
               Owner Live Chat
             </span>
           </div>
           <h3 class="text-lg font-extrabold text-white">Gesner Deslandes</h3>
-          <p class="text-xs font-medium text-emerald-400 leading-snug">
+          <p class="text-xs font-medium text-emerald-300 leading-snug">
             Software Developer &amp; Technology Coordinator, GlobalInternet.py
           </p>
           <div class="pt-2 space-y-1.5 text-xs text-slate-300">
-            <div class="flex items-center justify-between gap-2 bg-black/60 px-3 py-2 rounded-lg border border-white/5">
-              <span class="text-slate-500">WhatsApp:</span>
-              <a id="card-whatsapp-link"
-                 href="https://wa.me/50947385663?text=Hello%20Gesner%20Deslandes%2C%20I%20am%20visiting%20Let%27s%20Play%20with%20Jarvis%20and%20want%20to%20chat%20now."
-                 target="_blank" rel="noopener noreferrer"
-                 class="font-semibold text-emerald-400 hover:underline font-mono">
+            <div class="flex items-center justify-between gap-2 bg-slate-900/80 px-3 py-2 rounded-xl border border-slate-800">
+              <span class="text-slate-400">WhatsApp:</span>
+              <a
+                id="card-whatsapp-link"
+                href="https://wa.me/50947385663?text=Hello%20Gesner%20Deslandes%2C%20I%20am%20visiting%20Let%27s%20Play%20with%20Jarvis%20and%20want%20to%20chat%20now."
+                target="_blank"
+                rel="noopener noreferrer"
+                class="font-semibold text-emerald-300 hover:underline font-mono"
+              >
                 (509)-47385663
               </a>
             </div>
-            <div class="flex items-center justify-between gap-2 bg-black/60 px-3 py-2 rounded-lg border border-white/5">
-              <span class="text-slate-500">Email:</span>
-              <a id="card-email-link"
-                 href="mailto:deslandes78@gmail.com?subject=Chat%20with%20Gesner%20Deslandes%20%E2%80%94%20Let%27s%20Play%20with%20Jarvis&body=Hello%20Gesner%20Deslandes%2C%0A%0AI%20am%20reaching%20out%20from%20Let%27s%20Play%20with%20Jarvis."
-                 class="font-semibold text-[#76b900] hover:underline truncate">
+            <div class="flex items-center justify-between gap-2 bg-slate-900/80 px-3 py-2 rounded-xl border border-slate-800">
+              <span class="text-slate-400">Email:</span>
+              <a
+                id="card-email-link"
+                href="mailto:deslandes78@gmail.com?subject=Chat%20with%20Gesner%20Deslandes%20%E2%80%94%20Let%27s%20Play%20with%20Jarvis&body=Hello%20Gesner%20Deslandes%2C%0A%0AI%20am%20reaching%20out%20from%20Let%27s%20Play%20with%20Jarvis."
+                class="font-semibold text-cyan-300 hover:underline truncate"
+              >
                 deslandes78@gmail.com
               </a>
             </div>
           </div>
           <div class="pt-1.5 grid grid-cols-2 gap-2">
-            <a href="https://wa.me/50947385663?text=Hello%20Gesner%20Deslandes%2C%20I%20would%20like%20to%20chat%20with%20you%20right%20now%20from%20Let%27s%20Play%20with%20Jarvis."
-               target="_blank" rel="noopener noreferrer"
-               class="px-3 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs text-center transition">
+            <a
+              href="https://wa.me/50947385663?text=Hello%20Gesner%20Deslandes%2C%20I%20would%20like%20to%20chat%20with%20you%20right%20now%20from%20Let%27s%20Play%20with%20Jarvis."
+              target="_blank"
+              rel="noopener noreferrer"
+              class="px-3 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs text-center transition"
+            >
               WhatsApp Chat
             </a>
-            <a href="mailto:deslandes78@gmail.com?subject=Direct%20Message%20to%20Gesner%20Deslandes&body=Hello%20Gesner%2C%0A%0A"
-               class="px-3 py-2 rounded-lg btn-outline-nvidia font-extrabold text-xs text-center transition">
+            <a
+              href="mailto:deslandes78@gmail.com?subject=Direct%20Message%20to%20Gesner%20Deslandes&body=Hello%20Gesner%2C%0A%0A"
+              class="px-3 py-2 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-200 border border-cyan-400/40 font-extrabold text-xs text-center transition"
+            >
               Send Email
             </a>
           </div>
         </div>
-        <div class="flex items-center justify-between gap-2 pt-2 border-t border-white/5 text-xs">
-          <span class="text-slate-500">GitHub Ready: <strong class="text-[#76b900]">index.html</strong></span>
-          <button id="btn-copy-contact" type="button"
-                  class="px-2.5 py-1.5 rounded bg-white/5 hover:bg-white/10 text-[#76b900] font-semibold border border-white/10 transition cursor-pointer">
+        <div class="flex items-center justify-between gap-2 pt-2 border-t border-slate-800/80 text-xs">
+          <span class="text-slate-400">GitHub Ready: <strong class="text-emerald-400">index.html</strong></span>
+          <button
+            id="btn-copy-contact"
+            type="button"
+            class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 font-semibold border border-slate-700 transition cursor-pointer"
+          >
             Copy Info
           </button>
         </div>
       </aside>
     </section>
 
-    <!-- Social Media Quick Access Bar (preserved) -->
-    <section id="social-media-bar" class="glass-panel rounded-xl p-4 sm:p-5 border border-[#76b900]/15 space-y-3">
+    <!-- Social Media, Search Engine & GMail Quick Access Bar (Simulated Background Cover Mode) -->
+    <section id="social-media-bar" class="glass-panel rounded-2xl p-4 sm:p-5 border border-cyan-500/25 space-y-3">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <div class="space-y-0.5">
-          <div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#76b900]">
-            <span>🌐</span> <span>Social Media, Search &amp; Mail Quick Access</span>
+          <div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-cyan-300">
+            <span>🌐</span>
+            <span>Social Media, Search &amp; Mail Quick Access</span>
           </div>
-          <p class="text-xs text-slate-400">
+          <p class="text-xs text-slate-300">
             Opens in a new browser tab with <strong class="text-white">Jarvis</strong> active as a simulated background cover — no auto-typing or pre-filled queries/messages.
           </p>
         </div>
-        <span class="self-start sm:self-auto px-2.5 py-1 rounded text-[10px] font-bold bg-[#76b900]/15 text-[#76b900] border border-[#76b900]/30">
+        <span class="self-start sm:self-auto px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
           7 Shortcuts · Simulated Cover
         </span>
       </div>
       <div id="social-quick-buttons" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2.5"></div>
     </section>
 
-    <!-- Built-In Playable Stage (preserved structure, NVIDIA styling) -->
-    <section id="play-stage" class="glass-panel rounded-xl overflow-hidden neon-border">
-      <div class="px-4 sm:px-5 py-3 bg-black/60 border-b border-white/5 flex flex-wrap items-center justify-between gap-3">
+    <!-- Built-In Playable Stage with RTX Enhancements -->
+    <section id="play-stage" class="glass-panel rounded-2xl overflow-hidden neon-border">
+      <div class="px-4 sm:px-5 py-3 bg-slate-900/95 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3">
         <div class="flex items-center gap-3 min-w-0">
-          <span id="stage-badge" class="px-2.5 py-1 rounded text-[10px] font-bold bg-[#76b900]/15 text-[#76b900] border border-[#76b900]/30 shrink-0 uppercase tracking-wider">
+          <span id="stage-badge" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 shrink-0">
             3D Shooter
           </span>
           <div class="truncate">
-            <div id="stage-title" class="text-sm sm:text-base font-bold text-white truncate">
-              Rats of the Manor · RTX Tactical Edition
+            <div class="flex items-center gap-2">
+              <div id="stage-title" class="text-sm sm:text-base font-bold text-white truncate">
+                Rats of the Manor · RTX Tactical Edition
+              </div>
+              <span id="stage-rtx-pill" class="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-extrabold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                ⚡ Reflex ON
+              </span>
             </div>
-            <div id="stage-url" class="text-xs text-slate-500 truncate font-mono">
+            <div id="stage-url" class="text-xs text-slate-400 truncate">
               https://deslandes1.github.io/RATS-OF-THE-MINOR-GAME-2026/
             </div>
           </div>
         </div>
         <div class="flex flex-wrap items-center gap-2 shrink-0">
-          <button id="btn-simulate-stage" type="button"
-                  class="px-3 py-1.5 rounded btn-outline-nvidia text-xs font-bold transition cursor-pointer"
-                  title="Open in new tab with Jarvis background cover">
+          <button
+            id="btn-stage-nvidia"
+            type="button"
+            class="px-3 py-1.5 rounded-lg text-xs font-extrabold text-slate-950 transition cursor-pointer"
+            style="background-color: var(--nv-accent);"
+            title="Open NVIDIA App RTX & Reflex Drawer"
+          >
+            ⚡ RTX Overlay
+          </button>
+          <button
+            id="btn-simulate-stage"
+            type="button"
+            class="px-3 py-1.5 rounded-lg text-xs font-bold bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/40 transition cursor-pointer"
+            title="Open in new tab with Jarvis background cover"
+          >
             ⧉ Simulated Cover
           </button>
-          <button id="btn-reload-stage" type="button"
-                  class="px-3 py-1.5 rounded bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 text-xs font-semibold transition cursor-pointer"
-                  title="Reload game frame">
+          <button
+            id="btn-reload-stage"
+            type="button"
+            class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition cursor-pointer"
+            title="Reload game frame"
+          >
             ↻ Reload
           </button>
-          <button id="btn-fullscreen-stage" type="button"
-                  class="px-3 py-1.5 rounded bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 text-xs font-semibold transition cursor-pointer"
-                  title="Fullscreen player">
+          <button
+            id="btn-fullscreen-stage"
+            type="button"
+            class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition cursor-pointer"
+            title="Fullscreen player"
+          >
             ⛶ Fullscreen
           </button>
-          <a id="stage-external-link" href="https://deslandes1.github.io/RATS-OF-THE-MINOR-GAME-2026/"
-             target="_blank" rel="noopener noreferrer"
-             class="px-3 py-1.5 rounded bg-emerald-500 hover:bg-emerald-400 text-black text-xs font-bold transition">
+          <a
+            id="stage-external-link"
+            href="https://deslandes1.github.io/RATS-OF-THE-MINOR-GAME-2026/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition"
+          >
             ↗ Open Tab
           </a>
         </div>
       </div>
-      <div id="stage-frame-wrapper" class="relative w-full h-[62vh] min-h-[420px] max-h-[720px] bg-black">
-        <div id="stage-loader" class="hidden absolute inset-0 z-10 bg-black/90 flex flex-col items-center justify-center gap-2 text-center p-4">
-          <div class="w-8 h-8 rounded-full border-2 border-[#76b900] border-t-transparent animate-spin"></div>
-          <p class="text-sm font-semibold text-[#76b900]">Jarvis is loading the stage...</p>
+
+      <div id="stage-frame-wrapper" class="relative w-full h-[62vh] min-h-[420px] max-h-[720px] bg-slate-950">
+        <div id="stage-loader" class="hidden absolute inset-0 z-10 bg-slate-950/85 flex flex-col items-center justify-center gap-2 text-center p-4">
+          <div class="w-8 h-8 rounded-full border-2 border-cyan-400 border-t-transparent animate-spin"></div>
+          <p class="text-sm font-semibold text-cyan-300">Jarvis is loading the stage...</p>
         </div>
-        <iframe id="game-iframe" src="https://deslandes1.github.io/RATS-OF-THE-MINOR-GAME-2026/"
-                title="Jarvis Game Player" class="w-full h-full border-0"
-                allow="autoplay; fullscreen; gamepad; accelerometer; gyroscope; pointer-lock"
-                allowfullscreen loading="eager"></iframe>
+        <iframe
+          id="game-iframe"
+          src="https://deslandes1.github.io/RATS-OF-THE-MINOR-GAME-2026/"
+          title="Jarvis Game Player"
+          class="w-full h-full border-0 transition-all duration-300"
+          allow="autoplay; fullscreen; gamepad; accelerometer; gyroscope; pointer-lock"
+          allowfullscreen
+          loading="eager"
+        ></iframe>
       </div>
-      <div class="px-4 sm:px-5 py-2.5 bg-black/40 border-t border-white/5 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
+
+      <div class="px-4 sm:px-5 py-2.5 bg-slate-900/70 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400">
         <span>
           External portals, social media, search, and mail links automatically launch in a new tab with Jarvis active as a background cover and a top-left <strong class="text-white">← Back to Jarvis</strong> arrow.
         </span>
-        <button id="btn-add-custom-link" type="button"
-                class="text-[#76b900] hover:text-[#8fd400] font-semibold underline underline-offset-2 cursor-pointer">
+        <button
+          id="btn-add-custom-link"
+          type="button"
+          class="text-cyan-300 hover:text-cyan-200 font-semibold underline underline-offset-2 cursor-pointer"
+        >
           + Add Custom Link
         </button>
       </div>
     </section>
 
     <!-- Search & Category Filter Bar -->
-    <section class="glass-panel rounded-xl p-4 space-y-3">
+    <section class="glass-panel rounded-2xl p-4 space-y-3">
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div class="relative flex-1">
-          <input id="search-input" type="text"
-                 placeholder="Search 33 games, portals, social media & links (Rats of the Manor, Facebook, YouTube, TikTok, Instagram, LinkedIn, Google, GMail)..."
-                 class="w-full px-4 py-2.5 rounded-lg bg-black/60 border border-white/10 focus:border-[#76b900] focus:outline-none focus:ring-1 focus:ring-[#76b900]/30 text-sm text-white placeholder-slate-500" />
+          <input
+            id="search-input"
+            type="text"
+            placeholder="Search 33 games, portals, social media & links (Rats of the Manor, Fighter Jet, Facebook, YouTube, TikTok, Instagram, LinkedIn, Google, GMail)..."
+            class="w-full px-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 focus:border-cyan-400 focus:outline-none text-sm text-white placeholder-slate-400"
+          />
         </div>
-        <div class="flex items-center gap-2 text-xs text-slate-500">
+        <div class="flex items-center gap-2 text-xs text-slate-400">
           <span>Showing</span>
-          <strong id="visible-count" class="text-[#76b900] font-mono">33</strong>
+          <strong id="visible-count" class="text-cyan-300">33</strong>
           <span>items</span>
         </div>
       </div>
       <div id="category-pills" class="flex flex-wrap gap-2"></div>
     </section>
 
-    <!-- Catalog Grid (preserved) -->
+    <!-- Catalog Grid (33 Curated Games, Portals, Jarvis Links & Social/Search/Mail Shortcuts) -->
     <section>
       <div id="games-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"></div>
-      <div id="empty-state" class="hidden glass-panel rounded-xl p-10 text-center space-y-2">
+      <div id="empty-state" class="hidden glass-panel rounded-2xl p-10 text-center space-y-2">
         <p class="text-base font-bold text-white">No matching items found</p>
         <p class="text-sm text-slate-400">Try clearing your search filter or switching categories.</p>
       </div>
     </section>
 
-    <!-- Owner Chat Section (preserved) -->
-    <section id="owner-chat-section" class="glass-panel rounded-xl p-5 sm:p-6 border border-emerald-500/25 neon-border space-y-4">
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/5 pb-4">
+    <!-- Direct Chat with Owner (Gesner Deslandes) Section -->
+    <section id="owner-chat-section" class="glass-panel rounded-2xl p-5 sm:p-6 border border-emerald-500/30 neon-border space-y-4">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800/90 pb-4">
         <div class="space-y-1">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-bold">
-            <span>💬</span> <span>Direct Owner Channel · Let's Play with Jarvis</span>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/35 text-emerald-200 text-xs font-bold">
+            <span>💬</span>
+            <span>Direct Owner Channel · Let&apos;s Play with Jarvis</span>
           </div>
-          <h2 class="text-xl sm:text-2xl font-black text-white">Chat with Gesner Deslandes Right Now</h2>
-          <p class="text-xs sm:text-sm text-slate-400">
-            Redirect directly to <strong class="text-emerald-400">WhatsApp (509)-47385663</strong> or send an
-            <strong class="text-[#76b900]">Email to deslandes78@gmail.com</strong> to chat with
-            <strong class="text-white">Gesner Deslandes</strong>, the owner.
+          <h2 class="text-xl sm:text-2xl font-black text-white">
+            Chat with Gesner Deslandes Right Now
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-300">
+            Redirect directly to <strong class="text-emerald-300">WhatsApp (509)-47385663</strong> or send an <strong class="text-cyan-300">Email to deslandes78@gmail.com</strong> to chat with <strong class="text-white">Gesner Deslandes</strong>, the owner.
           </p>
         </div>
-        <button id="btn-section-owner-chat-modal" type="button"
-                class="px-4 py-2.5 rounded-lg btn-nvidia text-xs sm:text-sm font-extrabold shadow-lg transition shrink-0 cursor-pointer">
+        <button
+          id="btn-section-owner-chat-modal"
+          type="button"
+          class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold bg-gradient-to-r from-emerald-400 to-cyan-400 hover:from-emerald-300 hover:to-cyan-300 text-slate-950 shadow-lg shadow-emerald-500/20 transition shrink-0 cursor-pointer"
+        >
           💬 Launch Instant Chat Box
         </button>
       </div>
+
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="bg-black/60 border border-emerald-500/25 rounded-xl p-4 sm:p-5 flex flex-col justify-between gap-4">
+        <div class="bg-slate-900/85 border border-emerald-500/30 rounded-2xl p-4 sm:p-5 flex flex-col justify-between gap-4">
           <div class="space-y-1.5">
-            <div class="text-[10px] font-bold uppercase tracking-wider text-emerald-300">WhatsApp Direct Chat</div>
+            <div class="text-xs font-bold uppercase tracking-wider text-emerald-300">WhatsApp Direct Chat</div>
             <h3 class="text-base font-extrabold text-white">Message Gesner Deslandes on WhatsApp</h3>
-            <p class="text-xs text-slate-400">
-              Number: <span class="font-mono font-bold text-emerald-400">(509)-47385663</span> · Instant redirect to WhatsApp chat.
+            <p class="text-xs text-slate-300">
+              Number: <span class="font-mono font-bold text-emerald-300">(509)-47385663</span> · Instant redirect to WhatsApp chat.
             </p>
           </div>
           <div class="flex flex-wrap items-center gap-2">
-            <a href="https://wa.me/50947385663?text=Hello%20Gesner%20Deslandes%2C%20I%20am%20chatting%20with%20you%20from%20Let%27s%20Play%20with%20Jarvis."
-               target="_blank" rel="noopener noreferrer"
-               class="flex-1 px-4 py-2.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs text-center transition">
+            <a
+              href="https://wa.me/50947385663?text=Hello%20Gesner%20Deslandes%2C%20I%20am%20chatting%20with%20you%20from%20Let%27s%20Play%20with%20Jarvis."
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex-1 px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs text-center transition"
+            >
               💬 Open WhatsApp (509)-47385663
             </a>
-            <button type="button" data-copy-value="(509)-47385663" data-copy-label="WhatsApp number (509)-47385663"
-                    class="copy-trigger px-3 py-2.5 rounded-lg bg-white/5 hover:bg-white/10 text-emerald-300 border border-white/10 font-bold text-xs transition cursor-pointer">
+            <button
+              type="button"
+              data-copy-value="(509)-47385663"
+              data-copy-label="WhatsApp number (509)-47385663"
+              class="copy-trigger px-3 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-slate-700 font-bold text-xs transition cursor-pointer"
+            >
               Copy Number
             </button>
           </div>
         </div>
-        <div class="bg-black/60 border border-[#76b900]/25 rounded-xl p-4 sm:p-5 flex flex-col justify-between gap-4">
+
+        <div class="bg-slate-900/85 border border-cyan-500/30 rounded-2xl p-4 sm:p-5 flex flex-col justify-between gap-4">
           <div class="space-y-1.5">
-            <div class="text-[10px] font-bold uppercase tracking-wider text-[#76b900]">Email Direct Contact</div>
+            <div class="text-xs font-bold uppercase tracking-wider text-cyan-300">Email Direct Contact</div>
             <h3 class="text-base font-extrabold text-white">Email Gesner Deslandes Directly</h3>
-            <p class="text-xs text-slate-400">
-              Email: <span class="font-mono font-bold text-[#76b900]">deslandes78@gmail.com</span> · Opens your mail client immediately.
+            <p class="text-xs text-slate-300">
+              Email: <span class="font-mono font-bold text-cyan-300">deslandes78@gmail.com</span> · Opens your mail client immediately.
             </p>
           </div>
           <div class="flex flex-wrap items-center gap-2">
-            <a href="mailto:deslandes78@gmail.com?subject=Chat%20with%20Gesner%20Deslandes%20%E2%80%94%20Owner%20of%20Let%27s%20Play%20with%20Jarvis&body=Hello%20Gesner%20Deslandes%2C%0A%0AI%20would%20like%20to%20chat%20with%20you%20regarding%20Let%27s%20Play%20with%20Jarvis."
-               class="flex-1 px-4 py-2.5 rounded-lg btn-nvidia font-extrabold text-xs text-center transition">
+            <a
+              href="mailto:deslandes78@gmail.com?subject=Chat%20with%20Gesner%20Deslandes%20%E2%80%94%20Owner%20of%20Let%27s%20Play%20with%20Jarvis&body=Hello%20Gesner%20Deslandes%2C%0A%0AI%20would%20like%20to%20chat%20with%20you%20regarding%20Let%27s%20Play%20with%20Jarvis."
+              class="flex-1 px-4 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-extrabold text-xs text-center transition"
+            >
               ✉ Email deslandes78@gmail.com
             </a>
-            <button type="button" data-copy-value="deslandes78@gmail.com" data-copy-label="Email deslandes78@gmail.com"
-                    class="copy-trigger px-3 py-2.5 rounded-lg bg-white/5 hover:bg-white/10 text-[#76b900] border border-white/10 font-bold text-xs transition cursor-pointer">
+            <button
+              type="button"
+              data-copy-value="deslandes78@gmail.com"
+              data-copy-label="Email deslandes78@gmail.com"
+              class="copy-trigger px-3 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 font-bold text-xs transition cursor-pointer"
+            >
               Copy Email
             </button>
           </div>
@@ -657,94 +1067,1651 @@
       </div>
     </section>
 
-    <!-- Donation Section (preserved) -->
-    <section id="donation-section" class="glass-panel rounded-xl p-5 sm:p-6 border border-rose-500/25 neon-border space-y-5">
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/5 pb-4">
+    <!-- Dedicated Supporter Donation Section -->
+    <section id="donation-section" class="glass-panel rounded-2xl p-5 sm:p-6 border border-rose-500/30 neon-border space-y-5">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800/90 pb-4">
         <div class="space-y-1">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs font-bold">
-            <span>❤️</span> <span>Support Let's Play with Jarvis &amp; GlobalInternet.py</span>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/15 border border-rose-500/35 text-rose-200 text-xs font-bold">
+            <span class="text-rose-500">❤️</span>
+            <span>Support Let&apos;s Play with Jarvis &amp; GlobalInternet.py</span>
           </div>
-          <h2 class="text-xl sm:text-2xl font-black text-white">Send a Donation or Support Transfer</h2>
-          <p class="text-xs sm:text-sm text-slate-400">
+          <h2 class="text-xl sm:text-2xl font-black text-white">
+            Send a Donation or Support Transfer
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-300">
             Support ongoing development and community projects using Digicel MonCash mobile transfers or international money transfer services.
           </p>
         </div>
-        <button id="btn-section-donation-modal" type="button"
-                class="px-4 py-2.5 rounded-lg bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-400 hover:to-pink-400 text-white shadow-lg text-xs sm:text-sm font-extrabold transition shrink-0 cursor-pointer flex items-center gap-2">
-          <span>❤️</span> <span>Open Donation Card</span>
+        <button
+          id="btn-section-donation-modal"
+          type="button"
+          class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-400 hover:to-pink-400 text-white shadow-lg shadow-rose-500/25 transition shrink-0 cursor-pointer flex items-center gap-2"
+        >
+          <span>❤️</span>
+          <span>Open Donation Card</span>
         </button>
       </div>
+
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <div class="bg-black/60 border border-white/5 rounded-xl p-4 sm:p-5 flex flex-col justify-between gap-4">
+        <!-- Method 1: Prisme Transfer & TapTap Send to Digicel MonCash -->
+        <div class="bg-slate-900/85 border border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-col justify-between gap-4">
           <div class="space-y-2.5">
             <div class="flex items-center justify-between gap-2">
-              <span class="px-2.5 py-1 rounded text-[10px] font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+              <span class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
                 Option 1 · Digicel MonCash
               </span>
               <span class="text-base">❤️</span>
             </div>
             <h3 class="text-base font-extrabold text-white">Prisme Transfer &amp; TapTap Send</h3>
-            <p class="text-xs text-slate-400 leading-relaxed">
-              Send funds via <strong class="text-white">Prisme Transfer</strong> or <strong class="text-white">TapTap Send</strong>
-              directly to the Digicel MonCash number below:
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Send funds via <strong class="text-white">Prisme Transfer</strong> or <strong class="text-white">TapTap Send</strong> directly to the Digicel MonCash number below:
             </p>
+            <div class="bg-slate-950/90 border border-cyan-500/30 rounded-xl p-3 flex items-center justify-between gap-2">
+              <div>
+                <div class="text-[11px] text-slate-400">Digicel MonCash Number</div>
+                <div class="text-sm font-extrabold text-cyan-300 font-mono">(509)-47385663</div>
+              </div>
+              <button
+                type="button"
+                data-copy-value="(509)-47385663"
+                data-copy-label="Digicel MonCash number (509)-47385663"
+                class="copy-trigger px-2.5 py-1.5 rounded-lg text-xs font-bold bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 transition cursor-pointer"
+              >
+                Copy
+              </button>
+            </div>
+          </div>
+          <div class="flex flex-wrap items-center gap-2 pt-1">
+            <button
+              type="button"
+              data-donate-service="Prisme Transfer"
+              data-donate-url="https://prismetransfer.com/"
+              class="donate-service-btn flex-1 px-3 py-2 rounded-xl text-xs font-extrabold bg-cyan-500 hover:bg-cyan-400 text-slate-950 transition cursor-pointer"
+            >
+              ⧉ Prisme Transfer
+            </button>
+            <button
+              type="button"
+              data-donate-service="TapTap Send"
+              data-donate-url="https://www.taptapsend.com/"
+              class="donate-service-btn flex-1 px-3 py-2 rounded-xl text-xs font-extrabold bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition cursor-pointer"
+            >
+              ⧉ TapTap Send
+            </button>
           </div>
         </div>
-        <!-- Additional donation options would continue here as in your original file -->
+
+        <!-- Method 2: Western Union, MoneyGram, Unitransfer -->
+        <div class="bg-slate-900/85 border border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-col justify-between gap-4">
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between gap-2">
+              <span class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30">
+                Option 2 · Wire &amp; Remittance
+              </span>
+              <span class="text-xs font-bold text-slate-400">MTCN / Ref</span>
+            </div>
+            <h3 class="text-base font-extrabold text-white">Western Union, MoneyGram &amp; Unitransfer</h3>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Send via <strong class="text-white">Western Union</strong>, <strong class="text-white">MoneyGram</strong>, or <strong class="text-white">Unitransfer</strong> using the recipient details on the right, then <strong class="text-emerald-300">share the tracking number</strong> to:
+            </p>
+            <div class="bg-slate-950/90 border border-amber-500/30 rounded-xl p-3 flex items-center justify-between gap-2">
+              <div>
+                <div class="text-[11px] text-slate-400">Share Tracking Number To</div>
+                <div class="text-sm font-extrabold text-amber-300 font-mono">(509)-47385663</div>
+              </div>
+              <button
+                type="button"
+                data-copy-value="(509)-47385663"
+                data-copy-label="Tracking share number (509)-47385663"
+                class="copy-trigger px-2.5 py-1.5 rounded-lg text-xs font-bold bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 transition cursor-pointer"
+              >
+                Copy
+              </button>
+            </div>
+          </div>
+          <div class="flex flex-wrap items-center gap-1.5 pt-1">
+            <button
+              type="button"
+              data-donate-service="Western Union"
+              data-donate-url="https://www.westernunion.com/"
+              class="donate-service-btn px-2.5 py-2 rounded-xl text-[11px] font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition cursor-pointer"
+            >
+              Western Union
+            </button>
+            <button
+              type="button"
+              data-donate-service="MoneyGram"
+              data-donate-url="https://www.moneygram.com/"
+              class="donate-service-btn px-2.5 py-2 rounded-xl text-[11px] font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition cursor-pointer"
+            >
+              MoneyGram
+            </button>
+            <button
+              type="button"
+              data-donate-service="Unitransfer"
+              data-donate-url="https://unitransfer.com/"
+              class="donate-service-btn px-2.5 py-2 rounded-xl text-[11px] font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition cursor-pointer"
+            >
+              Unitransfer
+            </button>
+          </div>
+        </div>
+
+        <!-- Recipient Information Card -->
+        <div class="bg-slate-900/85 border border-cyan-500/25 rounded-2xl p-4 sm:p-5 flex flex-col justify-between gap-3">
+          <div class="space-y-2 text-xs">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] uppercase tracking-wider font-bold text-cyan-400">Recipient Details</span>
+              <button
+                type="button"
+                id="btn-copy-full-donation-info"
+                class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-300 border border-cyan-500/30 transition cursor-pointer"
+              >
+                Copy All
+              </button>
+            </div>
+            <div class="space-y-1.5 text-slate-300">
+              <div class="bg-slate-950/75 px-3 py-2 rounded-xl border border-slate-800/90">
+                <span class="text-slate-400">Name &amp; Role:</span>
+                <div class="font-bold text-white">Gesner Deslandes · Software Developer</div>
+              </div>
+              <div class="bg-slate-950/75 px-3 py-2 rounded-xl border border-slate-800/90 flex items-center justify-between gap-2">
+                <div>
+                  <span class="text-slate-400">Contact / MonCash / Tracking:</span>
+                  <div class="font-bold text-cyan-300 font-mono">(509)-47385663</div>
+                </div>
+              </div>
+              <div class="bg-slate-950/75 px-3 py-2 rounded-xl border border-slate-800/90">
+                <span class="text-slate-400">Email:</span>
+                <div class="font-semibold text-cyan-300 break-all">deslandes78@gmail.com</div>
+              </div>
+              <div class="bg-slate-950/75 px-3 py-2 rounded-xl border border-slate-800/90">
+                <span class="text-slate-400">Address:</span>
+                <div class="font-semibold text-white">Grand Goâve, Haiti — National Road Route 2</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   </main>
 
-  <!-- ================= JAVASCRIPT (preserved logic + NVIDIA-style live telemetry simulation) ================= -->
+  <!-- ============ FOOTER ============ -->
+  <footer class="glass-panel border-t border-slate-800/90 mt-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
+      <div>
+        <strong class="text-white">Let&apos;s Play with Jarvis</strong> · NVIDIA RTX Edition · Built by <strong class="text-cyan-300">Gesner Deslandes</strong> (Software Developer &amp; Technology Coordinator, GlobalInternet.py)
+      </div>
+      <div class="flex flex-wrap items-center gap-4">
+        <a
+          href="https://wa.me/50947385663?text=Hello%20Gesner%20Deslandes%2C%20I%20want%20to%20chat%20with%20you%20right%20now."
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-emerald-300 hover:underline font-semibold"
+        >
+          WhatsApp: (509)-47385663
+        </a>
+        <span>Email: <a href="mailto:deslandes78@gmail.com" class="text-cyan-300 hover:underline">deslandes78@gmail.com</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============ TOAST NOTIFICATION ============ -->
+  <div
+    id="toast"
+    class="fixed top-20 right-5 z-50 hidden max-w-sm px-4 py-3 rounded-xl bg-slate-950/95 border border-cyan-400/60 text-white text-xs sm:text-sm font-semibold shadow-2xl"
+  ></div>
+
+  <!-- ============ OWNER INSTANT CHAT MODAL ============ -->
+  <div id="owner-chat-modal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="glass-panel rounded-2xl max-w-lg w-full p-5 sm:p-6 space-y-4 border border-emerald-500/40 my-auto">
+      <div class="flex items-center justify-between gap-3 border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2.5">
+          <span class="w-9 h-9 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-lg">💬</span>
+          <div>
+            <h3 class="text-base sm:text-lg font-extrabold text-white">Chat with Gesner Deslandes Right Now</h3>
+            <p class="text-xs text-emerald-300">Owner · Let&apos;s Play with Jarvis &amp; GlobalInternet.py</p>
+          </div>
+        </div>
+        <button id="close-owner-chat-modal" type="button" class="text-slate-400 hover:text-white text-lg font-bold cursor-pointer">✕</button>
+      </div>
+      <form id="owner-chat-form" class="space-y-3">
+        <div>
+          <label for="chat-visitor-name" class="block text-xs font-semibold text-slate-300 mb-1">Your Name (Optional)</label>
+          <input
+            id="chat-visitor-name"
+            type="text"
+            placeholder="e.g., Visitor or Player"
+            class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white focus:border-emerald-400 focus:outline-none"
+          />
+        </div>
+        <div>
+          <label for="chat-visitor-message" class="block text-xs font-semibold text-slate-300 mb-1">Message for Gesner Deslandes</label>
+          <textarea
+            id="chat-visitor-message"
+            rows="3"
+            placeholder="Hello Gesner Deslandes, I would like to chat with you right now..."
+            class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white focus:border-emerald-400 focus:outline-none"
+          ></textarea>
+        </div>
+        <div class="bg-slate-950/85 border border-slate-800 rounded-xl p-3 text-xs text-slate-300 space-y-1">
+          <div><strong class="text-white">WhatsApp:</strong> <span class="font-mono text-emerald-300">(509)-47385663</span></div>
+          <div><strong class="text-white">Email:</strong> <span class="font-mono text-cyan-300">deslandes78@gmail.com</span></div>
+        </div>
+        <div class="flex flex-wrap items-center gap-2.5 pt-1">
+          <button
+            id="btn-redirect-whatsapp-now"
+            type="submit"
+            class="flex-1 px-4 py-2.5 rounded-xl text-xs font-extrabold bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition cursor-pointer"
+          >
+            💬 Redirect to WhatsApp (509)-47385663
+          </button>
+          <button
+            id="btn-redirect-email-now"
+            type="button"
+            class="flex-1 px-4 py-2.5 rounded-xl text-xs font-extrabold bg-cyan-500 hover:bg-cyan-400 text-slate-950 transition cursor-pointer"
+          >
+            ✉ Redirect to Email deslandes78@gmail.com
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ DONATION MODAL ============ -->
+  <div id="donation-modal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="glass-panel rounded-2xl max-w-2xl w-full p-5 sm:p-6 space-y-4 border border-rose-500/40 my-auto">
+      <div class="flex items-center justify-between gap-3 border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2.5">
+          <span class="w-9 h-9 rounded-xl bg-rose-500/20 border border-rose-500/40 flex items-center justify-center text-lg">❤️</span>
+          <div>
+            <h3 class="text-base sm:text-lg font-extrabold text-white">Donate to Gesner Deslandes</h3>
+            <p class="text-xs text-slate-400">Software Developer · Grand Goâve, Haiti — National Road Route 2</p>
+          </div>
+        </div>
+        <button id="close-donation-modal" type="button" class="text-slate-400 hover:text-white text-lg font-bold cursor-pointer">✕</button>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 space-y-2.5">
+          <div class="font-extrabold text-emerald-300 text-sm">1. Prisme Transfer &amp; TapTap Send</div>
+          <p class="text-slate-300 leading-relaxed">
+            Send directly to Digicel MonCash number:
+          </p>
+          <div class="flex items-center justify-between gap-2 bg-slate-950 border border-slate-800 rounded-xl px-3 py-2">
+            <span class="font-mono font-bold text-cyan-300">(509)-47385663</span>
+            <button
+              type="button"
+              data-copy-value="(509)-47385663"
+              data-copy-label="Digicel MonCash number (509)-47385663"
+              class="copy-trigger px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 font-bold cursor-pointer"
+            >
+              Copy
+            </button>
+          </div>
+          <div class="flex gap-2 pt-1">
+            <button
+              type="button"
+              data-donate-service="Prisme Transfer"
+              data-donate-url="https://prismetransfer.com/"
+              class="donate-service-btn flex-1 px-3 py-2 rounded-xl font-extrabold bg-cyan-500 hover:bg-cyan-400 text-slate-950 transition cursor-pointer"
+            >
+              ⧉ Prisme Transfer
+            </button>
+            <button
+              type="button"
+              data-donate-service="TapTap Send"
+              data-donate-url="https://www.taptapsend.com/"
+              class="donate-service-btn flex-1 px-3 py-2 rounded-xl font-extrabold bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition cursor-pointer"
+            >
+              ⧉ TapTap Send
+            </button>
+          </div>
+        </div>
+        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 space-y-2.5">
+          <div class="font-extrabold text-amber-300 text-sm">2. Western Union, MoneyGram, Unitransfer</div>
+          <p class="text-slate-300 leading-relaxed">
+            After sending, <strong class="text-white">share the tracking number</strong> to <strong class="text-amber-300 font-mono">(509)-47385663</strong>.
+          </p>
+          <div class="flex items-center justify-between gap-2 bg-slate-950 border border-slate-800 rounded-xl px-3 py-2">
+            <span class="font-mono font-bold text-amber-300">(509)-47385663</span>
+            <button
+              type="button"
+              data-copy-value="(509)-47385663"
+              data-copy-label="Tracking share number (509)-47385663"
+              class="copy-trigger px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold cursor-pointer"
+            >
+              Copy
+            </button>
+          </div>
+          <div class="flex flex-wrap gap-1.5 pt-1">
+            <button
+              type="button"
+              data-donate-service="Western Union"
+              data-donate-url="https://www.westernunion.com/"
+              class="donate-service-btn px-2.5 py-1.5 rounded-xl font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition cursor-pointer"
+            >
+              Western Union
+            </button>
+            <button
+              type="button"
+              data-donate-service="MoneyGram"
+              data-donate-url="https://www.moneygram.com/"
+              class="donate-service-btn px-2.5 py-1.5 rounded-xl font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition cursor-pointer"
+            >
+              MoneyGram
+            </button>
+            <button
+              type="button"
+              data-donate-service="Unitransfer"
+              data-donate-url="https://unitransfer.com/"
+              class="donate-service-btn px-2.5 py-1.5 rounded-xl font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition cursor-pointer"
+            >
+              Unitransfer
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="bg-slate-950/85 border border-slate-800 rounded-2xl p-4 space-y-1.5 text-xs text-slate-300">
+        <div class="font-bold text-cyan-400 uppercase tracking-wider text-[11px]">Recipient Personal Info</div>
+        <div><strong class="text-white">Name:</strong> Gesner Deslandes · <strong class="text-emerald-300">Software Developer</strong></div>
+        <div><strong class="text-white">Contact Info / Digicel MonCash / Tracking Number:</strong> <span class="font-mono text-cyan-300">(509)-47385663</span></div>
+        <div><strong class="text-white">Email:</strong> <span class="font-mono text-cyan-300">deslandes78@gmail.com</span></div>
+        <div><strong class="text-white">Location:</strong> Grand Goâve, Haiti — National Road Route 2</div>
+      </div>
+      <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+        <button
+          type="button"
+          id="btn-modal-copy-all"
+          class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 transition cursor-pointer"
+        >
+          Copy All Recipient Details
+        </button>
+        <button
+          type="button"
+          id="close-donation-modal-btn"
+          class="px-4 py-2 rounded-xl text-xs font-extrabold bg-cyan-500 hover:bg-cyan-400 text-slate-950 transition cursor-pointer"
+        >
+          Done
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ ADD CUSTOM LINK MODAL ============ -->
+  <div id="custom-game-modal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass-panel rounded-2xl max-w-md w-full p-5 space-y-4 border border-cyan-500/30">
+      <div class="flex items-center justify-between">
+        <h3 class="text-base font-extrabold text-white">Add Custom Link</h3>
+        <button id="close-custom-modal" type="button" class="text-slate-400 hover:text-white text-lg font-bold cursor-pointer">✕</button>
+      </div>
+      <form id="custom-game-form" class="space-y-3">
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Title</label>
+          <input id="custom-title" type="text" required placeholder="e.g., Neon Drift 3D" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white focus:border-cyan-400 focus:outline-none" />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">URL (https://...)</label>
+          <input id="custom-url" type="url" required placeholder="https://example.com/game" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white focus:border-cyan-400 focus:outline-none" />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Category</label>
+          <select id="custom-category" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white focus:border-cyan-400 focus:outline-none">
+            <option value="3D Shooter">3D Shooter</option>
+            <option value="Portal / Comms">Portal / Comms</option>
+            <option value="Portal / Website">Portal / Website</option>
+            <option value="Tracker / GPS">Tracker / GPS</option>
+            <option value="Portal">Portal</option>
+            <option value="Social & Search">Social &amp; Search</option>
+            <option value="Racing">Racing</option>
+            <option value="Action">Action</option>
+            <option value="Arcade">Arcade</option>
+            <option value="Puzzle">Puzzle</option>
+          </select>
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" id="cancel-custom-modal" class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 cursor-pointer">Cancel</button>
+          <button type="submit" class="px-4 py-2 rounded-xl text-xs font-bold bg-cyan-500 text-slate-950 hover:bg-cyan-400 cursor-pointer">Save &amp; Launch</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ GITHUB PAGES DEPLOY GUIDE MODAL ============ -->
+  <div id="github-modal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass-panel rounded-2xl max-w-xl w-full p-5 sm:p-6 space-y-4 border border-cyan-500/30">
+      <div class="flex items-center justify-between">
+        <h3 class="text-lg font-extrabold text-white">Deploy &quot;Let&apos;s Play with Jarvis&quot; on GitHub Pages</h3>
+        <button id="close-github-modal" type="button" class="text-slate-400 hover:text-white text-lg font-bold cursor-pointer">✕</button>
+      </div>
+      <ol class="space-y-2.5 text-xs sm:text-sm text-slate-300 list-decimal list-inside">
+        <li>Create or open your GitHub repository (e.g., <code class="text-cyan-300">lets-play-with-jarvis</code>).</li>
+        <li>Copy and paste this entire file as <code class="text-cyan-300">index.html</code> in the root folder.</li>
+        <li>Commit and push <code class="text-cyan-300">index.html</code> to your <code class="text-cyan-300">main</code> branch.</li>
+        <li>Open <strong class="text-white">Settings → Pages</strong>, set <strong class="text-white">Deploy from a branch</strong> to <code class="text-cyan-300">main</code> / <code class="text-cyan-300">/(root)</code>, and save.</li>
+      </ol>
+      <div class="bg-slate-900/90 rounded-xl p-3 border border-slate-800 text-xs font-mono text-emerald-300 overflow-x-auto">
+        git init && git add index.html && git commit -m "Update Let's Play with Jarvis NVIDIA RTX Edition" && git branch -M main && git push -u origin main
+      </div>
+      <div class="flex justify-end">
+        <button id="done-github-modal" type="button" class="px-4 py-2 rounded-xl text-xs font-bold bg-cyan-500 text-slate-950 hover:bg-cyan-400 cursor-pointer">Got It</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ MAIN APPLICATION LOGIC ============ -->
   <script>
-    // ============ NVIDIA-STYLE LIVE TELEMETRY (simulated) ============
-    // Inspired by NVIDIA App's customizable stats overlay [citation:3][citation:9]
-    const telemetry = {
-      fps: 144,
-      latency: 8.2,
-      gpu: 67,
-      vram: 4.2
-    };
+    (function () {
+      const STORAGE_FAVS = 'jarvis_play_favs_v5';
+      const STORAGE_CUSTOM = 'jarvis_play_custom_v5';
+      const OWNER_NAME = 'Gesner Deslandes';
+      const OWNER_WHATSAPP_RAW = '50947385663';
+      const OWNER_WHATSAPP_DISPLAY = '(509)-47385663';
+      const OWNER_EMAIL = 'deslandes78@gmail.com';
 
-    function updateTelemetry() {
-      telemetry.fps = Math.round(138 + Math.random() * 16);
-      telemetry.latency = parseFloat((7.2 + Math.random() * 2.5).toFixed(1));
-      telemetry.gpu = Math.round(58 + Math.random() * 22);
-      telemetry.vram = parseFloat((3.6 + Math.random() * 1.8).toFixed(1));
+      // External portals, social media, search, and mail destinations that launch in a new tab
+      // while Jarvis remains active as a simulated background cover.
+      const EXTERNAL_COVER_HOSTS = [
+        'crazygames.com',
+        'easygames.org',
+        'topgames.gg',
+        'web-games.io',
+        'js13kgames.com',
+        'itch.io',
+        'facebook.com',
+        'youtube.com',
+        'tiktok.com',
+        'instagram.com',
+        'linkedin.com',
+        'google.com',
+        'mail.google.com'
+      ];
 
-      document.getElementById('sim-fps').textContent = telemetry.fps;
-      document.getElementById('sim-latency').innerHTML = telemetry.latency + '<small class="text-[8px] ml-0.5">ms</small>';
-      document.getElementById('sim-gpu').innerHTML = telemetry.gpu + '<small class="text-[8px] ml-0.5">%</small>';
-      document.getElementById('sim-vram').innerHTML = telemetry.vram + '<small class="text-[8px] ml-0.5">GB</small>';
+      // 7 Social Media, Search Engine & GMail Quick-Access Shortcuts
+      const SOCIAL_SHORTCUTS = [
+        {
+          id: 'social-facebook',
+          title: 'Facebook',
+          shortLabel: 'Facebook',
+          icon: '📘',
+          category: 'Social & Search',
+          url: 'https://www.facebook.com/',
+          badge: 'Simulated Cover',
+          desc: 'Facebook social feed and community hub opened in a new tab while Jarvis stays active as a background cover.'
+        },
+        {
+          id: 'social-youtube',
+          title: 'YouTube',
+          shortLabel: 'YouTube',
+          icon: '▶️',
+          category: 'Social & Search',
+          url: 'https://www.youtube.com/',
+          badge: 'Simulated Cover',
+          desc: 'YouTube video & creator hub opened in a new tab while Jarvis stays active as a background cover.'
+        },
+        {
+          id: 'social-tiktok',
+          title: 'TikTok',
+          shortLabel: 'TikTok',
+          icon: '🎵',
+          category: 'Social & Search',
+          url: 'https://www.tiktok.com/',
+          badge: 'Simulated Cover',
+          desc: 'TikTok short-form video hub opened in a new tab while Jarvis stays active as a background cover.'
+        },
+        {
+          id: 'social-instagram',
+          title: 'Instagram',
+          shortLabel: 'Instagram',
+          icon: '📸',
+          category: 'Social & Search',
+          url: 'https://www.instagram.com/',
+          badge: 'Simulated Cover',
+          desc: 'Instagram photos, reels, and stories opened in a new tab while Jarvis stays active as a background cover.'
+        },
+        {
+          id: 'social-linkedin',
+          title: 'LinkedIn',
+          shortLabel: 'LinkedIn',
+          icon: '💼',
+          category: 'Social & Search',
+          url: 'https://www.linkedin.com/',
+          badge: 'Simulated Cover',
+          desc: 'LinkedIn professional network opened in a new tab while Jarvis stays active as a background cover.'
+        },
+        {
+          id: 'search-google',
+          title: 'Google Search Engine',
+          shortLabel: 'Google Search',
+          icon: '🔍',
+          category: 'Social & Search',
+          url: 'https://www.google.com/',
+          badge: 'Simulated Cover',
+          desc: 'Google Search Engine opened cleanly in a new tab with no auto-typed search queries while Jarvis remains your background cover.'
+        },
+        {
+          id: 'mail-gmail',
+          title: 'GMail',
+          shortLabel: 'GMail',
+          icon: '✉️',
+          category: 'Social & Search',
+          url: 'https://mail.google.com/',
+          badge: 'Simulated Cover',
+          desc: 'GMail web inbox opened cleanly in a new tab with no pre-written message while Jarvis remains your background cover.'
+        }
+      ];
 
-      // Color code latency like NVIDIA Reflex
-      const latEl = document.getElementById('sim-latency');
-      latEl.className = 'value ' + (telemetry.latency < 10 ? 'cyan' : 'amber');
-    }
+      // Complete 33-Item Catalog (26 Original Curated Games & Portals + 7 Social/Search/Mail Shortcuts)
+      const INITIAL_GAMES = [
+        {
+          id: 'rats-of-the-manor',
+          title: 'Rats of the Manor · RTX Tactical Edition',
+          category: '3D Shooter',
+          url: 'https://deslandes1.github.io/RATS-OF-THE-MINOR-GAME-2026/',
+          badge: 'GitHub Pages Featured',
+          desc: 'Three-story manor & forest 3D tactical action game with flight, combat, and stages.'
+        },
+        {
+          id: 'g-jarvis-communication-portal',
+          title: 'G Jarvis Communication Portal',
+          category: 'Portal / Comms',
+          url: 'https://deslandes1.github.io/G-COMMUNICATION-2026/',
+          badge: 'Jarvis Comms · 2026',
+          desc: 'G Jarvis communication portal for connected messaging, alerts, and coordination.'
+        },
+        {
+          id: 'global-internet-py-website',
+          title: 'GlobalInternet.py Website',
+          category: 'Portal / Website',
+          url: 'https://deslandes1.github.io/GlobalInternet.py-Website-Static-Site-Conversion-2026/',
+          badge: 'GlobalInternet.py',
+          desc: 'Official static site edition of GlobalInternet.py built by Gesner Deslandes.'
+        },
+        {
+          id: 'jarvis-world-map-gps-tracker',
+          title: 'Jarvis World Map GPS Tracker',
+          category: 'Tracker / GPS',
+          url: 'https://deslandes1.github.io/JARVIS-WORLD-MAP-TRACKER-2026/',
+          badge: 'Live GPS Map',
+          desc: 'Interactive Jarvis world map GPS tracker for global coordinates and telemetry.'
+        },
+        {
+          id: 'fighter-jet-game',
+          title: 'Fighter Jet Game',
+          category: '3D Shooter',
+          url: 'https://deslandes1.github.io/FIGHTER-JECT-GAME-01/',
+          badge: 'Aerial Combat',
+          desc: 'High-speed fighter jet flight and combat action game hosted on GitHub Pages.'
+        },
+        {
+          id: 'crazygames-portal',
+          title: 'CrazyGames — Free Browser Games Hub',
+          category: 'Portal',
+          url: 'https://www.crazygames.com/',
+          badge: 'Popular Portal',
+          desc: 'Large catalog of free browser games across action, shooting, racing, puzzle, and multiplayer.'
+        },
+        {
+          id: 'easy-games-portal',
+          title: 'Easy Games — Instant HTML5 Browser Games',
+          category: 'Portal',
+          url: 'https://www.easygames.org/',
+          badge: 'Popular Portal',
+          desc: 'Instant HTML5 browser games across arcade, racing, action, and strategy.'
+        },
+        {
+          id: 'topgames-portal',
+          title: 'TopGames.gg — Desktop & Mobile Browser Games',
+          category: 'Portal',
+          url: 'https://topgames.gg/',
+          badge: 'Popular Portal',
+          desc: 'Free browser games you can launch directly on desktop or mobile devices.'
+        },
+        {
+          id: 'web-games-io-portal',
+          title: 'Web-games.io — Instant-Play Web Games',
+          category: 'Portal',
+          url: 'https://web-games.io/',
+          badge: 'Popular Portal',
+          desc: 'Instant-play free web games with no sign-ups required.'
+        },
+        {
+          id: 'crazygames-action',
+          title: 'CrazyGames — Action & Shooter Zone',
+          category: '3D Shooter',
+          url: 'https://www.crazygames.com/c/action',
+          badge: '3D & Action',
+          desc: 'Fast-paced browser action and shooter titles ready to play.'
+        },
+        {
+          id: 'crazygames-car',
+          title: 'CrazyGames — Car & Racing Arena',
+          category: 'Racing',
+          url: 'https://www.crazygames.com/c/car',
+          badge: 'High Speed',
+          desc: 'Drifting, stunt tracks, and high-speed car races directly in the browser.'
+        },
+        {
+          id: 'crazygames-puzzle',
+          title: 'CrazyGames — Puzzle & Brain Lab',
+          category: 'Puzzle',
+          url: 'https://www.crazygames.com/c/puzzle',
+          badge: 'Logic & Mind',
+          desc: 'Clever logic puzzles, matching challenges, and spatial brain teasers.'
+        },
+        {
+          id: 'crazygames-io',
+          title: 'CrazyGames — Multiplayer .IO Arena',
+          category: 'Action',
+          url: 'https://www.crazygames.com/c/io',
+          badge: 'Multiplayer',
+          desc: 'Real-time browser arena and survival games.'
+        },
+        {
+          id: 'easygames-arcade',
+          title: 'Easy Games — Classic Arcade Collection',
+          category: 'Arcade',
+          url: 'https://www.easygames.org/c/arcade',
+          badge: 'HTML5 Arcade',
+          desc: 'Quick-reflex arcade classics built for instant browser play.'
+        },
+        {
+          id: 'easygames-racing',
+          title: 'Easy Games — Racing & Track Circuit',
+          category: 'Racing',
+          url: 'https://www.easygames.org/c/racing',
+          badge: 'HTML5 Racing',
+          desc: 'Speedy browser racing games with responsive controls.'
+        },
+        {
+          id: 'easygames-strategy',
+          title: 'Easy Games — Tactical & Strategy',
+          category: 'Puzzle',
+          url: 'https://www.easygames.org/c/strategy',
+          badge: 'Strategy',
+          desc: 'Plan moves, manage resources, and outsmart opponents.'
+        },
+        {
+          id: 'topgames-action',
+          title: 'TopGames.gg — Action & Arena Picks',
+          category: 'Action',
+          url: 'https://topgames.gg/category/action',
+          badge: 'Top Picks',
+          desc: 'Curated action games tuned for desktop and mobile play.'
+        },
+        {
+          id: 'topgames-racing',
+          title: 'TopGames.gg — Racing & Driving',
+          category: 'Racing',
+          url: 'https://topgames.gg/category/racing',
+          badge: 'Top Picks',
+          desc: 'Highway sprints, stunt courses, and racing challenges.'
+        },
+        {
+          id: 'topgames-arcade',
+          title: 'TopGames.gg — Arcade Classics',
+          category: 'Arcade',
+          url: 'https://topgames.gg/category/arcade',
+          badge: 'Top Picks',
+          desc: 'Pick-up-and-play arcade games with instant starts.'
+        },
+        {
+          id: 'topgames-puzzle',
+          title: 'TopGames.gg — Puzzle & Logic',
+          category: 'Puzzle',
+          url: 'https://topgames.gg/category/puzzle',
+          badge: 'Top Picks',
+          desc: 'Relaxing and challenging browser puzzle games.'
+        },
+        {
+          id: 'webgames-io-action',
+          title: 'Web-games.io — Instant Action',
+          category: 'Action',
+          url: 'https://web-games.io/c/action',
+          badge: 'No Sign-Up',
+          desc: 'Jump straight into action web games without accounts.'
+        },
+        {
+          id: 'webgames-io-racing',
+          title: 'Web-games.io — Instant Racing',
+          category: 'Racing',
+          url: 'https://web-games.io/c/racing',
+          badge: 'No Sign-Up',
+          desc: 'Instant-start racing games right in your browser.'
+        },
+        {
+          id: 'webgames-io-arcade',
+          title: 'Web-games.io — Instant Arcade',
+          category: 'Arcade',
+          url: 'https://web-games.io/c/arcade',
+          badge: 'No Sign-Up',
+          desc: 'Light, fast-loading arcade games on demand.'
+        },
+        {
+          id: 'webgames-io-puzzle',
+          title: 'Web-games.io — Instant Puzzle',
+          category: 'Puzzle',
+          url: 'https://web-games.io/c/puzzle',
+          badge: 'No Sign-Up',
+          desc: 'Brainteasers and puzzle games ready in seconds.'
+        },
+        {
+          id: 'js13k-games',
+          title: 'js13kGames — Indie HTML5 Showcase',
+          category: 'Arcade',
+          url: 'https://js13kgames.com/games',
+          badge: 'Indie Web',
+          desc: 'Creative lightweight browser games crafted by indie developers.'
+        },
+        {
+          id: 'itch-browser-games',
+          title: 'itch.io — Free Browser Games Shelf',
+          category: '3D Shooter',
+          url: 'https://itch.io/games/free/html5',
+          badge: 'Indie Catalog',
+          desc: 'Independent free HTML5 and WebGL games playable in browser.'
+        },
+        ...SOCIAL_SHORTCUTS
+      ];
 
-    setInterval(updateTelemetry, 1200);
-    updateTelemetry();
+      function safeReadJson(key, fallback) {
+        try {
+          const raw = localStorage.getItem(key);
+          return raw ? JSON.parse(raw) : fallback;
+        } catch (err) {
+          return fallback;
+        }
+      }
 
-    // ============ YOUR ORIGINAL LOGIC CONTINUES BELOW ============
-    // (Copy the entire script from your original file here — all game catalog logic,
-    //  iframe controls, search/filter, copy buttons, modal handlers, etc. remain identical.)
-    //
-    // The only new additions are the telemetry functions above and the NVIDIA-styled
-    // HTML/CSS classes. Your `games-grid` rendering, `category-pills`, `social-quick-buttons`,
-    // and all event listeners should be pasted here exactly as they were.
-    //
-    // Example placeholder for your existing catalog logic:
-    //
-    // const GAMES = [ ... your 33 items ... ];
-    // function renderGames(filter) { ... }
-    // document.getElementById('search-input').addEventListener('input', ...);
-    // document.getElementById('btn-play-featured').addEventListener('click', ...);
-    // ... etc.
-    //
-    // Because your original script was not fully included in the docx excerpt,
-    // paste your complete existing `<script>` block here. The HTML above expects
-    // elements like #games-grid, #category-pills, #social-quick-buttons, etc.,
-    // which your existing JavaScript already populates.
+      function safeWriteJson(key, value) {
+        try {
+          localStorage.setItem(key, JSON.stringify(value));
+        } catch (err) {
+          // Ignore storage quota errors
+        }
+      }
+
+      function shouldUseSimulatedCover(url) {
+        try {
+          const parsed = new URL(url);
+          const host = parsed.hostname.toLowerCase();
+          return EXTERNAL_COVER_HOSTS.some(
+            (blockedHost) => host === blockedHost || host.endsWith('.' + blockedHost)
+          );
+        } catch (err) {
+          return false;
+        }
+      }
+
+      let favorites = safeReadJson(STORAGE_FAVS, [
+        'rats-of-the-manor',
+        'g-jarvis-communication-portal',
+        'global-internet-py-website',
+        'jarvis-world-map-gps-tracker',
+        'fighter-jet-game'
+      ]);
+      let customGames = safeReadJson(STORAGE_CUSTOM, []);
+      let activeCategory = 'All';
+      let favoritesOnly = false;
+      let searchQuery = '';
+      let currentGame = INITIAL_GAMES[0];
+      let simulatedTargetGame = null;
+      let isSimulatedCoverActive = false;
+      let stageWatchdogTimer = null;
+
+      // NVIDIA RTX & Reflex State
+      const nvState = {
+        drawerOpen: false,
+        perfVisible: true,
+        customOpen: false,
+        instantReplay: true,
+        rtxVibrance: false,
+        rtxHdr: false,
+        reflexBoost: true,
+        powerLimit: 100,
+        clockOffset: 0,
+        fpsCap: 165,
+        accent: '#76b900',
+        fpsHistory: Array.from({ length: 20 }, () => 144)
+      };
+
+      const CATEGORIES = [
+        'All',
+        'Social & Search',
+        'Portal / Comms',
+        'Portal / Website',
+        'Tracker / GPS',
+        '3D Shooter',
+        'Portal',
+        'Racing',
+        'Action',
+        'Arcade',
+        'Puzzle'
+      ];
+
+      // DOM Elements
+      const socialQuickButtons = document.getElementById('social-quick-buttons');
+      const gamesGrid = document.getElementById('games-grid');
+      const emptyState = document.getElementById('empty-state');
+      const visibleCount = document.getElementById('visible-count');
+      const totalCatalogCount = document.getElementById('total-catalog-count');
+      const favCount = document.getElementById('fav-count');
+      const categoryPills = document.getElementById('category-pills');
+      const searchInput = document.getElementById('search-input');
+      const gameIframe = document.getElementById('game-iframe');
+      const stageTitle = document.getElementById('stage-title');
+      const stageUrl = document.getElementById('stage-url');
+      const stageBadge = document.getElementById('stage-badge');
+      const stageRtxPill = document.getElementById('stage-rtx-pill');
+      const stageExternalLink = document.getElementById('stage-external-link');
+      const stageLoader = document.getElementById('stage-loader');
+      const stageFrameWrapper = document.getElementById('stage-frame-wrapper');
+      const toastEl = document.getElementById('toast');
+
+      // Simulated Cover Elements
+      const simOverlay = document.getElementById('simulated-cover-overlay');
+      const simTitle = document.getElementById('sim-cover-title');
+      const simCategory = document.getElementById('sim-cover-category');
+      const simBadge = document.getElementById('sim-cover-badge');
+      const simDesc = document.getElementById('sim-cover-desc');
+      const simUrlLink = document.getElementById('sim-cover-url-link');
+      const simDirectOpen = document.getElementById('sim-cover-direct-open');
+
+      // NVIDIA Elements
+      const nvidiaDrawer = document.getElementById('nvidia-drawer');
+      const perfOverlay = document.getElementById('perf-overlay');
+      const customHudDrawer = document.getElementById('custom-hud-drawer');
+      const fpsSparkline = document.getElementById('fps-sparkline');
+
+      let toastTimer = null;
+      function showToast(message) {
+        toastEl.textContent = message;
+        toastEl.classList.remove('hidden');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+          toastEl.classList.add('hidden');
+        }, 3000);
+      }
+
+      // ============ NVIDIA APP TELEMETRY & CONTROLS ============
+      function toggleNvidiaDrawer(forceState) {
+        nvState.drawerOpen = typeof forceState === 'boolean' ? forceState : !nvState.drawerOpen;
+        nvidiaDrawer.classList.toggle('open', nvState.drawerOpen);
+      }
+
+      function togglePerfOverlay(forceState) {
+        nvState.perfVisible = typeof forceState === 'boolean' ? forceState : !nvState.perfVisible;
+        perfOverlay.classList.toggle('hud-hidden', !nvState.perfVisible);
+        const switchBtn = document.getElementById('toggle-perf-switch');
+        if (switchBtn) {
+          switchBtn.textContent = nvState.perfVisible ? 'VISIBLE' : 'HIDDEN';
+          switchBtn.className = nvState.perfVisible
+            ? 'px-3 py-1 rounded-full text-[11px] font-extrabold bg-emerald-500 text-slate-950 cursor-pointer'
+            : 'px-3 py-1 rounded-full text-[11px] font-extrabold bg-slate-800 text-slate-400 cursor-pointer';
+        }
+      }
+
+      function toggleCustomHudDrawer(forceState) {
+        nvState.customOpen = typeof forceState === 'boolean' ? forceState : !nvState.customOpen;
+        customHudDrawer.classList.toggle('open', nvState.customOpen);
+      }
+
+      function updateStageShaders() {
+        gameIframe.classList.toggle('rtx-vibrance-active', nvState.rtxVibrance);
+        gameIframe.classList.toggle('rtx-hdr-active', nvState.rtxHdr);
+
+        const activeTags = [];
+        if (nvState.reflexBoost) activeTags.push('Reflex ON');
+        if (nvState.rtxVibrance) activeTags.push('Vibrance');
+        if (nvState.rtxHdr) activeTags.push('RTX HDR');
+
+        if (activeTags.length > 0) {
+          stageRtxPill.textContent = '⚡ ' + activeTags.join(' · ');
+          stageRtxPill.classList.remove('hidden');
+        } else {
+          stageRtxPill.classList.add('hidden');
+        }
+      }
+
+      function updateNvidiaMetrics() {
+        // Calculate dynamic telemetry influenced by Power Limit, Clock Offset, FPS Cap, and Reflex
+        const powerFactor = nvState.powerLimit / 100;
+        const clockBonus = nvState.clockOffset * 0.08;
+        const reflexBonus = nvState.reflexBoost ? 14 : 0;
+        const rawTarget = (138 * powerFactor) + clockBonus + reflexBonus + (Math.random() * 14 - 7);
+        const fps = Math.max(45, Math.min(nvState.fpsCap, Math.round(rawTarget)));
+
+        const frameTime = (1000 / fps).toFixed(1);
+        const baseLatency = nvState.reflexBoost ? 6.4 : 14.8;
+        const latency = Math.max(3.2, parseFloat((baseLatency + (100 / fps) * 1.4 + (Math.random() * 1.2 - 0.6)).toFixed(1)));
+        const gpuLoad = Math.min(99, Math.max(28, Math.round(58 * powerFactor + (Math.random() * 12 - 6))));
+        const gpuTemp = Math.min(86, Math.max(46, Math.round(54 + (powerFactor - 0.7) * 24 + (nvState.clockOffset / 45) + (Math.random() * 3 - 1.5))));
+        const gpuPower = Math.round(235 * powerFactor + (nvState.clockOffset * 0.12) + (Math.random() * 8 - 4));
+        const vram = (4.1 + (nvState.rtxHdr ? 0.6 : 0) + (nvState.rtxVibrance ? 0.3 : 0) + Math.random() * 0.4).toFixed(1);
+
+        // Update Floating Performance HUD
+        document.getElementById('perf-fps').textContent = `${fps} FPS`;
+        document.getElementById('perf-frametime').textContent = `${frameTime} ms`;
+        document.getElementById('perf-gpu').textContent = `${gpuLoad}%`;
+        const tempEl = document.getElementById('perf-temp');
+        tempEl.textContent = `${gpuTemp}°C`;
+        tempEl.className = gpuTemp > 75
+          ? 'font-mono-tabular font-bold text-rose-400'
+          : gpuTemp > 66
+            ? 'font-mono-tabular font-bold text-amber-400'
+            : 'font-mono-tabular font-bold text-emerald-400';
+
+        document.getElementById('perf-vram').textContent = `${vram} / 24 GB`;
+        document.getElementById('perf-latency').textContent = `${latency} ms`;
+
+        // Update Header Inline Telemetry
+        document.getElementById('header-fps').textContent = String(fps);
+        document.getElementById('header-latency').textContent = `${latency}ms`;
+
+        // Update Drawer Telemetry Summary
+        document.getElementById('drawer-gpu-load').textContent = `${gpuLoad}%`;
+        document.getElementById('drawer-gpu-temp').textContent = `${gpuTemp}°C`;
+        document.getElementById('drawer-gpu-power').textContent = `${gpuPower}W`;
+
+        // Update Reflex Latency Progress Bar
+        const pct = Math.min(100, Math.max(8, (latency / 30) * 100));
+        const bar = document.getElementById('latency-bar');
+        bar.style.width = `${pct}%`;
+        if (latency < 10) {
+          bar.style.background = `linear-gradient(90deg, ${nvState.accent}, #22d3ee)`;
+        } else if (latency < 18) {
+          bar.style.background = 'linear-gradient(90deg, #f59e0b, #fb923c)';
+        } else {
+          bar.style.background = 'linear-gradient(90deg, #f43f5e, #fb7185)';
+        }
+
+        // Update 20-bar FPS Sparkline
+        nvState.fpsHistory.push(fps);
+        if (nvState.fpsHistory.length > 20) nvState.fpsHistory.shift();
+        fpsSparkline.innerHTML = '';
+        nvState.fpsHistory.forEach((val) => {
+          const barHeight = Math.max(18, Math.min(100, Math.round((val / 240) * 100)));
+          const col = document.createElement('div');
+          col.className = 'flex-1 rounded-t-sm transition-all duration-300';
+          col.style.height = `${barHeight}%`;
+          col.style.backgroundColor = val >= 100 ? nvState.accent : '#f59e0b';
+          col.style.opacity = '0.85';
+          fpsSparkline.appendChild(col);
+        });
+      }
+
+      function applyAccentTheme(color) {
+        nvState.accent = color;
+        document.documentElement.style.setProperty('--nv-accent', color);
+        document.documentElement.style.setProperty('--nv-accent-glow', color + '40');
+        document.getElementById('btn-toggle-nvidia-app').style.backgroundColor = color;
+        document.getElementById('btn-hero-nvidia').style.backgroundColor = color;
+        document.getElementById('btn-stage-nvidia').style.backgroundColor = color;
+        document.getElementById('nv-logo-badge').style.backgroundColor = color;
+        document.getElementById('perf-fps').style.color = color;
+        document.getElementById('header-fps').style.color = color;
+        nvidiaDrawer.style.borderRightColor = color;
+      }
+
+      // Wire NVIDIA Drawer Feature Tiles
+      document.getElementById('tile-instant-replay').addEventListener('click', () => {
+        nvState.instantReplay = !nvState.instantReplay;
+        const badge = document.getElementById('badge-replay');
+        badge.textContent = nvState.instantReplay ? 'ON' : 'OFF';
+        badge.className = nvState.instantReplay
+          ? 'text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300'
+          : 'text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-800 text-slate-400';
+        showToast(nvState.instantReplay ? 'ShadowPlay Instant Replay Enabled (4K 120FPS)' : 'Instant Replay Paused');
+      });
+
+      document.getElementById('tile-photo-mode').addEventListener('click', () => {
+        const currentFps = document.getElementById('perf-fps').textContent;
+        const currentLat = document.getElementById('perf-latency').textContent;
+        showToast(`📸 RTX Snapshot Saved: "${currentGame.title}" (${currentFps} · ${currentLat})`);
+      });
+
+      document.getElementById('tile-rtx-vibrance').addEventListener('click', () => {
+        nvState.rtxVibrance = !nvState.rtxVibrance;
+        const badge = document.getElementById('badge-vibrance');
+        badge.textContent = nvState.rtxVibrance ? 'ON' : 'OFF';
+        badge.className = nvState.rtxVibrance
+          ? 'text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300'
+          : 'text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-800 text-slate-400';
+        updateStageShaders();
+        showToast(nvState.rtxVibrance ? '🎨 RTX Dynamic Vibrance Applied to Stage' : 'RTX Dynamic Vibrance Off');
+      });
+
+      document.getElementById('tile-rtx-hdr').addEventListener('click', () => {
+        nvState.rtxHdr = !nvState.rtxHdr;
+        const badge = document.getElementById('badge-hdr');
+        badge.textContent = nvState.rtxHdr ? 'ON' : 'OFF';
+        badge.className = nvState.rtxHdr
+          ? 'text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300'
+          : 'text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-800 text-slate-400';
+        updateStageShaders();
+        showToast(nvState.rtxHdr ? '🌅 RTX HDR Tone Mapping Active on Stage' : 'RTX HDR Off');
+      });
+
+      document.getElementById('tile-nv-reflex').addEventListener('click', () => {
+        nvState.reflexBoost = !nvState.reflexBoost;
+        const badge = document.getElementById('badge-reflex');
+        badge.textContent = nvState.reflexBoost ? 'ON + BOOST' : 'OFF';
+        badge.className = nvState.reflexBoost
+          ? 'text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300'
+          : 'text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-800 text-slate-400';
+        updateStageShaders();
+        updateNvidiaMetrics();
+        showToast(nvState.reflexBoost ? '⚡ NVIDIA Reflex Low Latency + Boost Enabled' : 'NVIDIA Reflex Disabled');
+      });
+
+      // GPU Tuning Sliders
+      document.getElementById('slider-power-limit').addEventListener('input', (e) => {
+        nvState.powerLimit = parseInt(e.target.value, 10);
+        document.getElementById('val-power-limit').textContent = `${nvState.powerLimit}%`;
+        updateNvidiaMetrics();
+      });
+
+      document.getElementById('slider-clock-offset').addEventListener('input', (e) => {
+        nvState.clockOffset = parseInt(e.target.value, 10);
+        const sign = nvState.clockOffset > 0 ? '+' : '';
+        document.getElementById('val-clock-offset').textContent = `${sign}${nvState.clockOffset} MHz`;
+        updateNvidiaMetrics();
+      });
+
+      document.getElementById('slider-fps-cap').addEventListener('input', (e) => {
+        nvState.fpsCap = parseInt(e.target.value, 10);
+        document.getElementById('val-fps-cap').textContent = `${nvState.fpsCap} FPS`;
+        updateNvidiaMetrics();
+      });
+
+      document.getElementById('btn-reset-tuning').addEventListener('click', () => {
+        nvState.powerLimit = 100;
+        nvState.clockOffset = 0;
+        nvState.fpsCap = 165;
+        document.getElementById('slider-power-limit').value = '100';
+        document.getElementById('slider-clock-offset').value = '0';
+        document.getElementById('slider-fps-cap').value = '165';
+        document.getElementById('val-power-limit').textContent = '100%';
+        document.getElementById('val-clock-offset').textContent = '+0 MHz';
+        document.getElementById('val-fps-cap').textContent = '165 FPS';
+        updateNvidiaMetrics();
+        showToast('GPU Tuning Reset to Factory Defaults');
+      });
+
+      // HUD Customization Controls
+      document.getElementById('toggle-perf-switch').addEventListener('click', () => {
+        togglePerfOverlay();
+      });
+
+      document.getElementById('select-hud-pos').addEventListener('change', (e) => {
+        const pos = e.target.value;
+        perfOverlay.style.top = 'auto';
+        perfOverlay.style.bottom = 'auto';
+        perfOverlay.style.left = 'auto';
+        perfOverlay.style.right = 'auto';
+        if (pos === 'bottom-left') {
+          perfOverlay.style.bottom = '20px';
+          perfOverlay.style.left = '20px';
+        } else if (pos === 'bottom-right') {
+          perfOverlay.style.bottom = '20px';
+          perfOverlay.style.right = '20px';
+        } else if (pos === 'top-right') {
+          perfOverlay.style.top = '76px';
+          perfOverlay.style.right = '20px';
+        } else if (pos === 'top-left') {
+          perfOverlay.style.top = '76px';
+          perfOverlay.style.left = '20px';
+        }
+      });
+
+      document.getElementById('select-hud-fontsize').addEventListener('change', (e) => {
+        document.getElementById('perf-metrics-list').style.fontSize = `${e.target.value}px`;
+      });
+
+      document.getElementById('slider-hud-opacity').addEventListener('input', (e) => {
+        const val = parseInt(e.target.value, 10);
+        document.getElementById('val-hud-opacity').textContent = `${val}%`;
+        perfOverlay.style.backgroundColor = `rgba(8, 10, 14, ${val / 100})`;
+      });
+
+      document.querySelectorAll('.accent-swatch').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const color = btn.getAttribute('data-accent');
+          if (color) {
+            document.getElementById('picker-accent').value = color;
+            applyAccentTheme(color);
+          }
+        });
+      });
+
+      document.getElementById('picker-accent').addEventListener('input', (e) => {
+        applyAccentTheme(e.target.value);
+      });
+
+      // Wire Drawer & HUD Triggers
+      document.getElementById('btn-toggle-nvidia-app').addEventListener('click', () => toggleNvidiaDrawer());
+      document.getElementById('btn-hero-nvidia').addEventListener('click', () => toggleNvidiaDrawer(true));
+      document.getElementById('btn-stage-nvidia').addEventListener('click', () => toggleNvidiaDrawer(true));
+      document.getElementById('btn-close-nvidia-drawer').addEventListener('click', () => toggleNvidiaDrawer(false));
+
+      document.getElementById('btn-toggle-perf-header').addEventListener('click', () => togglePerfOverlay());
+      document.getElementById('drawer-toggle-perf').addEventListener('click', () => togglePerfOverlay());
+      document.getElementById('btn-close-perf-hud').addEventListener('click', () => togglePerfOverlay(false));
+
+      document.getElementById('btn-toggle-custom-header').addEventListener('click', () => toggleCustomHudDrawer());
+      document.getElementById('drawer-open-custom').addEventListener('click', () => {
+        toggleNvidiaDrawer(false);
+        toggleCustomHudDrawer(true);
+      });
+      document.getElementById('btn-close-custom-hud').addEventListener('click', () => toggleCustomHudDrawer(false));
+
+      // ============ OWNER CHAT & REDIRECTS ============
+      function buildComposedMessage() {
+        const visitorNameInput = document.getElementById('chat-visitor-name');
+        const visitorMsgInput = document.getElementById('chat-visitor-message');
+        const name = visitorNameInput ? visitorNameInput.value.trim() : '';
+        const customBody = visitorMsgInput ? visitorMsgInput.value.trim() : '';
+        if (customBody) {
+          return name ? `${customBody} — From ${name}` : customBody;
+        }
+        return name
+          ? `Hello ${OWNER_NAME}, I am ${name} from Let's Play with Jarvis and would like to chat with you right now.`
+          : `Hello ${OWNER_NAME}, I am visiting Let's Play with Jarvis and would like to chat with you right now.`;
+      }
+
+      function redirectToWhatsAppChat() {
+        const message = encodeURIComponent(buildComposedMessage());
+        const whatsappUrl = `https://wa.me/${OWNER_WHATSAPP_RAW}?text=${message}`;
+        showToast(`Redirecting to WhatsApp (${OWNER_WHATSAPP_DISPLAY}) to chat with ${OWNER_NAME}...`);
+        openExternalWindow(whatsappUrl);
+      }
+
+      function redirectToEmailChat() {
+        const visitorNameInput = document.getElementById('chat-visitor-name');
+        const name = visitorNameInput ? visitorNameInput.value.trim() : '';
+        const subject = encodeURIComponent(
+          name
+            ? `Chat with ${OWNER_NAME} from ${name} — Let's Play with Jarvis`
+            : `Chat with ${OWNER_NAME} (Owner) — Let's Play with Jarvis`
+        );
+        const body = encodeURIComponent(buildComposedMessage());
+        const mailtoUrl = `mailto:${OWNER_EMAIL}?subject=${subject}&body=${body}`;
+        showToast(`Opening email to ${OWNER_EMAIL}...`);
+        window.location.href = mailtoUrl;
+      }
+
+      // ============ STAGE, SIMULATED COVER & CATALOG LOGIC ============
+      function clearStageWatchdog() {
+        if (stageWatchdogTimer) {
+          clearTimeout(stageWatchdogTimer);
+          stageWatchdogTimer = null;
+        }
+      }
+
+      function getAllGames() {
+        return [...INITIAL_GAMES, ...customGames];
+      }
+
+      function openExternalWindow(url) {
+        try {
+          const win = window.open(url, '_blank', 'noopener,noreferrer');
+          if (win && typeof win.focus === 'function') {
+            win.focus();
+          }
+          return Boolean(win);
+        } catch (err) {
+          return false;
+        }
+      }
+
+      function activateSimulatedCover(game, openNewTab = true) {
+        if (!game) return;
+        clearStageWatchdog();
+        stageLoader.classList.add('hidden');
+        simulatedTargetGame = game;
+        isSimulatedCoverActive = true;
+        simTitle.textContent = game.title;
+        simCategory.textContent = game.category;
+        simBadge.textContent = game.badge || 'Simulated In-App Mode';
+        simDesc.textContent = `${game.desc} Opened in a new browser tab while Let's Play with Jarvis remains active as a background cover.`;
+        simUrlLink.textContent = game.url;
+        simUrlLink.href = game.url;
+        simDirectOpen.href = game.url;
+        simOverlay.classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+        if (openNewTab) {
+          openExternalWindow(game.url);
+          showToast(`Opened "${game.title}" in a new tab`);
+        }
+      }
+
+      function returnFromSimulatedCover() {
+        isSimulatedCoverActive = false;
+        simOverlay.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+        try {
+          if (window.location.hash !== '#top') {
+            window.location.hash = '#top';
+          }
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } catch (err) {
+          document.getElementById('top').scrollIntoView({ behavior: 'smooth' });
+        }
+        showToast("Returned to Let's Play with Jarvis");
+      }
+
+      function handleItemLaunch(game, scrollToStage = true) {
+        if (!game) return;
+        currentGame = game;
+        renderGames();
+        if (shouldUseSimulatedCover(game.url)) {
+          activateSimulatedCover(game, true);
+          return;
+        }
+        stageTitle.textContent = game.title;
+        stageUrl.textContent = game.url;
+        stageBadge.textContent = game.category;
+        stageExternalLink.href = game.url;
+        stageLoader.classList.remove('hidden');
+        clearStageWatchdog();
+        stageWatchdogTimer = setTimeout(() => {
+          if (!isSimulatedCoverActive && currentGame && currentGame.id === game.id) {
+            activateSimulatedCover(game, true);
+          }
+        }, 4200);
+        try {
+          gameIframe.src = game.url;
+        } catch (err) {
+          activateSimulatedCover(game, true);
+          return;
+        }
+        showToast(`Launching "${game.title}"`);
+        if (scrollToStage) {
+          document.getElementById('play-stage').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+
+      gameIframe.addEventListener('load', () => {
+        clearStageWatchdog();
+        stageLoader.classList.add('hidden');
+      });
+
+      gameIframe.addEventListener('error', () => {
+        if (currentGame) {
+          activateSimulatedCover(currentGame, true);
+        }
+      });
+
+      function renderSocialQuickBar() {
+        socialQuickButtons.innerHTML = '';
+        SOCIAL_SHORTCUTS.forEach((item) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className =
+            'px-3 py-2.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 hover:border-cyan-400/50 text-left transition flex items-center gap-2.5 cursor-pointer group';
+          btn.title = `Open ${item.title} in simulated background cover mode`;
+          btn.innerHTML = `
+            <span class="text-lg leading-none shrink-0">${item.icon}</span>
+            <div class="min-w-0">
+              <div class="text-xs font-extrabold text-white group-hover:text-cyan-300 truncate">${item.shortLabel}</div>
+              <div class="text-[10px] font-semibold text-emerald-300 truncate">Simulated Cover</div>
+            </div>
+          `;
+          btn.addEventListener('click', () => {
+            activateSimulatedCover(item, true);
+          });
+          socialQuickButtons.appendChild(btn);
+        });
+      }
+
+      function toggleFavorite(gameId) {
+        if (favorites.includes(gameId)) {
+          favorites = favorites.filter((id) => id !== gameId);
+          showToast('Removed from Favorites');
+        } else {
+          favorites.push(gameId);
+          showToast('Added to Favorites ★');
+        }
+        safeWriteJson(STORAGE_FAVS, favorites);
+        renderGames();
+      }
+
+      function renderCategoryPills() {
+        categoryPills.innerHTML = '';
+        CATEGORIES.forEach((cat) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          const isActive = !favoritesOnly && activeCategory === cat;
+          btn.className = isActive
+            ? 'px-3.5 py-1.5 rounded-xl text-xs font-bold bg-cyan-400 text-slate-950 transition shadow-sm cursor-pointer'
+            : 'px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-900/90 hover:bg-slate-800 text-slate-300 border border-slate-700/80 transition cursor-pointer';
+          btn.textContent = cat;
+          btn.addEventListener('click', () => {
+            favoritesOnly = false;
+            activeCategory = cat;
+            document.getElementById('btn-favorites-filter').classList.remove('ring-2', 'ring-cyan-400');
+            renderCategoryPills();
+            renderGames();
+          });
+          categoryPills.appendChild(btn);
+        });
+      }
+
+      function renderGames() {
+        const all = getAllGames();
+        totalCatalogCount.textContent = String(all.length);
+        favCount.textContent = String(favorites.length);
+        const q = searchQuery.trim().toLowerCase();
+        const filtered = all.filter((g) => {
+          const matchesFav = !favoritesOnly || favorites.includes(g.id);
+          const matchesCat = favoritesOnly || activeCategory === 'All' || g.category === activeCategory;
+          const matchesSearch =
+            !q ||
+            g.title.toLowerCase().includes(q) ||
+            g.category.toLowerCase().includes(q) ||
+            (g.badge && g.badge.toLowerCase().includes(q)) ||
+            g.desc.toLowerCase().includes(q);
+          return matchesFav && matchesCat && matchesSearch;
+        });
+
+        visibleCount.textContent = String(filtered.length);
+        gamesGrid.innerHTML = '';
+        if (filtered.length === 0) {
+          emptyState.classList.remove('hidden');
+          return;
+        }
+        emptyState.classList.add('hidden');
+
+        filtered.forEach((game) => {
+          const isSelected = currentGame && currentGame.id === game.id;
+          const isFav = favorites.includes(game.id);
+          const usesCover = shouldUseSimulatedCover(game.url);
+          const card = document.createElement('article');
+          card.className = isSelected
+            ? 'glass-panel rounded-2xl p-4 flex flex-col justify-between gap-3 border-2 border-cyan-400 shadow-lg shadow-cyan-500/15'
+            : 'glass-panel rounded-2xl p-4 flex flex-col justify-between gap-3 hover:border-cyan-500/50 transition';
+
+          card.innerHTML = `
+            <div class="space-y-2">
+              <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span class="px-2.5 py-0.5 rounded-lg text-[11px] font-bold bg-cyan-500/15 text-cyan-300 border border-cyan-500/25">
+                    ${game.category}
+                  </span>
+                  ${
+                    game.badge
+                      ? `<span class="px-2 py-0.5 rounded-lg text-[10px] font-semibold bg-slate-800 text-emerald-300 border border-slate-700">${game.badge}</span>`
+                      : ''
+                  }
+                </div>
+                <button
+                  type="button"
+                  data-fav-id="${game.id}"
+                  class="text-base leading-none px-1.5 py-0.5 rounded-lg hover:bg-slate-800 transition cursor-pointer ${isFav ? 'text-amber-400' : 'text-slate-500'}"
+                  title="Toggle Favorite"
+                >
+                  ${isFav ? '★' : '☆'}
+                </button>
+              </div>
+              <h3 class="text-sm sm:text-base font-extrabold text-white leading-snug">
+                ${game.icon ? `<span class="mr-1.5">${game.icon}</span>` : ''}${game.title}
+              </h3>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                ${game.desc}
+              </p>
+            </div>
+            <div class="pt-2 border-t border-slate-800/80 flex items-center gap-2">
+              <button
+                type="button"
+                data-play-id="${game.id}"
+                class="flex-1 px-3 py-2 rounded-xl text-xs font-extrabold ${
+                  isSelected
+                    ? 'bg-emerald-400 text-slate-950'
+                    : 'bg-cyan-500 hover:bg-cyan-400 text-slate-950'
+                } transition cursor-pointer"
+              >
+                ${usesCover ? '⧉ Launch in Cover' : isSelected ? '▶ Active in Jarvis' : '▶ Open in Jarvis'}
+              </button>
+              <a
+                href="${game.url}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="px-3 py-2 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition"
+                title="Open in new browser tab"
+              >
+                ↗
+              </a>
+            </div>
+          `;
+
+          card.querySelector('[data-play-id]').addEventListener('click', () => {
+            handleItemLaunch(game, true);
+          });
+          card.querySelector('[data-fav-id]').addEventListener('click', () => {
+            toggleFavorite(game.id);
+          });
+          gamesGrid.appendChild(card);
+        });
+      }
+
+      // Owner Chat Modal Controls
+      const ownerChatModal = document.getElementById('owner-chat-modal');
+      function openOwnerChatModal() {
+        ownerChatModal.classList.remove('hidden');
+      }
+      function closeOwnerChatModal() {
+        ownerChatModal.classList.add('hidden');
+      }
+      document.getElementById('btn-open-owner-chat').addEventListener('click', openOwnerChatModal);
+      document.getElementById('btn-section-owner-chat-modal').addEventListener('click', openOwnerChatModal);
+      document.getElementById('close-owner-chat-modal').addEventListener('click', closeOwnerChatModal);
+      document.getElementById('owner-chat-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        redirectToWhatsAppChat();
+      });
+      document.getElementById('btn-redirect-email-now').addEventListener('click', redirectToEmailChat);
+
+      // Simulated Cover Controls
+      document.getElementById('btn-top-left-return').addEventListener('click', returnFromSimulatedCover);
+      document.getElementById('btn-cover-return-primary').addEventListener('click', returnFromSimulatedCover);
+      document.getElementById('btn-focus-external').addEventListener('click', () => {
+        const target = simulatedTargetGame || currentGame;
+        if (target) {
+          openExternalWindow(target.url);
+          showToast(`Focused "${target.title}" in external window`);
+        }
+      });
+
+      document.getElementById('btn-simulate-stage').addEventListener('click', () => {
+        activateSimulatedCover(currentGame, true);
+      });
+      document.getElementById('btn-hero-simulate').addEventListener('click', () => {
+        activateSimulatedCover(currentGame, true);
+      });
+
+      searchInput.addEventListener('input', (e) => {
+        searchQuery = e.target.value;
+        renderGames();
+      });
+
+      document.getElementById('btn-favorites-filter').addEventListener('click', (e) => {
+        favoritesOnly = !favoritesOnly;
+        e.currentTarget.classList.toggle('ring-2', favoritesOnly);
+        e.currentTarget.classList.toggle('ring-cyan-400', favoritesOnly);
+        renderCategoryPills();
+        renderGames();
+      });
+
+      document.getElementById('btn-play-featured').addEventListener('click', () => {
+        handleItemLaunch(INITIAL_GAMES[0], true);
+      });
+
+      document.getElementById('btn-random-game').addEventListener('click', () => {
+        const all = getAllGames();
+        const pool = all.filter((g) => g.id !== (currentGame && currentGame.id));
+        const pick = pool[Math.floor(Math.random() * pool.length)] || all[0];
+        handleItemLaunch(pick, true);
+      });
+
+      document.getElementById('btn-reload-stage').addEventListener('click', () => {
+        handleItemLaunch(currentGame, false);
+      });
+
+      document.getElementById('btn-fullscreen-stage').addEventListener('click', () => {
+        if (stageFrameWrapper.requestFullscreen) {
+          stageFrameWrapper.requestFullscreen().catch(() => {
+            activateSimulatedCover(currentGame, true);
+          });
+        } else if (gameIframe.requestFullscreen) {
+          gameIframe.requestFullscreen().catch(() => {
+            activateSimulatedCover(currentGame, true);
+          });
+        }
+      });
+
+      function copyTextValue(text, successMessage) {
+        try {
+          const temp = document.createElement('textarea');
+          temp.value = text;
+          document.body.appendChild(temp);
+          temp.select();
+          document.execCommand('copy');
+          document.body.removeChild(temp);
+          showToast(successMessage || 'Copied to clipboard!');
+        } catch (err) {
+          showToast(text);
+        }
+      }
+
+      document.getElementById('btn-copy-contact').addEventListener('click', () => {
+        const contactSummary = `${OWNER_NAME} (Owner, Software Developer & Technology Coordinator, GlobalInternet.py) | WhatsApp: ${OWNER_WHATSAPP_DISPLAY} | Email: ${OWNER_EMAIL}`;
+        copyTextValue(contactSummary, 'Developer contact info copied!');
+      });
+
+      // Custom Link Modal Controls
+      const customModal = document.getElementById('custom-game-modal');
+      document.getElementById('btn-add-custom-link').addEventListener('click', () => {
+        customModal.classList.remove('hidden');
+      });
+      document.getElementById('close-custom-modal').addEventListener('click', () => {
+        customModal.classList.add('hidden');
+      });
+      document.getElementById('cancel-custom-modal').addEventListener('click', () => {
+        customModal.classList.add('hidden');
+      });
+      document.getElementById('custom-game-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const title = document.getElementById('custom-title').value.trim();
+        const url = document.getElementById('custom-url').value.trim();
+        const category = document.getElementById('custom-category').value;
+        if (!title || !url) return;
+        const newGame = {
+          id: 'custom-' + Date.now(),
+          title,
+          url,
+          category,
+          badge: 'Custom Link',
+          desc: `Custom link added by ${OWNER_NAME} in Let's Play with Jarvis.`
+        };
+        customGames.push(newGame);
+        safeWriteJson(STORAGE_CUSTOM, customGames);
+        customModal.classList.add('hidden');
+        e.target.reset();
+        renderGames();
+        handleItemLaunch(newGame, true);
+      });
+
+      // GitHub Pages Modal Controls
+      const githubModal = document.getElementById('github-modal');
+      document.getElementById('btn-github-guide').addEventListener('click', () => {
+        githubModal.classList.remove('hidden');
+      });
+      document.getElementById('close-github-modal').addEventListener('click', () => {
+        githubModal.classList.add('hidden');
+      });
+      document.getElementById('done-github-modal').addEventListener('click', () => {
+        githubModal.classList.add('hidden');
+      });
+
+      // Donation Modal Controls
+      const donationModal = document.getElementById('donation-modal');
+      function openDonationModal() {
+        donationModal.classList.remove('hidden');
+      }
+      function closeDonationModal() {
+        donationModal.classList.add('hidden');
+      }
+      document.getElementById('btn-open-donation').addEventListener('click', openDonationModal);
+      document.getElementById('btn-section-donation-modal').addEventListener('click', openDonationModal);
+      document.getElementById('close-donation-modal').addEventListener('click', closeDonationModal);
+      document.getElementById('close-donation-modal-btn').addEventListener('click', closeDonationModal);
+
+      document.querySelectorAll('.copy-trigger').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const val = btn.getAttribute('data-copy-value') || OWNER_WHATSAPP_DISPLAY;
+          const label = btn.getAttribute('data-copy-label') || 'Contact value';
+          copyTextValue(val, `Copied ${label}`);
+        });
+      });
+
+      const fullDonationSummary =
+        `${OWNER_NAME} | Software Developer | Digicel MonCash & Tracking Number: ${OWNER_WHATSAPP_DISPLAY} | Email: ${OWNER_EMAIL} | Location: Grand Goâve, Haiti — National Road Route 2 | Services: Prisme Transfer, TapTap Send, Western Union, MoneyGram, Unitransfer`;
+
+      document.getElementById('btn-copy-full-donation-info').addEventListener('click', () => {
+        copyTextValue(fullDonationSummary, 'Copied all donation & recipient details!');
+      });
+      document.getElementById('btn-modal-copy-all').addEventListener('click', () => {
+        copyTextValue(fullDonationSummary, 'Copied all donation & recipient details!');
+      });
+
+      document.querySelectorAll('.donate-service-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const serviceName = btn.getAttribute('data-donate-service') || 'Transfer Portal';
+          const serviceUrl = btn.getAttribute('data-donate-url') || 'https://www.taptapsend.com/';
+          closeDonationModal();
+          activateSimulatedCover(
+            {
+              id: 'donate-' + serviceName.toLowerCase().replace(/\s+/g, '-'),
+              title: `${serviceName} · Donate to ${OWNER_WHATSAPP_DISPLAY}`,
+              category: 'Supporter Donation',
+              url: serviceUrl,
+              badge: '❤️ Donation Cover',
+              desc: `Recipient: ${OWNER_NAME} (Software Developer) · Digicel MonCash / Share Tracking Number: ${OWNER_WHATSAPP_DISPLAY} · ${OWNER_EMAIL} · Grand Goâve, Haiti — National Road Route 2.`
+            },
+            true
+          );
+        });
+      });
+
+      // Global Keyboard Shortcuts (Alt+Z, Alt+R, Escape)
+      document.addEventListener('keydown', (e) => {
+        if (e.altKey && e.code === 'KeyZ') {
+          e.preventDefault();
+          toggleNvidiaDrawer();
+          return;
+        }
+        if (e.altKey && e.code === 'KeyR') {
+          e.preventDefault();
+          togglePerfOverlay();
+          return;
+        }
+        if (e.key === 'Escape') {
+          if (nvState.drawerOpen) toggleNvidiaDrawer(false);
+          if (nvState.customOpen) toggleCustomHudDrawer(false);
+          if (isSimulatedCoverActive) returnFromSimulatedCover();
+          if (!ownerChatModal.classList.contains('hidden')) closeOwnerChatModal();
+          if (!donationModal.classList.contains('hidden')) closeDonationModal();
+          if (!customModal.classList.contains('hidden')) customModal.classList.add('hidden');
+          if (!githubModal.classList.contains('hidden')) githubModal.classList.add('hidden');
+        }
+      });
+
+      // Initialize App & Telemetry Loop
+      renderSocialQuickBar();
+      renderCategoryPills();
+      renderGames();
+      updateNvidiaMetrics();
+      setInterval(updateNvidiaMetrics, 900);
+    })();
   </script>
 </body>
 </html>
